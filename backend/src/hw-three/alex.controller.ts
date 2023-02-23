@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common/decorators';
 
-//The controller metadata defines the route. ie: localhost:3001/danielhw3
+//The controller metadata defines the route. ie: localhost:3001/alexhw3
 @Controller('alexhw3')
 //Nestjs uses the mvc model. For this basic request i just used a controller.
-export class DanielController {
+export class AlexController {
 //tells nestjs the following method is used for the http GET method
     @Get()
     forHW() {
