@@ -1,20 +1,22 @@
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import Container from 'react-bootstrap/Container';
+import { Navbar, Container, Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { FiShoppingCart } from 'react-icons/fi';
-import { NavDropdown } from 'react-bootstrap';
+import { Outlet } from 'react-router-dom';
 
+//TODO Change login linked based on if user is signed in or not
 export const MainNav = () => (
-	<Navbar bg='dark' variant='dark' sticky='top'>
-		<Container fluid>
-			<Navbar.Brand href='/'>React-Bootstrap</Navbar.Brand>
-			<Navbar.Toggle aria-controls='basic-navbar-nav' />
-			<Navbar.Collapse id='basic-navbar-nav'>
-				<Nav className='me-auto'>
-					<Nav.Link href='Login'>Login</Nav.Link>
+	<>
+		<Navbar bg='dark' variant='dark'>
+			<Container fluid>
+				<LinkContainer to='/home'>
+					<Navbar.Brand>Bronco Corral</Navbar.Brand>
+				</LinkContainer>
+				<Nav>
+					<LinkContainer to='/login'>
+						<Nav.Link>Login</Nav.Link>
+					</LinkContainer>
 				</Nav>
-			</Navbar.Collapse>
-		</Container>
-	</Navbar>
+			</Container>
+		</Navbar>
+		<Outlet></Outlet>
+	</>
 );
