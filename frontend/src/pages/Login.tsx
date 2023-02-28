@@ -1,3 +1,5 @@
+import { FormInput } from '../components/FormInput';
+
 export function Login() {
-	return <div>Das Login</div>;
+	return <FormInput />;
 }
