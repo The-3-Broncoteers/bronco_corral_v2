@@ -8,6 +8,22 @@ app.use(express.json());
 
 const port: number = 3001;
 
+app.post('/api/create', async (req, res) => {
+	const email = req.body.email;
+	const password = req.body.password;
+
+	const prisma = new PrismaClient({ log: ['query'] });
+
+	const newUser = await prisma.users.create({
+		data: {
+			email: email,
+			password: password,
+		},
+	});
+
+	res.json({ success: true });
+});
+
 app.listen(port, () => {
 	console.log(`Express is listening at http://localhost:${port}`);
 
@@ -30,18 +46,4 @@ app.listen(port, () => {
 	} catch (error) {
 		console.log(error);
 	}
-});
-
-app.post('/create', async (req, res) => {
-	const email = req.body.email;
-	const password = req.body.password;
-
-	const prisma = new PrismaClient({ log: ['query'] });
-
-	const newUser = await prisma.users.create({
-		data: {
-			email: email,
-			password: password,
-		},
-	});
 });

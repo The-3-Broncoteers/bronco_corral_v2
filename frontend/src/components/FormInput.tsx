@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import axios from 'axios';
 import { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
@@ -8,14 +8,28 @@ export const FormInput = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const handleSubmit = () => {
-		console.log(`email: ${email} pw: ${password}`);
-		Axios.post('http://localhost:3001/create', {
-			email: email,
-			password: password,
-		}).then(() => {
-			console.log('submited');
-		});
+	// const handleSubmit = () => {
+	// 	console.log(`email: ${email} pw: ${password}`);
+	// 	Axios.post('http://localhost:3001/create', {
+	// 		email: email,
+	// 		password: password,
+	// 	}).then(() => {
+	// 		console.log('submited');
+	// 	});
+	// };
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		console.log('submitting');
+		try {
+			const response = await axios.post('http://localhost:3001/api/create', {
+				email,
+				password,
+			});
+			console.log(response.data);
+		} catch (error) {
+			console.log(error);
+		}
+		console.log('submitted');
 	};
 
 	return (
