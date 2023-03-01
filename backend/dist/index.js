@@ -44,8 +44,29 @@ var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
 var app = (0, express_1["default"])();
 app.use((0, cors_1["default"])());
-app.use(express_1["default"].json);
+app.use(express_1["default"].json());
 var port = 3001;
+app.post('/api/create', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var email, password, prisma, newUser;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                email = req.body.email;
+                password = req.body.password;
+                prisma = new client_1.PrismaClient({ log: ['query'] });
+                return [4 /*yield*/, prisma.users.create({
+                        data: {
+                            email: email,
+                            password: password
+                        }
+                    })];
+            case 1:
+                newUser = _a.sent();
+                res.json({ success: true });
+                return [2 /*return*/];
+        }
+    });
+}); });
 app.listen(port, function () {
     console.log("Express is listening at http://localhost:".concat(port));
     var prisma = new client_1.PrismaClient({ log: ['query'] });
@@ -92,24 +113,4 @@ app.listen(port, function () {
         console.log(error);
     }
 });
-app.post('/create', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var email, password, prisma, newUser;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                email = req.body.email;
-                password = req.body.password;
-                prisma = new client_1.PrismaClient({ log: ['query'] });
-                return [4 /*yield*/, prisma.users.create({
-                        data: {
-                            email: email,
-                            password: password
-                        }
-                    })];
-            case 1:
-                newUser = _a.sent();
-                return [2 /*return*/];
-        }
-    });
-}); });
 //# sourceMappingURL=index.js.map
