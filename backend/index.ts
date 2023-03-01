@@ -4,7 +4,8 @@ import cors from 'cors';
 
 const app = express();
 app.use(cors());
-app.use(express.json);
+app.use(express.json());
+
 const port: number = 3001;
 
 app.listen(port, () => {
