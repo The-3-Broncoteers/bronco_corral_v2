@@ -1,7 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import express from 'express';
 import cors from 'cors';
-import bcrypt from "bcrypt";
+import bcryptt from "bcrypt";
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const burnerPw = 'chickennuggetsaregas';
 
 const app = express();
 app.use(cors());
@@ -48,3 +52,11 @@ app.listen(port, () => {
 		console.log(error);
 	}
 });
+
+function encryptPw(): void {
+	bcrypt.genSalt(saltRounds, function(err, salt) {
+		bcrypt.hash(burnerPw, salt, function(err, hash) {
+			// Store hash in your password DB.
+		});
+	});
+}
