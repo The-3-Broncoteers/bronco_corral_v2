@@ -1,11 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import express from 'express';
 import cors from 'cors';
-import bcryptt from "bcrypt";
-
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const burnerPw = 'chickennuggetsaregas';
 
 const app = express();
 const port: number = 3001;
@@ -30,7 +25,7 @@ app.post('/api/create', async (req, res) => {
 });
 
 app.listen(port, async () => {
-	console.log(`Express is listening at http://localhost:${port}`);
+	console.log(`Express is listening at http://localhost:${port}\n Testing Prisma Connection...`);
 
 	const prisma = new PrismaClient({ log: ['query'] });
 	const users = await prisma.users
@@ -46,11 +41,3 @@ app.listen(port, async () => {
 
 	console.log(users);
 });
-
-function encryptPw(): void {
-	bcrypt.genSalt(saltRounds, function(err, salt) {
-		bcrypt.hash(burnerPw, salt, function(err, hash) {
-			// Store hash in your password DB.
-		});
-	});
-}

@@ -72,7 +72,7 @@ app.listen(port, function () { return __awaiter(void 0, void 0, void 0, function
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log("Express is listening at http://localhost:".concat(port));
+                console.log("Express is listening at http://localhost:".concat(port, "\n Testing Prisma Connection..."));
                 prisma = new client_1.PrismaClient({ log: ['query'] });
                 return [4 /*yield*/, prisma.users
                         .findMany()
