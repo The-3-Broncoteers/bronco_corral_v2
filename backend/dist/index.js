@@ -43,9 +43,9 @@ var client_1 = require("@prisma/client");
 var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
 var app = (0, express_1["default"])();
+var port = 3001;
 app.use((0, cors_1["default"])());
 app.use(express_1["default"].json());
-var port = 3001;
 app.post('/api/create', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var email, password, prisma, newUser;
     return __generator(this, function (_a) {
@@ -67,50 +67,42 @@ app.post('/api/create', function (req, res) { return __awaiter(void 0, void 0, v
         }
     });
 }); });
-app.listen(port, function () {
-    console.log("Express is listening at http://localhost:".concat(port));
-    var prisma = new client_1.PrismaClient({ log: ['query'] });
-    function main() {
-        return __awaiter(this, void 0, void 0, function () {
-            var users;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, prisma.users.findMany()];
-                    case 1:
-                        users = _a.sent();
-                        console.log(users);
-                        return [2 /*return*/];
-                }
-            });
-        });
-    }
-    try {
-        main()
-            .then(function () { return __awaiter(void 0, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, prisma.$disconnect()];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        }); })["catch"](function (e) { return __awaiter(void 0, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        console.error(e);
-                        return [4 /*yield*/, prisma.$disconnect()];
-                    case 1:
-                        _a.sent();
-                        process.exit(1);
-                        return [2 /*return*/];
-                }
-            });
-        }); });
-    }
-    catch (error) {
-        console.log(error);
-    }
-});
+app.listen(port, function () { return __awaiter(void 0, void 0, void 0, function () {
+    var prisma, users;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log("Express is listening at http://localhost:".concat(port));
+                prisma = new client_1.PrismaClient({ log: ['query'] });
+                return [4 /*yield*/, prisma.users
+                        .findMany()
+                        .then(function () { return __awaiter(void 0, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, prisma.$disconnect()];
+                                case 1:
+                                    _a.sent();
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); })["catch"](function (e) { return __awaiter(void 0, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    console.error(e);
+                                    return [4 /*yield*/, prisma.$disconnect()];
+                                case 1:
+                                    _a.sent();
+                                    process.exit(1);
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); })];
+            case 1:
+                users = _a.sent();
+                console.log(users);
+                return [2 /*return*/];
+        }
+    });
+}); });
 //# sourceMappingURL=index.js.map

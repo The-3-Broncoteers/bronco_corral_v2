@@ -3,10 +3,10 @@ import express from 'express';
 import cors from 'cors';
 
 const app = express();
+const port: number = 3001;
+
 app.use(cors());
 app.use(express.json());
-
-const port: number = 3001;
 
 app.post('/api/create', async (req, res) => {
 	const email = req.body.email;
@@ -24,26 +24,20 @@ app.post('/api/create', async (req, res) => {
 	res.json({ success: true });
 });
 
-app.listen(port, () => {
+app.listen(port, async () => {
 	console.log(`Express is listening at http://localhost:${port}`);
 
 	const prisma = new PrismaClient({ log: ['query'] });
-	async function main() {
-		const users = await prisma.users.findMany();
-		console.log(users);
-	}
+	const users = await prisma.users
+		.findMany()
+		.then(async () => {
+			await prisma.$disconnect();
+		})
+		.catch(async (e) => {
+			console.error(e);
+			await prisma.$disconnect();
+			process.exit(1);
+		});
 
-	try {
-		main()
-			.then(async () => {
-				await prisma.$disconnect();
-			})
-			.catch(async (e) => {
-				console.error(e);
-				await prisma.$disconnect();
-				process.exit(1);
-			});
-	} catch (error) {
-		console.log(error);
-	}
+	console.log(users);
 });
