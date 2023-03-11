@@ -35,61 +35,46 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 exports.__esModule = true;
-var client_1 = require("@prisma/client");
-var express_1 = __importDefault(require("express"));
-var cors_1 = __importDefault(require("cors"));
-var user_routes_1 = require("./src/routes/user.routes");
-var app = (0, express_1["default"])();
-var port = 3001;
-app.use((0, cors_1["default"])());
-app.use(express_1["default"].json());
-app.use('/users', user_routes_1.userRouter);
-app.listen(port, function () { return __awaiter(void 0, void 0, void 0, function () {
-    var prisma;
+exports.deleteUserByID = exports.getUserByID = exports.createNewUser = void 0;
+var user_services_1 = require("../services/user.services");
+var createNewUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                console.log("Express is listening at http://localhost:".concat(port, "\nTesting Prisma Connection..."));
-                prisma = new client_1.PrismaClient({ log: ['query'] });
-                return [4 /*yield*/, prisma
-                        .$connect()
-                        .then(function () { return __awaiter(void 0, void 0, void 0, function () {
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0:
-                                    console.log('Db Connected');
-                                    return [4 /*yield*/, prisma.$disconnect()];
-                                case 1:
-                                    _a.sent();
-                                    return [2 /*return*/];
-                            }
-                        });
-                    }); }, function () { return __awaiter(void 0, void 0, void 0, function () {
-                        return __generator(this, function (_a) {
-                            console.log('Db connection failed');
-                            return [2 /*return*/];
-                        });
-                    }); })["catch"](function (e) { return __awaiter(void 0, void 0, void 0, function () {
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0:
-                                    console.error(e);
-                                    return [4 /*yield*/, prisma.$disconnect()];
-                                case 1:
-                                    _a.sent();
-                                    process.exit(1);
-                                    return [2 /*return*/];
-                            }
-                        });
-                    }); })];
+            case 0: return [4 /*yield*/, (0, user_services_1.newUser)(req.body)];
             case 1:
-                _a.sent();
+                user = _a.sent();
+                res.send(user);
                 return [2 /*return*/];
         }
     });
-}); });
-//# sourceMappingURL=index.js.map
+}); };
+exports.createNewUser = createNewUser;
+var getUserByID = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, (0, user_services_1.queryListOfUsers)(Number(req.params.userID))];
+            case 1:
+                user = _a.sent();
+                res.send(user);
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.getUserByID = getUserByID;
+var deleteUserByID = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, (0, user_services_1.deleteUser)(Number(req.params.userID))];
+            case 1:
+                user = _a.sent();
+                res.send(user);
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.deleteUserByID = deleteUserByID;
+//# sourceMappingURL=user.controller.js.map

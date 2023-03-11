@@ -35,61 +35,50 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 exports.__esModule = true;
+exports.newUser = exports.deleteUser = exports.queryListOfUsers = void 0;
 var client_1 = require("@prisma/client");
-var express_1 = __importDefault(require("express"));
-var cors_1 = __importDefault(require("cors"));
-var user_routes_1 = require("./src/routes/user.routes");
-var app = (0, express_1["default"])();
-var port = 3001;
-app.use((0, cors_1["default"])());
-app.use(express_1["default"].json());
-app.use('/users', user_routes_1.userRouter);
-app.listen(port, function () { return __awaiter(void 0, void 0, void 0, function () {
-    var prisma;
+var prisma = new client_1.PrismaClient();
+var queryListOfUsers = function (userID) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log("Express is listening at http://localhost:".concat(port, "\nTesting Prisma Connection..."));
-                prisma = new client_1.PrismaClient({ log: ['query'] });
-                return [4 /*yield*/, prisma
-                        .$connect()
-                        .then(function () { return __awaiter(void 0, void 0, void 0, function () {
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0:
-                                    console.log('Db Connected');
-                                    return [4 /*yield*/, prisma.$disconnect()];
-                                case 1:
-                                    _a.sent();
-                                    return [2 /*return*/];
-                            }
-                        });
-                    }); }, function () { return __awaiter(void 0, void 0, void 0, function () {
-                        return __generator(this, function (_a) {
-                            console.log('Db connection failed');
-                            return [2 /*return*/];
-                        });
-                    }); })["catch"](function (e) { return __awaiter(void 0, void 0, void 0, function () {
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0:
-                                    console.error(e);
-                                    return [4 /*yield*/, prisma.$disconnect()];
-                                case 1:
-                                    _a.sent();
-                                    process.exit(1);
-                                    return [2 /*return*/];
-                            }
-                        });
-                    }); })];
-            case 1:
-                _a.sent();
-                return [2 /*return*/];
+                if (!userID) return [3 /*break*/, 2];
+                return [4 /*yield*/, prisma.users.findUniqueOrThrow({ where: { id: userID } })["catch"](function (error) {
+                        return "error finding user with ID: ".concat(userID);
+                    })];
+            case 1: return [2 /*return*/, _a.sent()];
+            case 2: return [4 /*yield*/, prisma.users.findMany()];
+            case 3: return [2 /*return*/, _a.sent()];
         }
     });
-}); });
-//# sourceMappingURL=index.js.map
+}); };
+exports.queryListOfUsers = queryListOfUsers;
+var deleteUser = function (userId) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, prisma.users["delete"]({
+                    where: {
+                        id: userId
+                    }
+                })];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };
+exports.deleteUser = deleteUser;
+var newUser = function (req) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, prisma.users.create({
+                    data: {
+                        email: req.email,
+                        password: req.password
+                    }
+                })];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };
+exports.newUser = newUser;
+//# sourceMappingURL=user.services.js.map
