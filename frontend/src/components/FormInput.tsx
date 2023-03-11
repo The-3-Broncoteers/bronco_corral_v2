@@ -21,7 +21,7 @@ export const FormInput = () => {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		console.log('submitting');
 		try {
-			const response = await axios.post('http://localhost:3001/api/create', {
+			const response = await axios.put('http://localhost:3001/users/create', {
 				email,
 				password,
 			});
