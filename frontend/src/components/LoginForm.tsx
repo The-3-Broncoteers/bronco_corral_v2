@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import styled from 'styled-components';
+import { SignupForm } from './SignupForm';
 
 //TODO set up themes replace siteColors with theme color
 const tempColor: string = '#422407';
@@ -78,6 +79,15 @@ const StyledLoginForm = styled.div`
 export const LoginForm = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [isOpen, setIsOpen] = useState(false);
+
+	const openSignUpModal = () => {
+		setIsOpen(true);
+	};
+
+	const closeSignUpModal = () => {
+		setIsOpen(false);
+	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		try {
@@ -121,9 +131,10 @@ export const LoginForm = () => {
 				</div>
 				<div className='login-seperator'></div>
 				<div className='signup-container'>
-					<a role={'button'} onClick={() => console.log('clicked')} className='signup-button'>
+					<a role={'button'} onClick={openSignUpModal} className='signup-button'>
 						Create a new account
 					</a>
+					<SignupForm isOpen={isOpen} onClose={closeSignUpModal}></SignupForm>
 				</div>
 			</Form>
 		</StyledLoginForm>
