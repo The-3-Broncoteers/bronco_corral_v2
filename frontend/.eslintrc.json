@@ -33,7 +33,8 @@
 		"@typescript-eslint/member-ordering": "warn",
 		"@typescript-eslint/no-explicit-any": "off",
 		"@typescript-eslint/no-unused-vars": "off",
-		"@typescript-eslint/prefer-interface": "off"
+		"@typescript-eslint/prefer-interface": "off",
+        "@typescript-eslint/no-inferrable-types": "off"
     },
     "settings": {
 		"react": {
