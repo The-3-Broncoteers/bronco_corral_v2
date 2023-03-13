@@ -15,8 +15,8 @@ const StyledLoginForm = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: 55%;
-	width: 18em;
+	height: 20em;
+	width: 40%;
 
 	input {
 		height: 3.4em;
@@ -28,6 +28,7 @@ const StyledLoginForm = styled.div`
 		border-color: ${tempColor};
 		width: 100%;
 		height: 3em;
+		border-radius: 25px;
 
 		&:hover {
 			background-color: #402307;
@@ -37,14 +38,42 @@ const StyledLoginForm = styled.div`
 
 	.forgot-password {
 		margin: 0.55em 0em;
+		text-align: center;
 
 		a:link {
 			text-decoration: none;
 		}
 	}
-`;
 
-const LoginButton = styled(Button)``;
+	.login-seperator {
+		border-bottom: 1px solid #dadde1;
+		margin: 0px;
+		text-align: center;
+		width: 100%;
+	}
+
+	.signup-container {
+		width: 100%;
+		height: 3em;
+		margin: 0.6em 0em 0em 0em;
+		position: relative;
+	}
+
+	.signup-button {
+		background-color: #80461b;
+		border-radius: 25px;
+		text-align: center;
+		text-decoration: none;
+		color: white;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 3em;
+		vertical-align: middle;
+		line-height: 3em;
+	}
+`;
 
 export const LoginForm = () => {
 	const [email, setEmail] = useState('');
@@ -86,11 +115,17 @@ export const LoginForm = () => {
 						}}
 					/>
 				</Form.Group>
-				<LoginButton type='submit'>Log In</LoginButton>
+				<Button type='submit'>Log In</Button>
+				<div className='forgot-password'>
+					<a href=''>Forgot Password?</a>
+				</div>
+				<div className='login-seperator'></div>
+				<div className='signup-container'>
+					<a role={'button'} onClick={() => console.log('clicked')} className='signup-button'>
+						Create a new account
+					</a>
+				</div>
 			</Form>
-			<div className='forgot-password'>
-				<a href=''>Forgot Password?</a>
-			</div>
 		</StyledLoginForm>
 	);
 };
