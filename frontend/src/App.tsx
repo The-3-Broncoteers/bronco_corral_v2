@@ -6,15 +6,13 @@ import { LandingPage } from './pages/LandingPage';
 
 function App() {
 	return (
-		<div className='app'>
-			<Routes>
-				<Route path='/' element={<LandingPage />} />
-				<Route path='/' element={<MainNav />}>
-					<Route path='home' element={<Home />} />
-					<Route path='login' element={<Login />} />
-				</Route>
-			</Routes>
-		</div>
+		<Routes>
+			<Route path='/' element={<LandingPage />} />
+			<Route path='/' element={<MainNav />}>
+				<Route path='home' element={<Home />} />
+				<Route path='login' element={<Login />} />
+			</Route>
+		</Routes>
 	);
 }
 
