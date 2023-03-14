@@ -29,3 +29,7 @@ export const newUser = async (req: ParamsDictionary) => {
 		},
 	});
 };
+
+export const userAuth = async (userEmail: string, userPassword: string) => {
+	
+};
