@@ -22,10 +22,14 @@ export const deleteUser = async (userId: number) => {
 };
 
 export const newUser = async (req: ParamsDictionary) => {
-	return await prisma.users.create({
-		data: {
-			email: req.email,
-			password: req.password,
-		},
-	});
+	try {
+		return await prisma.users.create({
+			data: {
+				email: req.email,
+				password: req.password,
+			},
+		});
+	} catch (error) {
+		console.log(error);
+	}
 };

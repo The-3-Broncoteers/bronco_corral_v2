@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { LoginForm } from '../components/LoginForm';
-
-//TODO set up themes replace siteColors with theme color
-const tempColor: string = '#422407';
+import { Colors } from '../utils/Colors';
+import LoginFormResponsive from '../components/LoginFormResponsive';
 
 const LandingContainer = styled.div`
 	position: absolute;
@@ -11,8 +10,8 @@ const LandingContainer = styled.div`
 	transform: translate(-50%, -50%);
 	height: 60vh;
 	width: 65vw;
-	background-color: #edf0f5;
-	box-shadow: 2px 2px 15px 1px ${tempColor};
+	background-color: ${Colors.White};
+	box-shadow: 2px 2px 15px 1px ${Colors.Cambridge};
 	border-radius: 25px;
 	display: flex;
 	flex-wrap: wrap;
@@ -20,21 +19,17 @@ const LandingContainer = styled.div`
 	align-items: center;
 `;
 
-//TODO media queries for h1/h4 small phone sizes
-//Make h1 shrink text to fit one line
-//h4 can dissappear
 const BrandingContainer = styled.div`
 	max-width: 20em;
     max-height: 25%;
 	margin: 1em 3em;
     overflow: hidden;
-
 	h1 {
-        color: ${tempColor}}; 
-    }
-    
-	h4 {
-		color: ${tempColor}};
+		color: ${Colors.Cambridge}};
+	}
+
+    h4 {
+		color: ${Colors.Blue}};
 	}
 `;
 
@@ -45,7 +40,7 @@ export function LandingPage() {
 				<h1>Bronco Corral</h1>
 				<h4>Manage your fleet with ease</h4>
 			</BrandingContainer>
-			<LoginForm />
+			<LoginFormResponsive />
 		</LandingContainer>
 	);
 }
