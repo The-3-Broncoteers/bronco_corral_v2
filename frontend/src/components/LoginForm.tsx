@@ -1,16 +1,15 @@
 import axios from 'axios';
 import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import styled from 'styled-components';
 import { SignupForm } from './SignupForm';
+import { Colors } from '../utils/Colors';
 
-//TODO set up themes replace siteColors with theme color
-const tempColor: string = '#422407';
+//TODO set up themes replace Colors with theme color
 
 const StyledLoginForm = styled.div`
-	background-color: white;
-	box-shadow: 2px 2px 15px 1px ${tempColor};
+	background-color: ${Colors.White};
+	box-shadow: 2px 2px 15px 1px ${Colors.Charcoal};
 	border-radius: 25px;
 	display: flex;
 	flex-direction: column;
@@ -25,15 +24,17 @@ const StyledLoginForm = styled.div`
 	}
 
 	button {
-		background-color: ${tempColor};
-		border-color: ${tempColor};
+		background-color: ${Colors.Charcoal};
+		border: none;
+		color: ${Colors.White};
 		width: 100%;
 		height: 3em;
 		border-radius: 25px;
 
-		&:hover {
-			background-color: #402307;
-			border-color: #402307;
+		&:hover,
+		&:focus,
+		&:target {
+			background-color: ${Colors.SlateGray};
 		}
 	}
 
@@ -61,11 +62,11 @@ const StyledLoginForm = styled.div`
 	}
 
 	.signup-button {
-		background-color: #80461b;
+		background-color: ${Colors.Cambridge};
 		border-radius: 25px;
 		text-align: center;
 		text-decoration: none;
-		color: white;
+		color: ${Colors.White};
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -125,7 +126,7 @@ export const LoginForm = () => {
 						}}
 					/>
 				</Form.Group>
-				<Button type='submit'>Log In</Button>
+				<button type='submit'>Log In</button>
 				<div className='forgot-password'>
 					<a href=''>Forgot Password?</a>
 				</div>
