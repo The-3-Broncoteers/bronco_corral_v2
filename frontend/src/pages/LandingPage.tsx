@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { LoginForm } from '../components/LoginForm';
+import LoginFormContainer from '../components/LoginFormContainer';
 import { Colors } from '../utils/Colors';
-import LoginFormResponsive from '../components/LoginFormResponsive';
 
 const LandingContainer = styled.div`
 	position: absolute;
@@ -10,7 +9,7 @@ const LandingContainer = styled.div`
 	transform: translate(-50%, -50%);
 	height: 60vh;
 	width: 65vw;
-	background-color: ${Colors.White};
+	background-color: ${Colors.Charcoal};
 	box-shadow: 2px 2px 15px 1px ${Colors.Cambridge};
 	border-radius: 25px;
 	display: flex;
@@ -40,7 +39,7 @@ export function LandingPage() {
 				<h1>Bronco Corral</h1>
 				<h4>Manage your fleet with ease</h4>
 			</BrandingContainer>
-			<LoginFormResponsive />
+			<LoginFormContainer />
 		</LandingContainer>
 	);
 }
