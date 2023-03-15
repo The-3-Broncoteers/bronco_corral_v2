@@ -5,7 +5,7 @@ import LoginForm from './LoginForm';
 const StyledContainer = styled.div`
 	position: relative;
 	background-color: ${Colors.MintCream};
-	box-shadow: 2px 2px 15px 1px ${Colors.MintCream};
+	box-shadow: 0px 0px 15px 1px ${Colors.MintCream};
 	border-radius: 25px;
 	height: 70%;
 	width: 50%;

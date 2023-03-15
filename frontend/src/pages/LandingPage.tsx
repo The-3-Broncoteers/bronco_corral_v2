@@ -10,7 +10,7 @@ const LandingContainer = styled.div`
 	height: 60vh;
 	width: 65vw;
 	background-color: ${Colors.Charcoal};
-	box-shadow: 2px 2px 15px 1px ${Colors.Cambridge};
+	box-shadow: 0px 0px 15px 5px ${Colors.Cambridge};
 	border-radius: 25px;
 	display: flex;
 	flex-wrap: wrap;
@@ -24,11 +24,11 @@ const BrandingContainer = styled.div`
 	margin: 1em 3em;
     overflow: hidden;
 	h1 {
-		color: ${Colors.Cambridge}};
+		color: ${Colors.MintCream}};
 	}
 
     h4 {
-		color: ${Colors.Blue}};
+		color: ${Colors.TeaGreen}};
 	}
 `;
 
