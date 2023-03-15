@@ -1,80 +1,91 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Colors } from '../utils/Colors';
 
-//TODO set up themes replace siteColors with theme color
-const tempColor: string = '#422407';
+//TODO Media Queries for css
+//TODO Themeing
 
-const StyledSignupForm = styled.div`
-	background-color: white;
-	box-shadow: 2px 2px 15px 1px ${tempColor};
-	border-radius: 25px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	height: 20em;
-	width: 40%;
-
-	input {
-		height: 3.4em;
-		width: 16em;
+const StyledModal = styled(Modal)`
+	.modal-header {
+		border: none;
 	}
 
-	button {
-		background-color: ${tempColor};
-		border-color: ${tempColor};
-		width: 100%;
-		height: 3em;
-		border-radius: 25px;
+	form {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
+		align-items: center;
+		gap: 0.7em;
+		width: 80%;
+		margin: auto;
 
-		&:hover {
-			background-color: #402307;
-			border-color: #402307;
+		button {
+			background-color: ${Colors.Charcoal};
+			border-style: solid;
+			border-radius: 10px;
+			border-color: ${Colors.Charcoal};
+			color: ${Colors.MintCream};
+			height: 3em;
+			width: 100%;
+
+			&:hover,
+			&:focus,
+			&:target {
+				background-color: ${Colors.Blue};
+				border-color: ${Colors.Blue};
+			}
 		}
-	}
 
-	.forgot-password {
-		margin: 0.55em 0em;
-		text-align: center;
-
-		a:link {
+		a {
 			text-decoration: none;
 		}
-	}
 
-	.login-seperator {
-		border-bottom: 1px solid #dadde1;
-		margin: 0px;
-		text-align: center;
-		width: 100%;
-	}
+		.form-group {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
 
-	.login-container {
-		width: 100%;
-		height: 3em;
-		margin: 0.6em 0em 0em 0em;
-		position: relative;
-	}
+			input {
+				border-style: solid;
+				border-radius: 10px;
+				border-color: ${Colors.Blue};
+				height: 3.5em;
+				padding: 5px;
+				width: 100%;
+			}
+		}
 
-	.login-button {
-		background-color: #80461b;
-		border-radius: 25px;
-		text-align: center;
-		text-decoration: none;
-		color: white;
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 3em;
-		vertical-align: middle;
-		line-height: 3em;
+		.form-seperator {
+			border-bottom: 1px solid ${Colors.TeaGreen};
+			margin: 0px;
+			width: 100%;
+		}
+
+		.login-container {
+			position: relative;
+			width: 100%;
+			height: 3em;
+			margin-bottom: 1em;
+
+			a {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				border-radius: 10px;
+				background-color: ${Colors.Cambridge};
+				color: ${Colors.MintCream};
+				width: 100%;
+				height: 3em;
+				line-height: 3em;
+				text-align: center;
+			}
+		}
 	}
 `;
 
@@ -83,27 +94,15 @@ interface SignupFormProps {
 	onClose: () => void;
 }
 
-export const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
-	if (!isOpen) {
-		return null;
-	}
+const loginEndPoint: string = 'http://localhost:3001/users/create';
+
+const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
+	if (!isOpen) return null;
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const navigate = useNavigate();
-
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		try {
-			const response = await axios.put('http://localhost:3001/users/create', {
-				email,
-				password,
-			});
-			console.log(response.data);
-		} catch (error) {
-			console.log(error);
-		}
-	};
 
 	const handleLoginButton = () => {
 		onClose();
@@ -111,53 +110,81 @@ export const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 		navigate('/');
 	};
 
+	const handleSubmit = async () => {
+		try {
+			email.trim().toLowerCase();
+
+			//TODO Check the form input and do pre validation
+			return await axios.put(loginEndPoint, {
+				email,
+				password,
+			});
+		} catch (error) {
+			const axiosError = error as AxiosError;
+
+			if (axiosError.response) {
+				console.error(
+					`PUT request to ${loginEndPoint} failed with status code ${axiosError.response.status}`,
+				);
+			} else if (axiosError.request) {
+				console.error(`PUT request to ${loginEndPoint} failed with no response received`);
+			} else {
+				console.error(
+					`PUT request to ${loginEndPoint} failed with error message ${axiosError.message}`,
+				);
+			}
+			throw axiosError;
+		}
+	};
+
 	return (
-		<Modal show={isOpen} onHide={onClose} backdrop='static' keyboard={false}>
+		<StyledModal show={isOpen} onHide={onClose} backdrop='static' keyboard={false}>
 			<Modal.Header closeButton></Modal.Header>
-			<StyledSignupForm>
-				<Form onSubmit={handleSubmit}>
-					<Form.Group className='mb-3' controlId='formBasicEmail'>
-						<Form.Label hidden>Email address</Form.Label>
-						<Form.Control
-							type='text'
-							placeholder='Enter email'
-							onChange={(event) => {
-								setEmail(event.target.value);
-							}}
-						/>
-					</Form.Group>
+			<form onSubmit={handleSubmit}>
+				<div className='form-group'>
+					<label hidden>Enter Email</label>
+					<input
+						type='email'
+						placeholder='Enter email'
+						onChange={(event) => {
+							setEmail(event.target.value);
+						}}
+					></input>
+				</div>
 
-					<Form.Group className='mb-3' controlId='formBasicPassword'>
-						<Form.Label hidden>Password</Form.Label>
-						<Form.Control
-							type='password'
-							placeholder='Enter password'
-							onChange={(event) => {
-								setPassword(event.target.value);
-							}}
-						/>
-					</Form.Group>
+				<div className='form-group'>
+					<label hidden>Enter Password</label>
+					<input
+						type='password'
+						placeholder='Enter password'
+						onChange={(event) => {
+							setPassword(event.target.value);
+						}}
+					></input>
+				</div>
 
-					<Form.Group className='mb-3' controlId='formBasicPassword'>
-						<Form.Label hidden>Password</Form.Label>
-						<Form.Control
-							type='password'
-							placeholder='Re-enter password'
-							onChange={(event) => {
-								setConfirmPassword(event.target.value);
-							}}
-						/>
-					</Form.Group>
+				<div className='form-group'>
+					<label hidden>Re-enter Password</label>
+					<input
+						type='password'
+						placeholder='Re-enter password'
+						onChange={(event) => {
+							setConfirmPassword(event.target.value);
+						}}
+					></input>
+				</div>
 
-					<Button type='submit'>Sign up</Button>
-					<div className='login-seperator'></div>
-					<div className='login-container'>
-						<a role={'button'} onClick={handleLoginButton} className='login-button'>
-							Login to existing account
-						</a>
-					</div>
-				</Form>
-			</StyledSignupForm>
-		</Modal>
+				<button type='submit'>Sign Up</button>
+				<div className='form-seperator'></div>
+
+				<div className='login-container'>
+					<a role={'button'} onClick={handleLoginButton} className='login-button'>
+						Login to existing account
+					</a>
+				</div>
+			</form>
+		</StyledModal>
 	);
 };
+
+export default SignupForm;

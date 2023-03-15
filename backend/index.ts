@@ -24,6 +24,7 @@ app.listen(port, async () => {
 			},
 			async () => {
 				console.log('Db connection failed');
+				await prisma.$disconnect();
 			},
 		)
 		.catch(async (e) => {
