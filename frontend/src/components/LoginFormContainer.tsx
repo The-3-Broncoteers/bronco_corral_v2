@@ -1,27 +1,34 @@
 import styled from 'styled-components';
-import { Colors } from '../utils/Colors';
 import LoginForm from './LoginForm';
+import { Colors } from '../utils/Colors';
 
-const StyledContainer = styled.div`
-	position: relative;
-	background-color: ${Colors.MintCream};
-	box-shadow: 0px 0px 15px 1px ${Colors.MintCream};
+export type LoginFormContainerProps = {
+	backgroundColor?: string;
+	width?: string;
+	height?: string;
+};
+
+const StyledContainer = styled.div<LoginFormContainerProps>`
+	background-color: ${({ backgroundColor }) => backgroundColor || `${Colors.MintCream}`};
+	box-shadow: 0px 0px 15px 1px ${({ backgroundColor }) => backgroundColor || `${Colors.MintCream}`};
 	border-radius: 25px;
-	height: 70%;
-	width: 50%;
+	width: ${({ width }) => width || '50%'};
+	height: ${({ height }) => height || '70%'};
+	display: flex;
 
 	form {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
 		width: 80%;
+		margin: auto;
 	}
 `;
 
-const LoginFormContainer = () => {
+const LoginFormContainer = (props: LoginFormContainerProps) => {
 	return (
-		<StyledContainer>
+		<StyledContainer
+			backgroundColor={props.backgroundColor}
+			width={props.width}
+			height={props.height}
+		>
 			<LoginForm />
 		</StyledContainer>
 	);
