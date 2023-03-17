@@ -11,8 +11,6 @@ require('dotenv').config()
 const app = express();
 const port: number = 3001;
 
-const jwt = require('jsonwebtoken');
-
 const users = []
 
 app.use(cors());
@@ -44,37 +42,37 @@ app.listen(port, async () => {
 
 // note to self: start moving following code to users/services
 
-app.post("/", async (req, res) =>  {
+// app.post("/", async (req, res) =>  {
 
-	const dbUser = await prisma.users.findFirst({
-		where: { email: req.body.email}
-	})
+// 	const dbUser = await prisma.users.findFirst({
+// 		where: { email: req.body.email}
+// 	})
 
-	if(dbUser == null){
-		return res.status(400).send('Cannot find user')
-	}
+// 	if(dbUser == null){
+// 		return res.status(400).send('Cannot find user')
+// 	}
 
-	try {
-		if(dbUser.password == req.body.password){
-			res.send('Success')
-		} else {
-			res.send('Invalid password')
-		}
-	} catch {
-		res.status(500).send();
-	}
+// 	try {
+// 		if(dbUser.password == req.body.password){
+// 			res.send('Success')
+// 		} else {
+// 			res.send('Invalid password')
+// 		}
+// 	} catch {
+// 		res.status(500).send();
+// 	}
 
-	const email = req.body.email
-	const password = req.body.password
+// 	const email = req.body.email
+// 	const password = req.body.password
 
-	const user = 
-	{ email : email,
-	password: password
-	}
+// 	const user = 
+// 	{ email : email,
+// 	password: password
+// 	}
 
-	const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
-	res.json({acessToken: accessToken})
-})
+// 	const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
+// 	res.json({acessToken: accessToken})
+// })
 
 const authenticateToken = (req: any,res: any,next: any) => {
 	const authHeader = req.headers['authorization']

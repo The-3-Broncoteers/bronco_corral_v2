@@ -17,6 +17,6 @@ export const deleteUserByID = async (req: Request, res: Response) => {
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-	const user = await userAuth(req.body.email, req.body.password);
+	const user = await userAuth(req.body.email, req.body.password, res);
 	res.send(user);
 };
