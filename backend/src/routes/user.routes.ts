@@ -1,6 +1,11 @@
 import express from 'express';
-import { createNewUser, deleteUserByID, getUserByID, loginUser } from '../controllers/user.controller';
-import { deleteRefreshTokens, useRefreshToken } from '../services/user.services';
+import {
+	createNewUser,
+	deleteUserByID,
+	getUserByID,
+	loginUser,
+} from '../controllers/user.controller';
+import { deleteRefreshTokens, getPosts, useRefreshToken } from '../services/user.services';
 
 const router = express.Router();
 
@@ -12,7 +17,9 @@ router.post('/login', loginUser);
 
 router.post('/token', useRefreshToken);
 
-app.delete('/logout', deleteRefreshTokens)
+router.get('/posts', getPosts);
+
+router.delete('/logout', deleteRefreshTokens);
 
 router.delete('/:id', deleteUserByID);
 

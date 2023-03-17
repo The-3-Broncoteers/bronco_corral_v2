@@ -1,17 +1,13 @@
 import { Prisma, PrismaClient } from '@prisma/client';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { userRouter } from './src/routes/user.routes';
 import { resolve } from 'path';
 import { nextTick } from 'process';
 import { isDataView } from 'util/types';
-
-require('dotenv').config()
+import { userRouter } from './src/routes/user.routes';
 
 const app = express();
 const port: number = 3001;
-
-const users = []
 
 app.use(cors());
 app.use(express.json());
