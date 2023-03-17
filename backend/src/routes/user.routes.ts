@@ -1,6 +1,6 @@
 import express from 'express';
 import { createNewUser, deleteUserByID, getUserByID, loginUser } from '../controllers/user.controller';
-import { useRefreshToken } from '../services/user.services';
+import { deleteRefreshTokens, useRefreshToken } from '../services/user.services';
 
 const router = express.Router();
 
