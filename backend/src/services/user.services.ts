@@ -12,7 +12,7 @@ let refreshTokens: String[] = [];
 
 const posts = [
 	{
-		username: 'owwix',
+		username: 'owwixx',
 		title: 'Post 1',
 	},
 ];
@@ -46,15 +46,27 @@ export const newUser = async (req: ParamsDictionary) => {
 
 export const userAuth = async (userEmail: string, userPassword: string, res: Response) => {
 	const dbUser = await prisma.users.findFirst({
-		where: { email: userEmail },
+		where: {
+			email: userEmail,
+		},
 	});
 
-	if (dbUser == null) {
+	if (!dbUser) {
 		return res.status(400).send('Cannot find user');
 	}
 
 	try {
 		if (dbUser.password == userPassword) {
+			const email = userEmail;
+			const password = userPassword;
+
+			const user = { email: email, password: password };
+
+			const accessToken = generateAccessToken(user);
+			const refreshToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!);
+
+			res.json({ accessToken: accessToken, refreshToken: refreshToken });
+			console.log('Successful authentication for ' + dbUser.email);
 			res.send('Success');
 		} else {
 			res.send('Invalid password');
@@ -62,20 +74,10 @@ export const userAuth = async (userEmail: string, userPassword: string, res: Res
 	} catch {
 		res.status(500).send();
 	}
-
-	const email = userEmail;
-	const password = userPassword;
-
-	const user = { email: email, password: password };
-
-	const accessToken = generateAccessToken(user);
-	const refreshToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!);
-
-	res.json({ acessToken: accessToken, refreshToken: refreshToken });
 };
 
 const generateAccessToken = (user: any) => {
-	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '15s' });
+	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '15m' });
 };
 
 const authenticateToken = (req: any, res: any, next: any) => {

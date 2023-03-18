@@ -17,7 +17,7 @@ router.post('/login', loginUser);
 
 router.post('/token', useRefreshToken);
 
-router.get('/posts', getPosts);
+router.post('/posts', getPosts);
 
 router.delete('/logout', deleteRefreshTokens);
 

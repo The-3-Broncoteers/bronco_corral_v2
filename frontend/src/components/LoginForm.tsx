@@ -91,7 +91,7 @@ export const LoginForm = () => {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		try {
-			const response = await axios.put('http://localhost:3001/', {
+			const response = await axios.post('http://localhost:3001/users/login', {
 				email,
 				password,
 			});
