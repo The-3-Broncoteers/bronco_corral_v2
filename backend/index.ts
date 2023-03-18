@@ -2,6 +2,10 @@ import { PrismaClient } from '@prisma/client';
 import express from 'express';
 import cors from 'cors';
 import { userRouter } from './src/routes/user.routes';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+console.log(process.env.DATABASE_URL);
 
 const app = express();
 const port: number = 3001;
