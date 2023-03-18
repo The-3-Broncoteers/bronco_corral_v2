@@ -81,7 +81,7 @@ const StyledForm = styled.form`
 	}
 `;
 
-const loginEndPoint: string = 'http://localhost:3001/users/create';
+const loginEndPoint: string = 'http://localhost:3001/users/login';
 
 const LoginForm = () => {
 	const [formData, setFormData] = useState({
@@ -117,14 +117,12 @@ const LoginForm = () => {
 
 		setError('');
 
-		const target = e.currentTarget;
-
 		try {
 			const res = await axios.post(loginEndPoint, formData);
 			navigate('/login'); //you have no idea how long it took me to figure out the behavior i wanted for the form
 			//console.log(res.data);
 		} catch (error) {
-			const axiosError = error as AxiosError;
+			//const axiosError = error as AxiosError;
 			//console.log(`Axios error to ${loginEndPoint}. Error Message: ${axiosError.message}`);
 			setError('Invalid email or password.');
 		}
