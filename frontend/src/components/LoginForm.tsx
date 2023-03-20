@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axiosConfig from '../apis/axiosConfig';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
@@ -81,7 +81,7 @@ const StyledForm = styled.form`
 	}
 `;
 
-const loginEndPoint: string = 'http://localhost:3001/users/login';
+const loginEndPoint: string = '/users/login';
 
 const LoginForm = () => {
 	const [formData, setFormData] = useState({
@@ -118,8 +118,13 @@ const LoginForm = () => {
 		setError('');
 
 		try {
-			const res = await axios.post(loginEndPoint, formData);
+			const res = await axiosConfig.post(loginEndPoint, formData);
 			navigate('/login'); //you have no idea how long it took me to figure out the behavior i wanted for the form
+			//I was trying to use the form submit method, but if you do it that way while using GET it send via URL which is bad
+			//So I started using POST, but then it redirects you on submit to the submission end point
+			//I sat here googling my life away for fixes. Nothing worked the way I wanted
+			//So just handling the navigation manually and never actually submitting was my fix
+
 			//console.log(res.data);
 		} catch (error) {
 			//const axiosError = error as AxiosError;

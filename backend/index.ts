@@ -5,10 +5,8 @@ import { userRouter } from './src/routes/user.routes';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-console.log(process.env.DATABASE_URL);
-
 const app = express();
-const port: number = 3001;
+const port: number = Number(process.env.PORT) || 3001;
 
 app.use(cors());
 app.use(express.json());

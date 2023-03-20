@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
 import { validateForm } from '../utils/formUtils';
+import axiosConfig from '../apis/axiosConfig';
 
 //TODO Media Queries for css
 //TODO Themeing
@@ -95,7 +96,7 @@ interface SignupFormProps {
 	onClose: () => void;
 }
 
-const loginEndPoint: string = 'http://localhost:3001/users/create';
+const loginEndPoint: string = '/users/create';
 
 const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 	if (!isOpen) return null;
@@ -133,7 +134,7 @@ const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 		setError('');
 
 		try {
-			const res = await axios.post(loginEndPoint, formData);
+			const res = await axiosConfig.post(loginEndPoint, formData);
 			navigate('/login'); //you have no idea how long it took me to figure out the behavior i wanted for the form
 			//console.log(res.data);
 		} catch (error) {
