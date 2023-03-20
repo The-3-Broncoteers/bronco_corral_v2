@@ -4,6 +4,8 @@ import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
+import { validateForm } from '../utils/formUtils';
+import axiosConfig from '../apis/axiosConfig';
 
 //TODO Media Queries for css
 //TODO Themeing
@@ -94,15 +96,26 @@ interface SignupFormProps {
 	onClose: () => void;
 }
 
-const loginEndPoint: string = 'http://localhost:3001/users/create';
+const loginEndPoint: string = '/users/create';
 
 const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 	if (!isOpen) return null;
 
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [confirmPassword, setConfirmPassword] = useState('');
+	const [formData, setFormData] = useState({
+		email: '',
+		password: '',
+		confirmPassword: '',
+	});
+
+	const [error, setError] = useState('');
 	const navigate = useNavigate();
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value,
+		});
+	};
 
 	const handleLoginButton = () => {
 		onClose();
@@ -110,31 +123,27 @@ const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 		navigate('/');
 	};
 
-	const handleSubmit = async () => {
-		try {
-			email.trim().toLowerCase();
-
-			//TODO Check the form input and do pre validation
-			return await axios.put(loginEndPoint, {
-				email,
-				password,
-			});
-		} catch (error) {
-			const axiosError = error as AxiosError;
-
-			if (axiosError.response) {
-				console.error(
-					`PUT request to ${loginEndPoint} failed with status code ${axiosError.response.status}`,
-				);
-			} else if (axiosError.request) {
-				console.error(`PUT request to ${loginEndPoint} failed with no response received`);
-			} else {
-				console.error(
-					`PUT request to ${loginEndPoint} failed with error message ${axiosError.message}`,
-				);
-			}
-			throw axiosError;
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const validationError = validateForm(formData);
+		if (validationError) {
+			setError(validationError);
+			return false;
 		}
+
+		setError('');
+
+		try {
+			const res = await axiosConfig.post(loginEndPoint, formData);
+			navigate('/login'); //you have no idea how long it took me to figure out the behavior i wanted for the form
+			//console.log(res.data);
+		} catch (error) {
+			//const axiosError = error as AxiosError;
+			//console.log(`Axios error to ${loginEndPoint}. Error Message: ${axiosError.message}`);
+			setError('Invalid email or password.');
+		}
+
+		//TODO something with errors in case we get any
 	};
 
 	return (
@@ -143,35 +152,17 @@ const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 			<form onSubmit={handleSubmit}>
 				<div className='form-group'>
 					<label hidden>Enter Email</label>
-					<input
-						type='email'
-						placeholder='Enter email'
-						onChange={(event) => {
-							setEmail(event.target.value);
-						}}
-					></input>
+					<input type='email' placeholder='Enter email' onChange={handleChange}></input>
 				</div>
 
 				<div className='form-group'>
 					<label hidden>Enter Password</label>
-					<input
-						type='password'
-						placeholder='Enter password'
-						onChange={(event) => {
-							setPassword(event.target.value);
-						}}
-					></input>
+					<input type='password' placeholder='Enter password' onChange={handleChange}></input>
 				</div>
 
 				<div className='form-group'>
 					<label hidden>Re-enter Password</label>
-					<input
-						type='password'
-						placeholder='Re-enter password'
-						onChange={(event) => {
-							setConfirmPassword(event.target.value);
-						}}
-					></input>
+					<input type='password' placeholder='Re-enter password' onChange={handleChange}></input>
 				</div>
 
 				<button type='submit'>Sign Up</button>

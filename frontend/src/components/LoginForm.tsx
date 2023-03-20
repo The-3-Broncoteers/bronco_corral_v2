@@ -1,8 +1,10 @@
-import axios, { AxiosError } from 'axios';
+import axiosConfig from '../apis/axiosConfig';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
 import SignupForm from './SignupForm';
+import { validateForm } from '../utils/formUtils';
+import { useNavigate } from 'react-router-dom';
 
 //TODO Media Queries for css
 //TODO Themeing
@@ -79,12 +81,23 @@ const StyledForm = styled.form`
 	}
 `;
 
-const loginEndPoint: string = 'http://localhost:3001/users/create';
+const loginEndPoint: string = '/users/login';
 
 const LoginForm = () => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [formData, setFormData] = useState({
+		email: '',
+		password: '',
+	});
 	const [isOpen, setIsOpen] = useState(false);
+	const [error, setError] = useState('');
+	const navigate = useNavigate();
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value,
+		});
+	};
 
 	const handleOpenModal = () => {
 		setIsOpen(true);
@@ -94,44 +107,39 @@ const LoginForm = () => {
 		setIsOpen(false);
 	};
 
-	const handleSubmit = async () => {
-		try {
-			email.trim().toLowerCase();
-
-			//TODO Check the form input and do pre validation
-			return await axios.put(loginEndPoint, {
-				email,
-				password,
-			});
-		} catch (error) {
-			const axiosError = error as AxiosError;
-
-			if (axiosError.response) {
-				console.error(
-					`PUT request to ${loginEndPoint} failed with status code ${axiosError.response.status}`,
-				);
-			} else if (axiosError.request) {
-				console.error(`PUT request to ${loginEndPoint} failed with no response received`);
-			} else {
-				console.error(
-					`PUT request to ${loginEndPoint} failed with error message ${axiosError.message}`,
-				);
-			}
-			throw axiosError;
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const validationError = validateForm(formData);
+		if (validationError) {
+			setError(validationError);
+			return false;
 		}
+
+		setError('');
+
+		try {
+			const res = await axiosConfig.post(loginEndPoint, formData);
+			navigate('/login'); //you have no idea how long it took me to figure out the behavior i wanted for the form
+			//I was trying to use the form submit method, but if you do it that way while using GET it send via URL which is bad
+			//So I started using POST, but then it redirects you on submit to the submission end point
+			//I sat here googling my life away for fixes. Nothing worked the way I wanted
+			//So just handling the navigation manually and never actually submitting was my fix
+
+			//console.log(res.data);
+		} catch (error) {
+			//const axiosError = error as AxiosError;
+			//console.log(`Axios error to ${loginEndPoint}. Error Message: ${axiosError.message}`);
+			setError('Invalid email or password.');
+		}
+
+		//TODO something with errors in case we get any
 	};
 
 	return (
-		<StyledForm onSubmit={handleSubmit}>
+		<StyledForm onSubmit={handleSubmit} method='POST' action={loginEndPoint}>
 			<div className='form-group'>
 				<label hidden>Enter Email</label>
-				<input
-					type='email'
-					placeholder='Enter email'
-					onChange={(event) => {
-						setEmail(event.target.value);
-					}}
-				></input>
+				<input type='email' placeholder='Enter email' name='email' onChange={handleChange}></input>
 			</div>
 
 			<div className='form-group'>
@@ -139,9 +147,8 @@ const LoginForm = () => {
 				<input
 					type='password'
 					placeholder='Enter password'
-					onChange={(event) => {
-						setPassword(event.target.value);
-					}}
+					name='password'
+					onChange={handleChange}
 				></input>
 			</div>
 
