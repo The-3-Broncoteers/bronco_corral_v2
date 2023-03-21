@@ -6,11 +6,11 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
-const port: number = Number(process.env.PORT) || 3001;
+const port: number = 3001;
 
 app.use(cors());
 app.use(express.json());
-app.use('api/users', userRouter);
+app.use('/api/users', userRouter);
 
 app.listen(port, async () => {
 	console.log(`Express is listening at http://localhost:${port}\nTesting Prisma Connection...`);
