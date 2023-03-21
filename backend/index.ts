@@ -10,7 +10,7 @@ const port: number = Number(process.env.PORT) || 3001;
 
 app.use(cors());
 app.use(express.json());
-app.use('/users', userRouter);
+app.use('api/users', userRouter);
 
 app.listen(port, async () => {
 	console.log(`Express is listening at http://localhost:${port}\nTesting Prisma Connection...`);
