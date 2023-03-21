@@ -10,28 +10,19 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  frontend:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [19.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: |
-        cd /frontend
-        npm i
-        npm run build
-        cd ..
-        cd backend
-        npm i
-        npx prisma generate
-        npm run build
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: cd frontend && npm ci --prefer-offline --no-audit --progress=false --no-save --no-optional --no-fund
+      - name: Build
+        run: cd frontend && npm run build
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: cd backend && npm ci --prefer-offline --no-audit --progress=false --no-save --no-optional --no-fund
+      - name: Build
+        run: cd backend && npm run build
