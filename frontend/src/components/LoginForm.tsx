@@ -81,7 +81,7 @@ const StyledForm = styled.form`
 	}
 `;
 
-const loginEndPoint: string = '/users/login';
+const loginEndPoint: string = '/users/create';
 
 const LoginForm = () => {
 	const [formData, setFormData] = useState({
