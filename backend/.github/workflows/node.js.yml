@@ -2,9 +2,9 @@ name: node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: |
-          cd frontend
+          cd ../frontend
           npm i
           npm run build
           cd ..
@@ -25,5 +25,3 @@ jobs:
           npm i
           npx prisma generate
           npm run build
-
-
