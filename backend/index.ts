@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 import express from 'express';
 import cors from 'cors';
 import { userRouter } from './src/routes/user.routes';
-import path from 'path';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,7 +10,6 @@ const port: number = 3001;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../frontend/build')));
 app.use('/api/users', userRouter);
 
 app.listen(port, async () => {
