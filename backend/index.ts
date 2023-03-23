@@ -13,7 +13,7 @@ const port: number = 3001;
 app.use(cors());
 app.use(express.json());
 app.use('/api/users', userRouter);
-app.use('/api/users', authRouter);
+app.use('/api/auth', authRouter);
 
 const prisma = new PrismaClient({ log: ['query'] });
 
