@@ -1,8 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
-import { ParamsDictionary } from 'express-serve-static-core';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 
 let refreshTokens: String[] = [];
@@ -31,6 +29,7 @@ export const userAuth = async (userEmail: string, userPassword: string, res: Res
 			const password = userPassword;
 
 			const user: User = { email: '', password: '' };
+			const user2: User = <User>{};
 
 			user.email = email;
 			user.password = password;

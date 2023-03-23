@@ -1,11 +1,10 @@
-import { Prisma, PrismaClient } from '@prisma/client';
-import express, { Request, Response } from 'express';
-import cors from 'cors';
-import { resolve } from 'path';
-import { nextTick } from 'process';
-import { isDataView } from 'util/types';
+import { PrismaClient } from '@prisma/client';
 import { userRouter } from './src/routes/user.routes';
+import { authRouter } from './src/routes/user.auth.routes';
+import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 const app = express();

@@ -1,4 +1,3 @@
-import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
