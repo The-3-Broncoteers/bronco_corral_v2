@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { deleteUser, newUser, queryListOfUsers, userAuth } from '../services/user.services';
+import { deleteUser, newUser, queryListOfUsers } from '../services/user.services';
+import { userAuth } from '../services/user.auth.services';
 
 export const createNewUser = async (req: Request, res: Response) => {
 	const user = await newUser(req.body);

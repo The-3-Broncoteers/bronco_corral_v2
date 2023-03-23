@@ -5,6 +5,7 @@ import { resolve } from 'path';
 import { nextTick } from 'process';
 import { isDataView } from 'util/types';
 import { userRouter } from './src/routes/user.routes';
+import { authRouter } from './src/routes/user.auth.routes';
 
 const app = express();
 const port: number = 3001;
@@ -12,6 +13,7 @@ const port: number = 3001;
 app.use(cors());
 app.use(express.json());
 app.use('/users', userRouter);
+app.use('/users', authRouter);
 
 const prisma = new PrismaClient({ log: ['query'] });
 
