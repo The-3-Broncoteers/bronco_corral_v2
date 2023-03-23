@@ -5,6 +5,7 @@ import { resolve } from 'path';
 import { nextTick } from 'process';
 import { isDataView } from 'util/types';
 import { userRouter } from './src/routes/user.routes';
+import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
