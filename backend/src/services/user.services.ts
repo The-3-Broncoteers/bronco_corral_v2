@@ -1,21 +1,21 @@
 import { PrismaClient } from '@prisma/client';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
+
 dotenv.config();
 
 console.log(process.env.ACCESS_TOKEN_SECRET);
 
+interface User {
+	email: string;
+	password: string;
+}
+
 const prisma = new PrismaClient();
 let refreshTokens: String[] = [];
-
-const posts = [
-	{
-		username: 'owwixx',
-		title: 'Post 1',
-	},
-];
 
 export const queryListOfUsers = async (userID?: number) => {
 	if (userID) {
@@ -36,10 +36,12 @@ export const deleteUser = async (userId: number) => {
 };
 
 export const newUser = async (req: ParamsDictionary) => {
+	const hashedPassword = await bcrypt.hash(req.password, 10);
+
 	return await prisma.users.create({
 		data: {
 			email: req.email,
-			password: req.password,
+			password: hashedPassword,
 		},
 	});
 };
@@ -56,11 +58,14 @@ export const userAuth = async (userEmail: string, userPassword: string, res: Res
 	}
 
 	try {
-		if (dbUser.password == userPassword) {
+		if (await bcrypt.compare(userPassword, dbUser.password)) {
 			const email = userEmail;
 			const password = userPassword;
 
-			const user = { email: email, password: password };
+			var user = <User>{};
+
+			user.email = email;
+			user.password = password;
 
 			const accessToken = generateAccessToken(user);
 			const refreshToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!);
@@ -76,11 +81,11 @@ export const userAuth = async (userEmail: string, userPassword: string, res: Res
 	}
 };
 
-const generateAccessToken = (user: any) => {
+const generateAccessToken = (user: User) => {
 	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '15m' });
 };
 
-const authenticateToken = (req: any, res: any, next: any) => {
+const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
 	const authHeader = req.headers['authorization'];
 	const token = authHeader && authHeader.split(' ')[1];
 
@@ -88,7 +93,7 @@ const authenticateToken = (req: any, res: any, next: any) => {
 
 	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!, (err: any, user: any) => {
 		if (err) return res.sendStatus(403);
-		req.user = user;
+		req.body.user = user;
 		next();
 	});
 };
@@ -99,16 +104,12 @@ export const useRefreshToken = async (req: Request, res: Response) => {
 	if (refreshTokens.includes(refreshToken)) return res.sendStatus(403);
 	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!, (err: any, user: any) => {
 		if (err) return res.sendStatus(403);
-		const accessToken = generateAccessToken({ name: user.name });
+		const accessToken = generateAccessToken({ email: user.email, password: user.password });
 		res.json({ accessToken: accessToken });
 	});
 };
 
 export const deleteRefreshTokens = async (req: Request, res: Response) => {
-	refreshTokens = refreshTokens.filter((token: any) => token !== req.body.token);
+	refreshTokens = refreshTokens.filter((token: String) => token !== req.body.token);
 	res.sendStatus(204);
-};
-
-export const getPosts = (req: Request, res: Response) => {
-	res.json(posts);
 };

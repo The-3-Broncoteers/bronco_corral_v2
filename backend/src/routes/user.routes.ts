@@ -5,7 +5,7 @@ import {
 	getUserByID,
 	loginUser,
 } from '../controllers/user.controller';
-import { deleteRefreshTokens, getPosts, useRefreshToken } from '../services/user.services';
+import { deleteRefreshTokens, useRefreshToken } from '../services/user.services';
 
 const router = express.Router();
 
@@ -16,8 +16,6 @@ router.put('/create', createNewUser);
 router.post('/login', loginUser);
 
 router.post('/token', useRefreshToken);
-
-router.post('/posts', getPosts);
 
 router.delete('/logout', deleteRefreshTokens);
 
