@@ -37,10 +37,11 @@ export const deleteUser = async (userId: number) => {
 
 export const newUser = async (req: ParamsDictionary) => {
 	const hashedPassword = await bcrypt.hash(req.password, 10);
+	const useremail = req.email;
 
 	return await prisma.users.create({
 		data: {
-			email: req.email,
+			email: useremail,
 			password: hashedPassword,
 		},
 	});
@@ -62,7 +63,7 @@ export const userAuth = async (userEmail: string, userPassword: string, res: Res
 			const email = userEmail;
 			const password = userPassword;
 
-			var user = <User>{};
+			const user: User = { email: '', password: '' };
 
 			user.email = email;
 			user.password = password;
@@ -91,7 +92,7 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
 
 	if (token == null) return res.sendStatus(401);
 
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!, (err: any, user: any) => {
+	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!, (err: jwt.VerifyErrors | null, user: any) => {
 		if (err) return res.sendStatus(403);
 		req.body.user = user;
 		next();
@@ -102,11 +103,15 @@ export const useRefreshToken = async (req: Request, res: Response) => {
 	const refreshToken = req.body.token;
 	if (refreshToken == null) return res.sendStatus(401);
 	if (refreshTokens.includes(refreshToken)) return res.sendStatus(403);
-	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!, (err: any, user: any) => {
-		if (err) return res.sendStatus(403);
-		const accessToken = generateAccessToken({ email: user.email, password: user.password });
-		res.json({ accessToken: accessToken });
-	});
+	jwt.verify(
+		refreshToken,
+		process.env.REFRESH_TOKEN_SECRET!,
+		(err: jwt.VerifyErrors | null, user: any) => {
+			if (err) return res.sendStatus(403);
+			const accessToken = generateAccessToken({ email: user.email, password: user.password });
+			res.json({ accessToken: accessToken });
+		},
+	);
 };
 
 export const deleteRefreshTokens = async (req: Request, res: Response) => {
