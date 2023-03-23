@@ -1,8 +1,11 @@
-import { PrismaClient } from '@prisma/client';
-import express from 'express';
+import { Prisma, PrismaClient } from '@prisma/client';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
+import { resolve } from 'path';
+import { nextTick } from 'process';
+import { isDataView } from 'util/types';
 import { userRouter } from './src/routes/user.routes';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
@@ -11,11 +14,12 @@ const port: number = 3001;
 app.use(cors());
 app.use(express.json());
 app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
+
+const prisma = new PrismaClient({ log: ['query'] });
 
 app.listen(port, async () => {
 	console.log(`Express is listening at http://localhost:${port}\nTesting Prisma Connection...`);
-
-	const prisma = new PrismaClient({ log: ['query'] });
 
 	await prisma
 		.$connect()

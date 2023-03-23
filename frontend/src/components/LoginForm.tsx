@@ -118,6 +118,7 @@ const LoginForm = () => {
 		setError('');
 
 		try {
+    
 			const res = await axiosConfig.post(loginEndPoint, formData);
 			navigate('/login'); //you have no idea how long it took me to figure out the behavior i wanted for the form
 			//I was trying to use the form submit method, but if you do it that way while using GET it send via URL which is bad
@@ -126,6 +127,7 @@ const LoginForm = () => {
 			//So just handling the navigation manually and never actually submitting was my fix
 
 			//console.log(res.data);
+
 		} catch (error) {
 			//const axiosError = error as AxiosError;
 			//console.log(`Axios error to ${loginEndPoint}. Error Message: ${axiosError.message}`);
