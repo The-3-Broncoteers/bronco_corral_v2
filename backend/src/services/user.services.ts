@@ -35,6 +35,7 @@ export const deleteUser = async (userId: number) => {
 };
 
 export const newUser = async (req: ParamsDictionary) => {
+
 	const hashedPassword = await bcrypt.hash(req.password, 10);
 	const useremail = req.email;
 
@@ -44,4 +45,16 @@ export const newUser = async (req: ParamsDictionary) => {
 			password: hashedPassword,
 		},
 	});
+
+	try {
+		return await prisma.users.create({
+			data: {
+				email: req.email,
+				password: req.password,
+			},
+		});
+	} catch (error) {
+		console.log(error);
+	}
+
 };

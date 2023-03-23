@@ -8,9 +8,6 @@ node_modules/
 # testing
 coverage/
 
-# production
-build/
-
 # misc
 .DS_Store
 .env.local
@@ -25,3 +22,5 @@ yarn-error.log*
 backend/node_modules
 backend/.env
 backend/dist
+
+build/

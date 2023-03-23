@@ -5,15 +5,15 @@ import { resolve } from 'path';
 import { nextTick } from 'process';
 import { isDataView } from 'util/types';
 import { userRouter } from './src/routes/user.routes';
-import { authRouter } from './src/routes/user.auth.routes';
+dotenv.config();
 
 const app = express();
 const port: number = 3001;
 
 app.use(cors());
 app.use(express.json());
-app.use('/users', userRouter);
-app.use('/users', authRouter);
+app.use('/api/users', userRouter);
+app.use('/api/users', authRouter);
 
 const prisma = new PrismaClient({ log: ['query'] });
 
@@ -29,6 +29,7 @@ app.listen(port, async () => {
 			},
 			async () => {
 				console.log('Db connection failed');
+				await prisma.$disconnect();
 			},
 		)
 		.catch(async (e) => {
