@@ -1,18 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { NextFunction, Request, Response } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
-
-dotenv.config();
-
-console.log(process.env.ACCESS_TOKEN_SECRET);
-
-interface User {
-	email: string;
-	password: string;
-}
 
 const prisma = new PrismaClient();
 
@@ -35,26 +23,17 @@ export const deleteUser = async (userId: number) => {
 };
 
 export const newUser = async (req: ParamsDictionary) => {
-
 	const hashedPassword = await bcrypt.hash(req.password, 10);
 	const useremail = req.email;
-
-	return await prisma.users.create({
-		data: {
-			email: useremail,
-			password: hashedPassword,
-		},
-	});
 
 	try {
 		return await prisma.users.create({
 			data: {
-				email: req.email,
-				password: req.password,
+				email: useremail,
+				password: hashedPassword,
 			},
 		});
 	} catch (error) {
 		console.log(error);
 	}
-
 };
