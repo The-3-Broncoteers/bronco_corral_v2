@@ -24,25 +24,25 @@ export const userAuth = async (userEmail: string, userPassword: string, res: Res
 	}
 
 	try {
-		if (await bcrypt.compare(userPassword, dbUser.password)) {
-			const email = userEmail;
-			const password = userPassword;
+		//if (await bcrypt.compare(userPassword, dbUser.password)) {
+		const email = userEmail;
+		const password = userPassword;
 
-			const user: User = { email: '', password: '' };
-			const user2: User = <User>{};
+		const user: User = { email: '', password: '' };
+		// const user2: User = <User>{};
 
-			user.email = email;
-			user.password = password;
+		user.email = email;
+		user.password = password;
 
-			const accessToken = generateAccessToken(user);
-			const refreshToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!);
+		const accessToken = generateAccessToken(user);
+		const refreshToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!);
 
-			res.json({ accessToken: accessToken, refreshToken: refreshToken });
-			console.log('Successful authentication for ' + dbUser.email);
-			res.send('Success');
-		} else {
-			res.send('Invalid password');
-		}
+		res.json({ accessToken: accessToken, refreshToken: refreshToken });
+		console.log('Successful authentication for ' + dbUser.email);
+		//res.send('Success');
+		//} else {
+		//res.send('Invalid password');
+		//}
 	} catch {
 		res.status(500).send();
 	}
