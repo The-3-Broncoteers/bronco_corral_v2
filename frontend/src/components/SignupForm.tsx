@@ -112,7 +112,7 @@ const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setFormData({
 			...formData,
-			[e.target.name]: e.target.value,
+			[e.currentTarget.name]: e.currentTarget.value,
 		});
 	};
 
@@ -148,20 +148,35 @@ const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 	return (
 		<StyledModal show={isOpen} onHide={onClose} backdrop='static' keyboard={false}>
 			<Modal.Header closeButton></Modal.Header>
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit} method='POST' action={loginEndPoint}>
 				<div className='form-group'>
 					<label hidden>Enter Email</label>
-					<input type='email' placeholder='Enter email' onChange={handleChange}></input>
+					<input
+						type='email'
+						placeholder='Enter email'
+						name='email'
+						onChange={handleChange}
+					></input>
 				</div>
 
 				<div className='form-group'>
 					<label hidden>Enter Password</label>
-					<input type='password' placeholder='Enter password' onChange={handleChange}></input>
+					<input
+						type='password'
+						placeholder='Enter password'
+						name='password'
+						onChange={handleChange}
+					></input>
 				</div>
 
 				<div className='form-group'>
 					<label hidden>Re-enter Password</label>
-					<input type='password' placeholder='Re-enter password' onChange={handleChange}></input>
+					<input
+						type='password'
+						placeholder='Re-enter password'
+						name='confirmPassword'
+						onChange={handleChange}
+					></input>
 				</div>
 
 				<button type='submit'>Sign Up</button>
