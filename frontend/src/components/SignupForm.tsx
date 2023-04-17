@@ -95,7 +95,7 @@ interface SignupFormProps {
 	onClose: () => void;
 }
 
-const loginEndPoint: string = '/users/create';
+const loginEndPoint: string = '/users/';
 
 const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 	if (!isOpen) return null;
