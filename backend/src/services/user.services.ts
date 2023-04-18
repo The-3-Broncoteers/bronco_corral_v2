@@ -1,39 +1,43 @@
-import { PrismaClient } from '@prisma/client';
-import { ParamsDictionary } from 'express-serve-static-core';
-import bcrypt from 'bcrypt';
+import { prisma } from '../../prisma/prisma';
+import { Http404Error } from '../utils/httpErrors/errors/Http404Error';
+import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
 
-const prisma = new PrismaClient();
-
-export const queryListOfUsers = async (userID?: number) => {
-	if (userID) {
-		return await prisma.users.findUniqueOrThrow({ where: { id: userID } }).catch((error) => {
-			return `error finding user with ID: ${userID}`;
-		});
-	}
-
-	return await prisma.users.findMany();
-};
-
-export const deleteUser = async (userId: number) => {
-	return await prisma.users.delete({
-		where: {
-			id: userId,
-		},
-	});
-};
-
-export const newUser = async (req: ParamsDictionary) => {
-	const hashedPassword = await bcrypt.hash(req.password, 10);
-	const useremail = req.email;
-
+export const getAllUsers = async () => {
 	try {
-		return await prisma.users.create({
-			data: {
-				email: useremail,
-				password: hashedPassword,
+		return await prisma.user.findMany();
+	} catch (error) {
+		throw new Http500Error(`Error getting all users: ${(error as Error).message}`);
+	}
+};
+
+export const updateUserByID = async (userID: number) => {
+	//TODO
+};
+
+export const deleteUserByID = async (userId: number) => {
+	try {
+		const deletedUser = await prisma.user.delete({
+			where: {
+				id: userId,
 			},
 		});
+		return deletedUser;
 	} catch (error) {
-		console.log(error);
+		if (error instanceof Error) {
+			throw new Http500Error(`Error deleting user with ID ${userId}: ${error.message}`);
+		} else {
+			throw new Http500Error(`Unknown error deleting user with ID ${userId}`);
+		}
+	}
+};
+export const getUserByID = async (userID: number) => {
+	try {
+		return await prisma.user.findUnique({ where: { id: userID } });
+	} catch (error) {
+		if (error instanceof Error) {
+			throw new Http404Error(`Failed to retrieve user with ID: ${userID}.`);
+		} else {
+			throw new Http500Error(`Unknown error retrieving user with ID ${userID}`);
+		}
 	}
 };
