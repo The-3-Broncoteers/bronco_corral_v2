@@ -1,12 +1,14 @@
+import { getUsers, deleteUser, getUser } from '../controllers/user.controller';
 import express from 'express';
-import { createNewUser, deleteUserByID, getUserByID } from '../controllers/user.controller';
 
 const router = express.Router();
 
-router.get('/:id', getUserByID);
+router
+	.route('/')
+	.get(getUsers)
+	//.put(updateUser) //TODO update user
+	.delete(deleteUser);
 
-router.post('/create', createNewUser);
-
-router.delete('/:id', deleteUserByID);
+router.route('/:id').get(getUser);
 
 export { router as userRouter };
