@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { loginUser } from '../services/auth.services';
 import { UserData } from '../utils/userData';
-import { BadRequestError } from '../utils/httpErrors/errors/BadRequestError';
+import { Http400Error } from '../utils/httpErrors/errors/Http400Error';
 import { HttpError } from '../utils/httpErrors/httpError';
 
 export const login = async (req: Request<{}, {}, UserData>, res: Response) => {
@@ -9,7 +9,7 @@ export const login = async (req: Request<{}, {}, UserData>, res: Response) => {
 
 	try {
 		if (!email || !password) {
-			throw new BadRequestError('Email and password are required');
+			throw new Http400Error('Email and password are required');
 		}
 
 		const userTokens = await loginUser(email, password);
