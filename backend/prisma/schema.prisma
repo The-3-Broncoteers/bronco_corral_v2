@@ -11,10 +11,10 @@ model Token {
     id        Int      @id @default(autoincrement())
     userId    Int
     type      String
-    value     String
+    value     String   @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
-    User      User     @relation(fields: [userId], references: [id])
+    user      User     @relation(fields: [userId], references: [id])
 }
 
 model User {
@@ -23,5 +23,5 @@ model User {
     password  String
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
-    Token     Token[]
+    tokens    Token[]
 }
