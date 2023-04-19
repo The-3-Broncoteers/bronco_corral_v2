@@ -10,6 +10,9 @@ function App() {
 		<Routes>
 			<Route path='/' element={<LandingPage />} />
 			<Route path='/login' element={<Login />} />
+			<Route path='/test/*' element={<MainNav />}>
+				<Route path='dashboard' element={<UserDashBoard />} />
+			</Route>
 			<Route path='/user/:userId/*' element={<MainNav />}>
 				<Route path='dashboard' element={<UserDashBoard />} />
 				<Route path='logout' element={<Logout />} />

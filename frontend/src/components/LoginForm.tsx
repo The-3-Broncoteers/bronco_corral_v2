@@ -1,4 +1,4 @@
-import axiosConfig from '../apis/axiosConfig';
+import axiosConfig from '../config/axiosConfig';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
@@ -81,7 +81,7 @@ const StyledForm = styled.form`
 	}
 `;
 
-const loginEndPoint: string = '/auth/login';
+const loginEndPoint: string = '/auth';
 
 const LoginForm = () => {
 	const [formData, setFormData] = useState({

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
 import { validateForm } from '../utils/formUtils';
-import axiosConfig from '../apis/axiosConfig';
+import axiosConfig from '../config/axiosConfig';
 
 //TODO Media Queries for css
 //TODO Themeing
@@ -95,7 +95,7 @@ interface SignupFormProps {
 	onClose: () => void;
 }
 
-const loginEndPoint: string = '/users/create';
+const loginEndPoint: string = '/register';
 
 const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 	if (!isOpen) return null;
