@@ -1,8 +1,9 @@
+import { User } from '.prisma/client';
 import { prisma } from '../../prisma/prisma';
 import { Http404Error } from '../utils/httpErrors/errors/Http404Error';
 import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (): Promise<User[]> => {
 	try {
 		return await prisma.user.findMany();
 	} catch (error) {
@@ -14,7 +15,7 @@ export const updateUserByID = async (userID: number) => {
 	//TODO
 };
 
-export const deleteUserByID = async (userId: number) => {
+export const deleteUserByID = async (userId: number): Promise<User> => {
 	try {
 		const deletedUser = await prisma.user.delete({
 			where: {
@@ -30,7 +31,7 @@ export const deleteUserByID = async (userId: number) => {
 		}
 	}
 };
-export const getUserByID = async (userID: number) => {
+export const getUserByID = async (userID: number): Promise<User | null> => {
 	try {
 		return await prisma.user.findUnique({ where: { id: userID } });
 	} catch (error) {

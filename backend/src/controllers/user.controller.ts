@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { deleteUserByID, getAllUsers, getUserByID } from '../services/user.services';
 import { HttpError } from '../utils/httpErrors/httpError';
 
-export const getUsers = async (req: Request, res: Response) => {
+export const getUsers = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const users = await getAllUsers();
 		res.send(users);
@@ -11,7 +11,7 @@ export const getUsers = async (req: Request, res: Response) => {
 	}
 };
 
-export const getUser = async (req: Request, res: Response) => {
+export const getUser = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const user = await getUserByID(Number(req.params.userID));
 		res.send(user);
@@ -26,7 +26,7 @@ export const getUser = async (req: Request, res: Response) => {
 // 	res.send(user);
 // };
 
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const user = await deleteUserByID(Number(req.params.userId));
 		res.send(user);
