@@ -1,12 +1,30 @@
-import jwt, { Secret } from 'jsonwebtoken';
-import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
+import { Secret } from 'jsonwebtoken';
 import { Http401Error } from '../utils/httpErrors/errors/Http401Error';
+import { Http403Error } from '../utils/httpErrors/errors/Http403Error';
+import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
+import jwt from 'jsonwebtoken';
+import { prisma } from '../../prisma/prisma';
 
 export const refreshToken = async (token: string): Promise<{ accessToken: string }> => {
 	try {
-		//Check token db for the token, if no token found send status 403
-		//If token found, get the user email associated with token
-		const userEmail = '';
+		const foundToken = await prisma.token.findUnique({
+			where: {
+				value: token,
+			},
+			select: {
+				user: {
+					select: {
+						email: true,
+					},
+				},
+			},
+		});
+
+		if (!foundToken) {
+			throw new Http403Error('Invalid token');
+		}
+
+		const userEmail: string = foundToken.user.email;
 
 		if (!process.env.ACCESS_TOKEN_SECRET || !process.env.REFRESH_TOKEN_SECRET) {
 			throw new Http500Error('Missing environment variables');
@@ -32,7 +50,7 @@ export const refreshToken = async (token: string): Promise<{ accessToken: string
 			},
 		);
 
-		return { accessToken: accessToken };
+		return { accessToken };
 	} catch (error) {
 		if (error instanceof Error) {
 			throw new Error('Failed to refresh token.');
