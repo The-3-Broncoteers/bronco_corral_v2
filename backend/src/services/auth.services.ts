@@ -26,8 +26,26 @@ export const loginUser = async (email: string, password: string): Promise<TokenD
 				expiresIn: '1d',
 			});
 
-			//TODO save tokens into token table
-			//TODO add tokens to user table
+			const newToken = await prisma.token.create({
+				data: {
+					value: refreshToken,
+					user: { connect: { id: dbUser.id } },
+					type: 'refresh',
+				},
+			});
+
+			await prisma.user.update({
+				where: {
+					id: dbUser.id,
+				},
+				data: {
+					tokens: {
+						connect: {
+							id: newToken.id,
+						},
+					},
+				},
+			});
 
 			return { accessToken: accessToken, refreshToken: refreshToken };
 		} else {
