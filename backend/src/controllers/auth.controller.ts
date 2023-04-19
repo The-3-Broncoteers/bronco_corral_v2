@@ -11,9 +11,7 @@ export const login = async (
 	const { email, password } = req.body;
 
 	try {
-		if (!email || !password) {
-			throw new Http400Error('Email and password are required');
-		}
+		if (!email || !password) throw new Http400Error('Email and password are required');
 
 		const userTokens = await loginUser(email, password);
 

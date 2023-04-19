@@ -13,9 +13,7 @@ export const loginUser = async (email: string, password: string): Promise<TokenD
 
 		const dbUser = await prisma.user.findUnique({ where: { email: email } });
 
-		if (!dbUser) {
-			throw new Http401Error('Invalid credentials');
-		}
+		if (!dbUser) throw new Http401Error('Invalid credentials');
 
 		const isValidPW: boolean = await bcrypt.compare(password, dbUser.password);
 
