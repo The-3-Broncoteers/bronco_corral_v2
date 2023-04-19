@@ -28,7 +28,8 @@ export const loginUser = async (email: string, password: string): Promise<TokenD
 				expiresIn: '1d',
 			});
 
-			//TODO save tokens into db
+			//TODO save tokens into token table
+			//TODO add tokens to user table
 
 			return { accessToken: accessToken, refreshToken: refreshToken };
 		} else {

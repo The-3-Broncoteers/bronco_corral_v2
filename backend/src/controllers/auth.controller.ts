@@ -4,7 +4,10 @@ import { UserData } from '../utils/userData';
 import { Http400Error } from '../utils/httpErrors/errors/Http400Error';
 import { HttpError } from '../utils/httpErrors/httpError';
 
-export const login = async (req: Request<{}, {}, UserData>, res: Response) => {
+export const login = async (
+	req: Request<{}, {}, UserData>,
+	res: Response,
+): Promise<Response<any, Record<string, any>>> => {
 	const { email, password } = req.body;
 
 	try {
