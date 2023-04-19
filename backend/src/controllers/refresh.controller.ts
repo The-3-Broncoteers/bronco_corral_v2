@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { UserData } from '../utils/userData';
 import { refreshToken } from '../services/refresh.services';
-import { HttpError } from '../utils/httpErrors/httpError';
+import { HttpStatus } from '../utils/httpErrors/HttpStatus';
 import { Http401Error } from '../utils/httpErrors/errors/Http401Error';
 
 export const refresh = async (
@@ -16,7 +16,7 @@ export const refresh = async (
 		const accessToken = await refreshToken(cookies.jwt);
 		return res.json(accessToken);
 	} catch (error) {
-		if (error instanceof HttpError) {
+		if (error instanceof HttpStatus) {
 			return res.status(error.status).json({ message: error.message });
 		}
 

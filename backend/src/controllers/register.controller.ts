@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { newUser } from '../services/register.services';
 import { UserData } from '../utils/userData';
-import { HttpError } from '../utils/httpErrors/httpError';
+import { HttpStatus } from '../utils/httpErrors/HttpStatus';
 import { Http400Error } from '../utils/httpErrors/errors/Http400Error';
 
 export const register = async (
@@ -16,7 +16,7 @@ export const register = async (
 		const user = await newUser(email, password);
 		return res.send(user);
 	} catch (error) {
-		if (error instanceof HttpError) {
+		if (error instanceof HttpStatus) {
 			return res.status(error.status).json({ message: error.message });
 		}
 

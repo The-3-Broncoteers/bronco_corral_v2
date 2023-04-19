@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import { deleteUserByID, getAllUsers, getUserByID } from '../services/user.services';
-import { HttpError } from '../utils/httpErrors/httpError';
+import { HttpStatus } from '../utils/httpErrors/HttpStatus';
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const users = await getAllUsers();
 		res.send(users);
 	} catch (error) {
-		res.status(500).json({ message: (error as HttpError).message });
+		res.status(500).json({ message: (error as HttpStatus).message });
 	}
 };
 
@@ -16,7 +16,7 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
 		const user = await getUserByID(Number(req.params.userID));
 		res.send(user);
 	} catch (error) {
-		res.status(404).json({ message: (error as HttpError).message });
+		res.status(404).json({ message: (error as HttpStatus).message });
 	}
 };
 
@@ -31,6 +31,6 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
 		const user = await deleteUserByID(Number(req.params.userId));
 		res.send(user);
 	} catch (error) {
-		res.status(404).json({ message: (error as HttpError).message });
+		res.status(404).json({ message: (error as HttpStatus).message });
 	}
 };

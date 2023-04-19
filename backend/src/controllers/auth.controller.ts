@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { loginUser } from '../services/auth.services';
 import { UserData } from '../utils/userData';
 import { Http400Error } from '../utils/httpErrors/errors/Http400Error';
-import { HttpError } from '../utils/httpErrors/httpError';
+import { HttpStatus } from '../utils/httpErrors/HttpStatus';
 
 export const login = async (
 	req: Request<{}, {}, UserData>,
@@ -18,7 +18,7 @@ export const login = async (
 		res.cookie('jwt', userTokens.refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }); //1 day
 		return res.send({ accessToken: userTokens.accessToken });
 	} catch (error) {
-		if (error instanceof HttpError) {
+		if (error instanceof HttpStatus) {
 			return res.status(error.status).json({ message: error.message });
 		}
 
