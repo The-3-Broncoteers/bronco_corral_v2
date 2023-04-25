@@ -27,9 +27,9 @@ app.use('/register', registerRouter);
 app.use('/auth', authRouter);
 app.use('/refresh', refreshRouter);
 app.use('/logout', logoutRouter);
+app.use('/maintenance', carmdRouter);
 app.use(verifyJWT);
 app.use('/users', userRouter);
-app.use('/maintenance', carmdRouter);
 app.use(errorHandler);
 
 app.listen(PORT, async () => {

@@ -1,3 +1,9 @@
+import MaintRequest from '../components/MaintRequest';
+
 export function UserDashBoard() {
-	return <div>Mi casa su casa</div>;
+	return (
+		<div>
+		  <MaintRequest />
+		</div>
+	  );
 }
