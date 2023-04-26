@@ -28,9 +28,9 @@ jobs:
     - name: Copy build to server
       uses: appleboy/scp-action@v0.1.4
       with:
-        host: 3.21.166.158
-        username: ubuntu
+        host: ec2-3-21-166-158.us-east-2.compute.amazonaws.com
+        username: ec2-user
         port: 22
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "./frontend/build/"
+        source: "./frontend/build"
         target: "/var/www/bronco_corral_v2/frontend/build/"
