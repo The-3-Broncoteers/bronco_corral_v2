@@ -25,13 +25,12 @@ jobs:
     - name: Deploy frontend to server
       uses: appleboy/ssh-action@master
       with:
-        host: 3.21.166.158
+        host: ip-172-31-37-171.us-east-2.compute.internal
         username: ubuntu
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          cd /var/www/bronco_corral_V2
+          cd /var/www/bronco_corral_v2
           git pull
           cd frontend
           npm install --production
-          
