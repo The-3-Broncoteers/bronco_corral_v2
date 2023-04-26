@@ -1,4 +1,3 @@
-name: Build and Deploy
 
 on:
   push:
@@ -9,9 +8,9 @@ on:
       - main
 
 jobs:
-  frontend-build-and-deploy:
+  frontend-and-backend-build-and-deploy:
     runs-on: ubuntu-latest
-    name: Build and Deploy Frontend
+    name: Build and Deploy Frontend and Backend
 
     steps:
     - name: Checkout code
@@ -25,7 +24,15 @@ jobs:
       working-directory: ./frontend
       run: npm run build
 
-    - name: Copy build to server
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm install
+
+    - name: Build backend
+      working-directory: ./backend
+      run: npm run build
+
+    - name: Copy frontend build to server
       uses: appleboy/scp-action@v0.1.4
       with:
         host: 3.21.166.158
@@ -34,3 +41,24 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "./frontend/build"
         target: "/var/www/bronco_corral_v2/"
+
+    - name: Copy backend build to server
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: 3.21.166.158
+        username: ubuntu
+        port: 22
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "./backend/build"
+        target: "/var/www/bronco_corral_v2/"
+
+    - name: SSH into server and restart PM2
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: 3.21.166.158
+        username: ubuntu
+        port: 22
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/bronco_corral_v2/
+          pm2 restart all
