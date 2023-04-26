@@ -49,7 +49,7 @@ jobs:
         username: ubuntu
         port: 22
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "./backend/build"
+        source: "./backend/dist"
         target: "/var/www/bronco_corral_v2/"
 
     - name: SSH into server and restart PM2
