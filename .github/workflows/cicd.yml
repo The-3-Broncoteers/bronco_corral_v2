@@ -34,3 +34,4 @@ jobs:
           git pull
           cd frontend
           sudo npm install --omit=dev
+          pm2 restart bronco_corral_v2
