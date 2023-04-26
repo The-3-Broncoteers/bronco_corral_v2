@@ -19,7 +19,12 @@ const app = express();
 const PORT: string | number = process.env.PORT || 3001;
 
 app.use(eventLogger);
-app.use(cors()); //Can use cors options for safety. (Prevent unauthorized people from making api requests)
+app.use(
+	cors({
+		origin: true,
+		credentials: true,
+	}),
+); //Can use cors options for safety. (Prevent unauthorized people from making api requests)
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());

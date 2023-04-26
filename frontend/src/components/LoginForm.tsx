@@ -118,22 +118,15 @@ const LoginForm = () => {
 		setError('');
 
 		try {
-			const res = await axiosConfig.post(loginEndPoint, formData);
-			// {
-			// 	headers: { 'Content-Type': 'application/json' },
-			// 	withCredentials: true,
-			// });
+			const res = await axiosConfig.post(loginEndPoint, formData, {
+				headers: { 'Content-Type': 'application/json' },
+				withCredentials: true,
+			});
 
-			console.log('data1 ' + res.data);
-			console.log('data2 ' + res);
+			//TODO store token
+			console.log('data1 ' + res.data.accessToken);
 
-			navigate('/'); //you have no idea how long it took me to figure out the behavior i wanted for the form
-			//I was trying to use the form submit method, but if you do it that way while using GET it send via URL which is bad
-			//So I started using POST, but then it redirects you on submit to the submission end point
-			//I sat here googling my life away for fixes. Nothing worked the way I wanted
-			//So just handling the navigation manually and never actually submitting was my fix
-
-			//console.log(res.data);
+			navigate('/');
 		} catch (error) {
 			//const axiosError = error as AxiosError;
 			//console.log(`Axios error to ${loginEndPoint}. Error Message: ${axiosError.message}`);
