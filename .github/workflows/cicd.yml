@@ -33,4 +33,4 @@ jobs:
         port: 22
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "./frontend/build"
-        target: "/var/www/bronco_corral_v2/frontend/build/"
+        target: "/var/www/bronco_corral_v2/"
