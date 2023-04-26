@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   frontend-build-and-deploy:
@@ -22,14 +25,12 @@ jobs:
       working-directory: ./frontend
       run: npm run build
 
-    - name: Deploy frontend to server
-      uses: appleboy/ssh-action@master
+    - name: Copy build to server
+      uses: appleboy/scp-action@v0.1.4
       with:
         host: 3.21.166.158
         username: ubuntu
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        script: |
-          cd /var/www/bronco_corral_v2
-          sudo rm -rf frontend/build
-          scp -r ./frontend/build ubuntu@3.21.166.158:/var/www/bronco_corral_v2/frontend
+        key: ${{ secrets.KEY }}
+        source: "./frontend/build"
+        target: "/var/www/bronco_corral_v2/frontend"
