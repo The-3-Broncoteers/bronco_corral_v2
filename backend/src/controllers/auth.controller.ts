@@ -15,7 +15,11 @@ export const login = async (
 
 		const userTokens = await loginUser(email, password);
 
-		res.cookie('jwt', userTokens.refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }); //1 day
+		res.cookie('jwt', userTokens.refreshToken, {
+			httpOnly: true,
+			maxAge: 24 * 60 * 60 * 1000,
+		}); //1 day
+
 		return res.send({ accessToken: userTokens.accessToken });
 	} catch (error) {
 		if (error instanceof HttpStatus) {

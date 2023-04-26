@@ -119,7 +119,15 @@ const LoginForm = () => {
 
 		try {
 			const res = await axiosConfig.post(loginEndPoint, formData);
-			navigate('/login'); //you have no idea how long it took me to figure out the behavior i wanted for the form
+			// {
+			// 	headers: { 'Content-Type': 'application/json' },
+			// 	withCredentials: true,
+			// });
+
+			console.log('data1 ' + res.data);
+			console.log('data2 ' + res);
+
+			navigate('/'); //you have no idea how long it took me to figure out the behavior i wanted for the form
 			//I was trying to use the form submit method, but if you do it that way while using GET it send via URL which is bad
 			//So I started using POST, but then it redirects you on submit to the submission end point
 			//I sat here googling my life away for fixes. Nothing worked the way I wanted

@@ -23,13 +23,13 @@ app.use(cors()); //Can use cors options for safety. (Prevent unauthorized people
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
-app.use('/register', registerRouter);
-app.use('/auth', authRouter);
-app.use('/refresh', refreshRouter);
-app.use('/logout', logoutRouter);
-app.use('/maintenance', carmdRouter);
+app.use('/api/register', registerRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/refresh', refreshRouter);
+app.use('/api/logout', logoutRouter);
+app.use('/api/maintenance', carmdRouter);
 app.use(verifyJWT);
-app.use('/users', userRouter);
+app.use('/api/users', userRouter);
 app.use(errorHandler);
 
 app.listen(PORT, async () => {
