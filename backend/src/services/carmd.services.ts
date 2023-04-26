@@ -1,7 +1,10 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
 
-const authKey = '';
-const token = '';
+dotenv.config();
+
+const authKey = process.env.AUTH_KEY || '';
+const token = process.env.TOKEN || '';
 
 export const getMaintenances = async (vin: string, mileage: number) => {
 	const apiUrl = `https://api.carmd.com/v3.0/maint?vin=${vin}&mileage=${mileage}`;
