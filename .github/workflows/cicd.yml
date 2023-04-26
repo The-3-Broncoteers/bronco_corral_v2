@@ -28,8 +28,8 @@ jobs:
     - name: Copy build to server
       uses: appleboy/scp-action@v0.1.4
       with:
-        host: ec2-3-21-166-158.us-east-2.compute.amazonaws.com
-        username: ec2-user
+        host: 3-21-166-158
+        username: ubuntu
         port: 22
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "./frontend/build"
