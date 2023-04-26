@@ -33,4 +33,4 @@ jobs:
           cd /var/www/bronco_corral_v2
           git pull
           cd frontend
-          npm install --production
+          sudo npm install --omit=dev
