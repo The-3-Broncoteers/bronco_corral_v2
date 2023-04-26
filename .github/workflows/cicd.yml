@@ -31,6 +31,6 @@ jobs:
         host: 3.21.166.158
         username: ubuntu
         port: 22
-        key: ${{ secrets.KEY }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "./frontend/build"
         target: "/var/www/bronco_corral_v2/frontend"
