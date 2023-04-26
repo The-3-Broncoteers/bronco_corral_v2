@@ -1,39 +1,67 @@
-name: cicd
+name: Build and Deploy
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-env:
-  NODE_ENV: production
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
-    runs-on: self-hosted
+  frontend-build-and-deploy:
+    runs-on: ubuntu-latest
+    name: Build and Deploy Frontend
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Use Node.js 19
-      uses: actions/setup-node@v2
-      with:
-        node-version: '19.x'
-
-    - name: Install dependencies
-      run: |
-        cd frontend
-        npm install
-        cd ../backend
-        npm install
+      
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm install
 
     - name: Build frontend
-      run: |
-        cd frontend
-        npm run build
+      working-directory: ./frontend
+      run: npm run build
 
-    - name: Start backend
-      run: |
-        cd backend
-        npm start
+    - name: Deploy frontend to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ip-172-31-37-171.us-east-2.compute.internal
+        username: ubuntu
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          cd /var/www/my-project
+          git pull
+          cd frontend
+          npm install --production
+          pm2 restart my-project
+
+  backend-build-and-deploy:
+    runs-on: ubuntu-latest
+    name: Build and Deploy Backend
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm install
+
+    - name: Build backend
+      working-directory: ./backend
+      run: npm run build
+
+    - name: Deploy backend to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ip-172-31-37-171.us-east-2.compute.internal
+        username: ubuntu
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          cd /var/www/my-project
+          git pull
+          cd backend
+          npm install --production
+          pm2 restart my-project
