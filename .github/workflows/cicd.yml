@@ -25,7 +25,7 @@ jobs:
     - name: Deploy frontend to server
       uses: appleboy/ssh-action@master
       with:
-        host: ip-172-31-37-171.us-east-2.compute.internal
+        host: 3.21.166.158
         username: ubuntu
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
