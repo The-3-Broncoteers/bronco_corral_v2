@@ -34,36 +34,4 @@ jobs:
           git pull
           cd frontend
           npm install --production
-          pm2 restart bronco_corral_V2
-
-  backend-build-and-deploy:
-    runs-on: ubuntu-latest
-    name: Build and Deploy Backend
-
-    steps:
-    - name: Checkout code
-      uses: actions/setup-node@v3
-      with:
-        node-version: '19.x'
-      
-    - name: Install backend dependencies
-      working-directory: ./backend
-      run: npm install
-
-    - name: Build backend
-      working-directory: ./backend
-      run: npm run build
-
-    - name: Deploy backend to server
-      uses: appleboy/ssh-action@master
-      with:
-        host: ip-172-31-37-171.us-east-2.compute.internal
-        username: ubuntu
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
-        script: |
-          cd /var/www/bronco_corral_V2
-          git pull
-          cd backend
-          npm install --production
-          pm2 restart bronco_corral_V2
+          
