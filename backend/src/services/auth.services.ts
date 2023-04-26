@@ -4,6 +4,7 @@ import { Http401Error } from '../utils/httpErrors/errors/Http401Error';
 import { TokenData } from '../utils/tokenData';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { ACCESS_TOKEN_DURATION, REFRESH_TOKEN_DURATION } from '../utils/jwtTokenDuration';
 
 export const loginUser = async (email: string, password: string): Promise<TokenData> => {
 	try {
@@ -19,11 +20,11 @@ export const loginUser = async (email: string, password: string): Promise<TokenD
 
 		if (isValidPW) {
 			const accessToken = jwt.sign({ email: dbUser.email }, process.env.ACCESS_TOKEN_SECRET, {
-				expiresIn: '5m',
+				expiresIn: ACCESS_TOKEN_DURATION,
 			});
 
 			const refreshToken = jwt.sign({ email: dbUser.email }, process.env.REFRESH_TOKEN_SECRET, {
-				expiresIn: '1d',
+				expiresIn: REFRESH_TOKEN_DURATION,
 			});
 
 			const newToken = await prisma.token.create({
