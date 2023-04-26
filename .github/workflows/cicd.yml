@@ -31,6 +31,5 @@ jobs:
         port: 22
         script: |
           cd /var/www/bronco_corral_v2
-          git pull
-          cd frontend
-          sudo npm install --omit=dev
+          sudo rm -rf frontend/build
+          scp -r ./frontend/build ubuntu@3.21.166.158:/var/www/bronco_corral_v2/frontend
