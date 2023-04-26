@@ -25,12 +25,16 @@ jobs:
       working-directory: ./frontend
       run: npm run build
 
-    - name: Copy build to server
-      uses: appleboy/scp-action@v0.1.4
+    - name: Deploy frontend to server
+      uses: appleboy/ssh-action@master
       with:
         host: 3.21.166.158
         username: ubuntu
-        port: 22
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "./frontend/build"
-        target: "/var/www/bronco_corral_v2/frontend"
+        port: 22
+        script: |
+          cd /var/www/bronco_corral_v2
+          sudo rm -rf frontend/build
+          eval $(ssh-agent -s)
+          ssh-add <(echo "${{ secrets.YOUR_SECRET_NAME }}")
+          scp -r ./frontend/build ubuntu@3.21.166.158:/var/www/bronco_corral_v2/frontend
