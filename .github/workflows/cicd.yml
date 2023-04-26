@@ -30,11 +30,11 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          cd /var/www/my-project
+          cd /var/www/bronco_corral_V2
           git pull
           cd frontend
           npm install --production
-          pm2 restart my-project
+          pm2 restart bronco_corral_V2
 
   backend-build-and-deploy:
     runs-on: ubuntu-latest
@@ -62,8 +62,8 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          cd /var/www/my-project
+          cd /var/www/bronco_corral_V2
           git pull
           cd backend
           npm install --production
-          pm2 restart my-project
+          pm2 restart bronco_corral_V2
