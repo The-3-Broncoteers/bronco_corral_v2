@@ -28,7 +28,7 @@ jobs:
     - name: Copy build to server
       uses: appleboy/scp-action@v0.1.4
       with:
-        host: 3-21-166-158
+        host: 3.21.166.158
         username: ubuntu
         port: 22
         key: ${{ secrets.SSH_PRIVATE_KEY }}
