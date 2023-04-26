@@ -61,4 +61,4 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd /var/www/bronco_corral_v2/
-          pm2 restart all
+          sudo pm2 restart all
