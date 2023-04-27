@@ -1,10 +1,11 @@
 import axiosConfig from '../config/axiosConfig';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
 import SignupForm from './SignupForm';
 import { validateForm } from '../utils/formUtils';
 import { useNavigate } from 'react-router-dom';
+import AuthContext from '../context/authProvider';
 
 //TODO Media Queries for css
 //TODO Themeing
@@ -84,6 +85,8 @@ const StyledForm = styled.form`
 const loginEndPoint: string = '/auth';
 
 const LoginForm = () => {
+	const { setAuth } = useContext(AuthContext);
+
 	const [formData, setFormData] = useState({
 		email: '',
 		password: '',
@@ -118,21 +121,21 @@ const LoginForm = () => {
 		setError('');
 
 		try {
-			const res = await axiosConfig.post(loginEndPoint, formData);
-			navigate('/login'); //you have no idea how long it took me to figure out the behavior i wanted for the form
-			//I was trying to use the form submit method, but if you do it that way while using GET it send via URL which is bad
-			//So I started using POST, but then it redirects you on submit to the submission end point
-			//I sat here googling my life away for fixes. Nothing worked the way I wanted
-			//So just handling the navigation manually and never actually submitting was my fix
+			const res = await axiosConfig.post(loginEndPoint, formData, {
+				headers: { 'Content-Type': 'application/json' },
+				withCredentials: true,
+			});
 
-			//console.log(res.data);
+			const accessToken = res?.data?.accessToken;
+			setAuth({ ...formData, accessToken });
+			console.log(`data: ${formData.email} ${formData.password}`);
+			console.log('token ' + accessToken);
+
+			navigate('/');
 		} catch (error) {
-			//const axiosError = error as AxiosError;
-			//console.log(`Axios error to ${loginEndPoint}. Error Message: ${axiosError.message}`);
+			console.log('error in login');
 			setError('Invalid email or password.');
 		}
-
-		//TODO something with errors in case we get any
 	};
 
 	return (
