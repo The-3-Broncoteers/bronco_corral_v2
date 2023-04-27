@@ -54,5 +54,6 @@ jobs:
           cd /var/www/bronco_corral_v2/backend
           sudo npm i
           sudo npx prisma generate
-          sudo npm run dev
+          sudo npm run build
+          sudo npm run start
           sudo pm2 restart all
