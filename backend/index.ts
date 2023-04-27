@@ -1,4 +1,3 @@
-import { db } from './prisma/db';
 import { userRouter } from './src/routes/user.routes';
 import { carmdRouter } from './src/routes/carmd.routes';
 import { errorHandler } from './src/middleware/errorHandler';
@@ -8,6 +7,7 @@ import { registerRouter } from './src/routes/register.routes';
 import { verifyJWT } from './src/middleware/verifyJWT';
 import { logoutRouter } from './src/routes/logout.routes';
 import { refreshRouter } from './src/routes/refresh.routes';
+import { PrismaClient } from '@prisma/client';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -17,6 +17,7 @@ dotenv.config();
 
 const app = express();
 const PORT: string | number = process.env.PORT || 3001;
+const db = new PrismaClient({ log: ['error'] });
 
 app.use(eventLogger);
 app.use(

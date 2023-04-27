@@ -29,6 +29,18 @@ jobs:
       working-directory: ./backend
       run: npm run build
 
+    - name: SSH into server delete old files
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: 3.21.166.158
+        username: ubuntu
+        port: 22
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/bronco_corral_v2/
+          sudo rm backend -r
+          sudo rm frontend -r
+
     - name: Copy frontend build to server
       uses: appleboy/scp-action@v0.1.4
       with:

@@ -1,10 +1,12 @@
-import { db } from '../../prisma/db';
 import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
 import { Http401Error } from '../utils/httpErrors/errors/Http401Error';
 import { TokenData } from '../utils/tokenData';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { ACCESS_TOKEN_DURATION, REFRESH_TOKEN_DURATION } from '../utils/jwtTokenDuration';
+import { PrismaClient } from '@prisma/client';
+
+const db = new PrismaClient({ log: ['error'] });
 
 export const loginUser = async (email: string, password: string): Promise<TokenData> => {
 	try {

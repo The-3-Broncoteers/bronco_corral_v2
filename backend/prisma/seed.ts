@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { db } from './db';
+
+const db = new PrismaClient({ log: ['error'] });
 
 /**
  * This will check and populate (if its not found) the database tables against the models in the main function
