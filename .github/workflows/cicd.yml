@@ -52,6 +52,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd /var/www/bronco_corral_v2/backend
+          sudo npm i
           sudo npm run build
           sudo npm start
           sudo pm2 restart all
