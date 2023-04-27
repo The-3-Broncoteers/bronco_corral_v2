@@ -1,4 +1,4 @@
-import { prisma } from '../../prisma/prisma';
+import { db } from '../../prisma/db';
 import bcrypt from 'bcrypt';
 import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
 import { Http409Error } from '../utils/httpErrors/errors/Http409Error';
@@ -8,7 +8,7 @@ export const newUser = async (email: string, password: string): Promise<User> =>
 	try {
 		const hashedPassword = await bcrypt.hash(password, 10);
 
-		const newUser = await prisma.user.create({
+		const newUser = await db.user.create({
 			data: {
 				email: email,
 				password: hashedPassword,

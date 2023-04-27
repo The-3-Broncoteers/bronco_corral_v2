@@ -3,12 +3,12 @@ import { Http401Error } from '../utils/httpErrors/errors/Http401Error';
 import { Http403Error } from '../utils/httpErrors/errors/Http403Error';
 import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
 import jwt from 'jsonwebtoken';
-import { prisma } from '../../prisma/prisma';
+import { db } from '../../prisma/db';
 import { ACCESS_TOKEN_DURATION } from '../utils/jwtTokenDuration';
 
 export const refreshToken = async (token: string): Promise<{ accessToken: string }> => {
 	try {
-		const foundToken = await prisma.token.findUnique({
+		const foundToken = await db.token.findUnique({
 			where: {
 				value: token,
 			},

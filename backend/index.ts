@@ -1,4 +1,4 @@
-import { prisma } from './prisma/prisma';
+import { db } from './prisma/db';
 import { userRouter } from './src/routes/user.routes';
 import { carmdRouter } from './src/routes/carmd.routes';
 import { errorHandler } from './src/middleware/errorHandler';
@@ -40,21 +40,21 @@ app.use(errorHandler);
 app.listen(PORT, async () => {
 	console.log(`Express is listening on port ${PORT}\nTesting Prisma Connection...`);
 
-	await prisma
+	await db
 		.$connect()
 		.then(
 			async () => {
 				console.log('Db Connected');
-				await prisma.$disconnect();
+				await db.$disconnect();
 			},
 			async () => {
 				console.log('Db connection failed');
-				await prisma.$disconnect();
+				await db.$disconnect();
 			},
 		)
 		.catch(async (e) => {
 			console.error(e);
-			await prisma.$disconnect();
+			await db.$disconnect();
 			process.exit(1);
 		});
 });
