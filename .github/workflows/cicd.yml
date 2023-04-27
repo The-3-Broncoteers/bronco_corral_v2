@@ -53,6 +53,5 @@ jobs:
         script: |
           cd /var/www/bronco_corral_v2/backend
           sudo npm i
-          sudo npm run build
-          sudo npm start
+          sudo npm run dev
           sudo pm2 restart all
