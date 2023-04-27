@@ -1,4 +1,4 @@
-import { prisma } from '../../prisma/prisma';
+import { db } from '../../prisma/db';
 import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
 import { Http401Error } from '../utils/httpErrors/errors/Http401Error';
 import { TokenData } from '../utils/tokenData';
@@ -12,7 +12,7 @@ export const loginUser = async (email: string, password: string): Promise<TokenD
 			throw new Http500Error('Missing environment variables');
 		}
 
-		const dbUser = await prisma.user.findUnique({ where: { email: email } });
+		const dbUser = await db.user.findUnique({ where: { email: email } });
 
 		if (!dbUser) throw new Http401Error('Invalid credentials');
 
@@ -27,7 +27,7 @@ export const loginUser = async (email: string, password: string): Promise<TokenD
 				expiresIn: REFRESH_TOKEN_DURATION,
 			});
 
-			const newToken = await prisma.token.create({
+			const newToken = await db.token.create({
 				data: {
 					value: refreshToken,
 					user: { connect: { id: dbUser.id } },
@@ -35,7 +35,7 @@ export const loginUser = async (email: string, password: string): Promise<TokenD
 				},
 			});
 
-			await prisma.user.update({
+			await db.user.update({
 				where: {
 					id: dbUser.id,
 				},

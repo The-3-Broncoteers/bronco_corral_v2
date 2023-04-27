@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import { Http409Error } from '../utils/httpErrors/errors/Http409Error';
 import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
-import { prisma } from '../../prisma/prisma';
+import { db } from '../../prisma/db';
 
 export const logoutUser = async (token: string) => {
 	try {
