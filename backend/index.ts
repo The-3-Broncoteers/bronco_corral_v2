@@ -48,8 +48,8 @@ app.listen(PORT, async () => {
 				console.log('Db Connected');
 				await db.$disconnect();
 			},
-			async () => {
-				console.log('Db connection failed');
+			async (reason) => {
+				console.log('Db connection failed ' + reason);
 				await db.$disconnect();
 			},
 		)
