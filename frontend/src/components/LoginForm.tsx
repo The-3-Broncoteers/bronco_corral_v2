@@ -1,10 +1,11 @@
 import axiosConfig from '../config/axiosConfig';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
 import SignupForm from './SignupForm';
 import { validateForm } from '../utils/formUtils';
 import { useNavigate } from 'react-router-dom';
+import AuthContext from '../context/authProvider';
 
 //TODO Media Queries for css
 //TODO Themeing
@@ -84,6 +85,8 @@ const StyledForm = styled.form`
 const loginEndPoint: string = '/auth';
 
 const LoginForm = () => {
+	const { setAuth } = useContext(AuthContext);
+
 	const [formData, setFormData] = useState({
 		email: '',
 		password: '',
@@ -123,17 +126,16 @@ const LoginForm = () => {
 				withCredentials: true,
 			});
 
-			//TODO store token
-			console.log('data1 ' + res.data.accessToken);
+			const accessToken = res?.data?.accessToken;
+			setAuth({ ...formData, accessToken });
+			console.log(`data: ${formData.email} ${formData.password}`);
+			console.log('token ' + accessToken);
 
 			navigate('/');
 		} catch (error) {
-			//const axiosError = error as AxiosError;
-			//console.log(`Axios error to ${loginEndPoint}. Error Message: ${axiosError.message}`);
+			console.log('error in login');
 			setError('Invalid email or password.');
 		}
-
-		//TODO something with errors in case we get any
 	};
 
 	return (
