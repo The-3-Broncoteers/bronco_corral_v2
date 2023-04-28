@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosConfig from '../config/axiosConfig';
 import React, { useEffect, useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -89,7 +90,7 @@ const TrackerForm = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [error, setError] = useState('');
 	const [vehicle, setVehicle] = useState('');
-	const [vehicleList, setVehicleList] = useState('');
+	const [vehicleList, setVehicleList] = useState([{ name: '', id: '' }]);
 	const navigate = useNavigate();
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,14 +120,11 @@ const TrackerForm = () => {
 		alert('You have submitted the form.');
 	};
 
-	const axiosConfig = {
-		headers: {
-			sessionToken: 'this should be the users access token',
-		},
-	};
 	useEffect(() => {
 		const fetchData = async () => {
-			const res = await axios.get('/carprofile', axiosConfig);
+			const res = await axiosConfig.get('/carprofile');
+			console.log(...res.data);
+
 			setVehicleList(res.data);
 		};
 		fetchData();
@@ -142,6 +140,11 @@ const TrackerForm = () => {
 				<div className='form-seperator'></div>
 				<select className='form-control' value='car' onChange={handleSelectChange}>
 					<option value=''>Select Vehicle</option>
+					{vehicleList.map((vehicle) => (
+						<option value={vehicle.name} key={vehicle.id}>
+							{vehicle.name}
+						</option>
+					))}
 				</select>
 
 				<select className='form-control'>

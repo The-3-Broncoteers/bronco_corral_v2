@@ -17,31 +17,33 @@ export const vehicleCreater = async (vin: string, user: string) => {
 	const make = res.data.data.make;
 	const model = res.data.data.model;
 
-	// should be from decoded token
-	const userEmail: string = 'tester@test.com';
-
 	await prisma.vehicle.create({
 		data: {
 			vin: vin,
 			year: year,
 			make: make,
 			model: model,
-			userEmail: userEmail,
+			userEmail: user,
 		},
 	});
 };
 
 export const fetchVehicles = async (user: string) => {
-	// should be from decoded token
-	const userEmail: string = 'tester@test.com';
+	console.log('user: ' + user);
 
 	const vehicles = await prisma.vehicle.findMany({
 		where: {
-			userEmail: userEmail,
+			userEmail: user,
+		},
+		select: {
+			id: true,
+			year: true,
+			make: true,
+			model: true,
 		},
 	});
 
-	// how do i
-	console.log(vehicles);
+	// how should i access each vehicle name?
+	console.log('number of vehicles: ' + vehicles.length);
 	return vehicles;
 };
