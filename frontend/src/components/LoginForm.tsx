@@ -1,10 +1,11 @@
 import axiosConfig from '../config/axiosConfig';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
 import SignupForm from './SignupForm';
 import { validateForm } from '../utils/formUtils';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 //TODO Media Queries for css
 //TODO Themeing
@@ -84,6 +85,7 @@ const StyledForm = styled.form`
 const loginEndPoint: string = '/auth';
 
 const LoginForm = () => {
+	const { setAuth } = useAuth();
 	const [formData, setFormData] = useState({
 		email: '',
 		password: '',
@@ -119,16 +121,14 @@ const LoginForm = () => {
 
 		try {
 			const res = await axiosConfig.post(loginEndPoint, formData);
-			navigate('/login'); //you have no idea how long it took me to figure out the behavior i wanted for the form
-			//I was trying to use the form submit method, but if you do it that way while using GET it send via URL which is bad
-			//So I started using POST, but then it redirects you on submit to the submission end point
-			//I sat here googling my life away for fixes. Nothing worked the way I wanted
-			//So just handling the navigation manually and never actually submitting was my fix
+			navigate('/login');
 
-			//console.log(res.data);
+			const email: string = formData.email;
+			const password: string = formData.password;
+
+			const accessToken: string = res?.data?.accessToken;
+			if (setAuth) setAuth({ email, password, accessToken });
 		} catch (error) {
-			//const axiosError = error as AxiosError;
-			//console.log(`Axios error to ${loginEndPoint}. Error Message: ${axiosError.message}`);
 			setError('Invalid email or password.');
 		}
 

@@ -43,7 +43,6 @@ export const fetchVehicles = async (user: string) => {
 		},
 	});
 
-	// how should i access each vehicle name?
 	console.log('number of vehicles: ' + vehicles.length);
 	return vehicles;
 };
