@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import LoginForm from './LoginForm';
 import { Colors } from '../utils/Colors';
+import { LoginForm } from './LoginForm';
 
 export type LoginFormContainerProps = {
 	backgroundColor?: string;
