@@ -3,11 +3,14 @@ import { Http401Error } from '../utils/httpErrors/errors/Http401Error';
 import { Http403Error } from '../utils/httpErrors/errors/Http403Error';
 import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
 import jwt from 'jsonwebtoken';
-import { prisma } from '../../prisma/prisma';
+import { ACCESS_TOKEN_DURATION } from '../utils/jwtTokenDuration';
+import { PrismaClient } from '@prisma/client';
+
+const db = new PrismaClient({ log: ['error'] });
 
 export const refreshToken = async (token: string): Promise<{ accessToken: string }> => {
 	try {
-		const foundToken = await prisma.token.findUnique({
+		const foundToken = await db.token.findUnique({
 			where: {
 				value: token,
 			},
@@ -43,7 +46,7 @@ export const refreshToken = async (token: string): Promise<{ accessToken: string
 				if (!accessTokenSecret) throw new Http500Error('ACCESS_TOKEN_SECRET is not defined');
 
 				const newToken = jwt.sign({ username: decodedData.username }, accessTokenSecret, {
-					expiresIn: '5m',
+					expiresIn: ACCESS_TOKEN_DURATION,
 				});
 
 				accessToken = newToken;

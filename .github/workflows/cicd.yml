@@ -1,39 +1,44 @@
-name: cicd
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-env:
-  NODE_ENV: production
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
-    runs-on: self-hosted
+  frontend-and-backend-build-and-deploy:
+    runs-on: ubuntu-latest
+    name: Build and Deploy Frontend and Backend
+
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Use Node.js 19
-      uses: actions/setup-node@v2
-      with:
-        node-version: '19.x'
-
-    - name: Install dependencies
-      run: |
-        cd frontend
-        npm install
-        cd ../backend
-        npm install
+      uses: actions/checkout@v3
+      
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm install
 
     - name: Build frontend
-      run: |
-        cd frontend
-        npm run build
+      working-directory: ./frontend
+      run: npm run build
 
-    - name: Start backend
-      run: |
-        cd backend
-        npm start
+    - name: SSH into server and prepare directory
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: 3.21.166.158
+        username: ubuntu
+        port: 22
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/bronco_corral_v2/
+          sudo git pull
+          sudo rm frontend/build -rf
+
+    - name: Copy frontend build to server
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: 3.21.166.158
+        username: ubuntu
+        port: 22
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "./frontend/build"
+        target: "/var/www/bronco_corral_v2/"

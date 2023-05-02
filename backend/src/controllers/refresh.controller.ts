@@ -9,6 +9,7 @@ export const refresh = async (
 	res: Response,
 ): Promise<Response<any, Record<string, any>>> => {
 	try {
+		console.log('refresh');
 		const cookies = req.cookies;
 
 		if (!cookies?.jwt) throw new Http401Error('JWT cookie not found');
