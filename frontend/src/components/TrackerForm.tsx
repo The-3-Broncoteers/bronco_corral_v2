@@ -78,6 +78,11 @@ const StyledForm = styled.form`
 	}
 `;
 
+interface VehicleDataInterface {
+	id: string;
+	name: string;
+}
+
 const addToLogEndPoint: string = 'user/log';
 
 const TrackerForm = () => {
@@ -123,9 +128,17 @@ const TrackerForm = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const res = await axiosConfig.get('/carprofile');
-			console.log(...res.data);
 
-			setVehicleList(res.data);
+			const vehicles: VehicleDataInterface[] = [];
+
+			for (let i = 0; i < res.data.length; i++) {
+				const vehicleData = {} as VehicleDataInterface;
+				vehicleData.id = res.data[0].id;
+				vehicleData.name = `${res.data[i].year}  ${res.data[i].make} ${res.data[i].model}`;
+				vehicles.push(vehicleData);
+			}
+
+			setVehicleList(vehicles);
 		};
 		fetchData();
 	}, []);

@@ -13,6 +13,8 @@ export const vehicleCreater = async (vin: string, user: string) => {
 		},
 	});
 
+	const userTest: string = 'tester@test.com';
+
 	const year = res.data.data.year;
 	const make = res.data.data.make;
 	const model = res.data.data.model;
@@ -23,7 +25,7 @@ export const vehicleCreater = async (vin: string, user: string) => {
 			year: year,
 			make: make,
 			model: model,
-			userEmail: user,
+			userEmail: userTest,
 		},
 	});
 };
