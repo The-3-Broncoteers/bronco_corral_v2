@@ -1,9 +1,9 @@
 import MaintRequest from '../components/MaintRequest';
 
-export function UserDashBoard() {
+export function DashBoard() {
 	return (
 		<div>
-		  <MaintRequest />
+			<MaintRequest />
 		</div>
-	  );
+	);
 }

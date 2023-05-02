@@ -1,14 +1,10 @@
-import axiosConfig from '../config/axiosConfig';
-import { useState, useContext } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
 import SignupForm from './SignupForm';
-import { validateForm } from '../utils/formUtils';
-import { useNavigate } from 'react-router-dom';
 import AuthContext from '../context/authProvider';
-
-//TODO Media Queries for css
-//TODO Themeing
+import axiosConfig from '../config/axiosConfig';
+import { useNavigate } from 'react-router-dom';
 
 const StyledForm = styled.form`
 	display: flex;
@@ -84,23 +80,12 @@ const StyledForm = styled.form`
 
 const loginEndPoint: string = '/auth';
 
-const LoginForm = () => {
-	const { setAuth } = useContext(AuthContext);
-
-	const [formData, setFormData] = useState({
-		email: '',
-		password: '',
-	});
-	const [isOpen, setIsOpen] = useState(false);
-	const [error, setError] = useState('');
+export const LoginForm = () => {
 	const navigate = useNavigate();
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFormData({
-			...formData,
-			[e.target.name]: e.target.value,
-		});
-	};
+	const { setAuth } = useContext(AuthContext);
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [isOpen, setIsOpen] = useState(false);
 
 	const handleOpenModal = () => {
 		setIsOpen(true);
@@ -112,37 +97,39 @@ const LoginForm = () => {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const validationError = validateForm(formData);
-		if (validationError) {
-			setError(validationError);
-			return false;
-		}
-
-		setError('');
 
 		try {
-			const res = await axiosConfig.post(loginEndPoint, formData, {
-				headers: { 'Content-Type': 'application/json' },
-				withCredentials: true,
-			});
+			const res = await axiosConfig.post(
+				loginEndPoint,
+				JSON.stringify({ email: email, password: password }),
+				{
+					headers: { 'Content-Type': 'application/json' },
+					withCredentials: true,
+				},
+			);
 
+			//console.log(JSON.stringify(res));
 			const accessToken = res?.data?.accessToken;
-			setAuth({ ...formData, accessToken });
-			console.log(`data: ${formData.email} ${formData.password}`);
-			console.log('token ' + accessToken);
-
-			navigate('/');
-		} catch (error) {
-			console.log('error in login');
-			setError('Invalid email or password.');
+			setAuth({ email: email, password: password, accessToken });
+			console.log(JSON.stringify(res?.data));
+			setEmail('');
+			setPassword('');
+			navigate('/user/dashboard');
+		} catch (err) {
+			console.log(err);
 		}
 	};
 
 	return (
-		<StyledForm onSubmit={handleSubmit} method='POST' action={loginEndPoint}>
+		<StyledForm onSubmit={handleSubmit}>
 			<div className='form-group'>
 				<label hidden>Enter Email</label>
-				<input type='email' placeholder='Enter email' name='email' onChange={handleChange}></input>
+				<input
+					type='email'
+					placeholder='Enter email'
+					name='email'
+					onChange={(e) => setEmail(e.target.value)}
+				/>
 			</div>
 
 			<div className='form-group'>
@@ -151,8 +138,8 @@ const LoginForm = () => {
 					type='password'
 					placeholder='Enter password'
 					name='password'
-					onChange={handleChange}
-				></input>
+					onChange={(e) => setPassword(e.target.value)}
+				/>
 			</div>
 
 			<button type='submit'>Log In</button>
@@ -168,5 +155,3 @@ const LoginForm = () => {
 		</StyledForm>
 	);
 };
-
-export default LoginForm;

@@ -134,15 +134,11 @@ const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 
 		try {
 			const res = await axiosConfig.post(loginEndPoint, formData);
-			navigate('/login'); //you have no idea how long it took me to figure out the behavior i wanted for the form
-			//console.log(res.data);
+			console.log(res.data);
+			onClose();
 		} catch (error) {
-			//const axiosError = error as AxiosError;
-			//console.log(`Axios error to ${loginEndPoint}. Error Message: ${axiosError.message}`);
 			setError('Invalid email or password.');
 		}
-
-		//TODO something with errors in case we get any
 	};
 
 	return (
