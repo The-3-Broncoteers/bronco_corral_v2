@@ -49,8 +49,8 @@ export const loginUser = async (email: string, password: string): Promise<TokenD
 					},
 				},
 			});
-			console.log('ACCESS TOKEN:' + accessToken);
-			console.log('REFRESH TOKEN:' + refreshToken);
+			// console.log('ACCESS TOKEN:' + accessToken);
+			// console.log('REFRESH TOKEN:' + refreshToken);
 			return { accessToken: accessToken, refreshToken: refreshToken };
 		} else {
 			throw new Http401Error('Invalid credentials');

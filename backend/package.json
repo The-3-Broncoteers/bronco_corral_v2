@@ -10,7 +10,7 @@
 		"test": "jest"
 	},
 	"nodemonConfig": {
-		"delay": 5000,
+		"delay": 2000,
 		"ignore": [
 			"*.json",
 			"dist/*"

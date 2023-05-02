@@ -60,4 +60,6 @@ app.listen(PORT, async () => {
 			await db.$disconnect();
 			process.exit(1);
 		});
+
+	console.log(`Server running!`);
 });
