@@ -27,6 +27,20 @@ model User {
   Vehicle   Vehicle[]
 }
 
+model Vehicle {
+  id           Int           @id @default(autoincrement())
+  vin          String        @unique
+  make         String
+  model        String
+  year         Int
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now()) @updatedAt
+  userEmail    String
+  maintenances Maintenance[]
+  recalls      Recall[]
+  user         User          @relation(fields: [userEmail], references: [email])
+}
+
 model Maintenance {
   id          Int      @id @default(autoincrement())
   vehicleId   Int
@@ -34,8 +48,8 @@ model Maintenance {
   description String
   date        DateTime
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
-  Vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+  updatedAt   DateTime @default(now()) @updatedAt
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
 }
 
 model Recall {
@@ -44,20 +58,6 @@ model Recall {
   description String
   date        DateTime
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
-  Vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
-}
-
-model Vehicle {
-  id          Int           @id @default(autoincrement())
-  vin         String        @unique
-  make        String
-  model       String
-  year        Int
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @default(now())
-  userEmail   String
-  Maintenance Maintenance[]
-  Recall      Recall[]
-  User        User          @relation(fields: [userEmail], references: [email])
+  updatedAt   DateTime @default(now()) @updatedAt
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
 }

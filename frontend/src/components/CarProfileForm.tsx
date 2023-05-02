@@ -1,13 +1,10 @@
-import axiosConfig from '../config/axiosConfig';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
-import SignupForm from './SignupForm';
-import { validateForm } from '../utils/formUtils';
 import { useNavigate } from 'react-router-dom';
-
-//TODO Media Queries for css
-//TODO Themeing
+import SignupForm from './SignupForm';
+import axiosConfig from '../config/axiosConfig';
+import { validateForm } from '../utils/formUtils';
 
 const StyledForm = styled.form`
 	display: flex;
@@ -81,26 +78,15 @@ const StyledForm = styled.form`
 	}
 `;
 
-const loginEndPoint: string = '/auth';
+const createCarProfileEndPoint: string = '/carprofile';
 
-const LoginForm = () => {
-	const { setAuth } = useContext(AuthContext);
-  
+const CarProfileForm = () => {
 	const [formData, setFormData] = useState({
-		email: '',
-		password: '',
+		VIN: '',
 	});
-  
 	const [isOpen, setIsOpen] = useState(false);
 	const [error, setError] = useState('');
 	const navigate = useNavigate();
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFormData({
-			...formData,
-			[e.target.name]: e.target.value,
-		});
-	};
 
 	const handleOpenModal = () => {
 		setIsOpen(true);
@@ -110,64 +96,44 @@ const LoginForm = () => {
 		setIsOpen(false);
 	};
 
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value,
+		});
+	};
+
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const validationError = validateForm(formData);
-		if (validationError) {
-			setError(validationError);
-			return false;
-		}
+
+		// remember to validate form
 
 		setError('');
 
 		try {
-    
-			const res = await axiosConfig.post(loginEndPoint, formData, {
-				headers: { 'Content-Type': 'application/json' },
-				withCredentials: true,
-			});
-
-			const accessToken = res?.data?.accessToken;
-			setAuth({ ...formData, accessToken });
-			console.log(`data: ${formData.email} ${formData.password}`);
-			console.log('token ' + accessToken);
-
-			navigate('/');
+			const res = await axiosConfig.post(createCarProfileEndPoint, formData);
 		} catch (error) {
-			console.log('error in login');
 			setError('Invalid email or password.');
 		}
 	};
 
 	return (
-		<StyledForm onSubmit={handleSubmit} method='POST' action={loginEndPoint}>
-			<div className='form-group'>
-				<label hidden>Enter Email</label>
-				<input type='email' placeholder='Enter email' name='email' onChange={handleChange}></input>
-			</div>
-
-			<div className='form-group'>
-				<label hidden>Enter Password</label>
-				<input
-					type='password'
-					placeholder='Enter password'
-					name='password'
-					onChange={handleChange}
-				></input>
-			</div>
-
-			<button type='submit'>Log In</button>
-			<a href=''>Forgot Password?</a>
-			<div className='form-seperator'></div>
-
-			<div className='signup-container'>
-				<a role={'button'} onClick={handleOpenModal} className='signup-button'>
-					Create a new account
-				</a>
-				<SignupForm isOpen={isOpen} onClose={handleCloseModal} />
-			</div>
-		</StyledForm>
+		<>
+			<StyledForm onSubmit={handleSubmit} method='POST' action={createCarProfileEndPoint}>
+				<div className='header'>
+					<h1>Car Profile Portal</h1>
+					<h6>Dont see your vehicle? Create a profile below</h6>
+				</div>
+				<div className='form-group'>
+					<label hidden>Enter VIN</label>
+					<input type='VIN' placeholder='Enter VIN' name='VIN' onChange={handleChange}></input>
+				</div>
+				<div className='signup-container'>
+					<button type='submit'>Create with VIN</button>
+				</div>
+			</StyledForm>
+		</>
 	);
 };
 
-export default LoginForm;
+export default CarProfileForm;

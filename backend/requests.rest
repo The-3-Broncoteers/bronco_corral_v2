@@ -1,0 +1,13 @@
+POST http://localhost:3001/carprofile
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckB0ZXN0LmNvbSIsImlhdCI6MTY4MjcyMDA2OSwiZXhwIjoxNjgyNzIwMzY5fQ.0gQcI4Tv2-x_V_luSYdqvhOTd0sy6J3tqwyqVeIZxM4
+
+{
+    "VIN":"1GNALDEK9FZ108495"
+}
+
+###
+
+GET http://localhost:3001/carprofile
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckB0ZXN0LmNvbSIsImlhdCI6MTY4Mjk4Mjg5MCwiZXhwIjoxNjgyOTgzMTkwfQ.dkQAC8rPwH0PQJJr2RLMQVVLZtiWTPdC414W8QTD_Z4
