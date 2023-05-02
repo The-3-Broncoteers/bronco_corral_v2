@@ -12,6 +12,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import { carProfileRouter } from './src/routes/carprofile.routes';
 
 dotenv.config();
 
@@ -33,8 +34,9 @@ app.use('/api/register', registerRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/refresh', refreshRouter);
 app.use('/api/logout', logoutRouter);
-app.use('/api/maintenance', carmdRouter);
 app.use(verifyJWT);
+app.use('/api/maintenance', carmdRouter);
+app.use('/api/carprofile', carProfileRouter);
 app.use('/api/users', userRouter);
 app.use(errorHandler);
 
