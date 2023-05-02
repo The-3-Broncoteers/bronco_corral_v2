@@ -22,7 +22,7 @@ export const vehicleCreater = async (vin: string, user: string) => {
 	const make = res.data.data.make;
 	const model = res.data.data.model;
 
-	await db.vehicle.create({
+	await db.userVehicle.create({
 		data: {
 			vin: vin,
 			year: year,
