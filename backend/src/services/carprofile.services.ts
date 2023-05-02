@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { env } from 'process';
-import { prisma } from '../../prisma/prisma';
+
 import { getMaintenances } from './carmd.services';
+import { PrismaClient } from '@prisma/client';
+
+const db = new PrismaClient({ log: ['error'] });
 
 export const vehicleCreater = async (vin: string, user: string) => {
 	const url = `http://api.carmd.com/v3.0/decode?vin=${vin}`;
@@ -19,7 +22,7 @@ export const vehicleCreater = async (vin: string, user: string) => {
 	const make = res.data.data.make;
 	const model = res.data.data.model;
 
-	await prisma.vehicle.create({
+	await db.vehicle.create({
 		data: {
 			vin: vin,
 			year: year,
@@ -33,7 +36,7 @@ export const vehicleCreater = async (vin: string, user: string) => {
 export const fetchVehicles = async (user: string) => {
 	console.log('user: ' + user);
 
-	const vehicles = await prisma.vehicle.findMany({
+	const vehicles = await db.vehicle.findMany({
 		where: {
 			userEmail: user,
 		},
