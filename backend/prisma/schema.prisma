@@ -1,63 +1,63 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model Token {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  type      String
-  value     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    type      String
+    value     String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
+    user      User     @relation(fields: [userId], references: [id])
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now()) @updatedAt
-  tokens    Token[]
-  Vehicle   Vehicle[]
-}
-
-model Vehicle {
-  id           Int           @id @default(autoincrement())
-  vin          String        @unique
-  make         String
-  model        String
-  year         Int
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @default(now()) @updatedAt
-  userEmail    String
-  maintenances Maintenance[]
-  recalls      Recall[]
-  user         User          @relation(fields: [userEmail], references: [email])
+    id        Int       @id @default(autoincrement())
+    email     String    @unique
+    password  String
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @default(now()) @updatedAt
+    tokens    Token[]
+    Vehicle   Vehicle[]
 }
 
 model Maintenance {
-  id          Int      @id @default(autoincrement())
-  vehicleId   Int
-  type        String
-  description String
-  date        DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
-  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+    id          Int      @id @default(autoincrement())
+    vehicleId   Int
+    type        String
+    description String
+    date        DateTime
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @default(now())
+    Vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
 }
 
 model Recall {
-  id          Int      @id @default(autoincrement())
-  vehicleId   Int
-  description String
-  date        DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
-  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+    id          Int      @id @default(autoincrement())
+    vehicleId   Int
+    description String
+    date        DateTime
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @default(now())
+    Vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+}
+
+model Vehicle {
+    id          Int           @id @default(autoincrement())
+    vin         String        @unique
+    make        String
+    model       String
+    year        Int
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @default(now())
+    userEmail   String
+    Maintenance Maintenance[]
+    Recall      Recall[]
+    User        User          @relation(fields: [userEmail], references: [email])
 }

@@ -137,12 +137,8 @@ const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 			console.log(res.data);
 			onClose();
 		} catch (error) {
-			//const axiosError = error as AxiosError;
-			//console.log(`Axios error to ${loginEndPoint}. Error Message: ${axiosError.message}`);
 			setError('Invalid email or password.');
 		}
-
-		//TODO something with errors in case we get any
 	};
 
 	return (

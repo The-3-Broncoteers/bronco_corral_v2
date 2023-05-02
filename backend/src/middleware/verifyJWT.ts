@@ -8,17 +8,18 @@ export const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
 		return res.sendStatus(401);
 	}
 
-	console.log('Auth header: ' + authHeader);
-	const token = authHeader && authHeader.replace(/^Bearer\s+/, '');
-	console.log('token: ' + token);
-
+	console.log(`header ${authHeader}`);
+	const token = authHeader.split(' ')[1];
+	console.log(`token ${token}`);
+	//const token = authHeader && authHeader.replace(/^Bearer\s+/, '');
+  
 	jwt.verify(
 		token,
 		process.env.ACCESS_TOKEN_SECRET,
 		(error: jwt.VerifyErrors | null, decodedData: any) => {
 			if (error) return res.sendStatus(403);
-			req.body.user = decodedData.email;
-			console.log('Access token decoded successfully');
+			req.body.user = decodedData;
+      //req.body.user = decodedData.email;
 			next();
 		},
 	);
