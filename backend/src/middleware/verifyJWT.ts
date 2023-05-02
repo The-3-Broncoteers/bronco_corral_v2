@@ -4,8 +4,6 @@ import jwt from 'jsonwebtoken';
 export const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
 	const authHeader = req.headers['authorization'];
 
-	console.log(authHeader);
-
 	if (!authHeader || !process.env.ACCESS_TOKEN_SECRET) {
 		return res.sendStatus(401);
 	}
