@@ -36,7 +36,7 @@ export const vehicleCreater = async (vin: string, user: string) => {
 export const fetchVehicles = async (user: string) => {
 	console.log('user: ' + user);
 
-	const vehicles = await db.vehicle.findMany({
+	const vehicles = await db.userVehicle.findMany({
 		where: {
 			userEmail: user,
 		},

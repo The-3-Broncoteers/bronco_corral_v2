@@ -2,20 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
 
-// const StyledDiv = styled.div`
-// 	background-color: ${Colors.White};
-// 	width: auto;
-// 	height: auto;
-
-// 	ul {
-// 		list-style: none;
-// 		padding: 0.2em 0.5em;
-// 	}
-// `;
-
 const StyledDiv = styled.div`
 	background-color: ${Colors.DarkBlue};
 	position: relative;
+	min-width: 12vw;
 
 	.menu-container {
 		min-width: auto;
