@@ -43,9 +43,8 @@ model UserVehicle {
 model MaintenanceLog {
     id          Int         @id @default(autoincrement())
     vehicleId   Int
-    type        String
+    dueMileage  Int
     description String
-    date        DateTime
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @default(now())
     vehicle     UserVehicle @relation(fields: [vehicleId], references: [id])
@@ -65,9 +64,8 @@ model Vehicle {
 model Maintenance {
     id          Int      @id @default(autoincrement())
     vehicleId   Int
-    type        String
+    dueMileage  Int
     description String
-    date        DateTime
     createdAt   DateTime @default(now())
     updatedAt   DateTime @default(now())
     vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
