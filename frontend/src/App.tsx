@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router-dom';
-import { DashBoard } from './pages/DashBoard';
 import { MainNav } from './components/MainNav';
 import { CarProfilePage } from './pages/CarProfilePage';
 import { Login } from './pages/Login';
@@ -7,6 +6,7 @@ import { LandingPage } from './pages/LandingPage';
 import { TrackerPage } from './pages/TrackerPage';
 import { Logout } from './pages/Logout';
 import { RequireAuth } from './components/RequireAuth';
+import { DashboardController } from './pages/DashboardController';
 
 function App() {
 	return (
@@ -18,7 +18,7 @@ function App() {
 
 			<Route element={<RequireAuth />}>
 				<Route path='/user/' element={<MainNav />}>
-					<Route path='dashboard' element={<DashBoard />} />
+					<Route path='dashboard' element={<DashboardController />} />
 					<Route path='logout' element={<Logout />} />
 				</Route>
 			</Route>
