@@ -5,7 +5,7 @@ import { HttpStatus } from '../utils/httpErrors/HttpStatus';
 
 export const createVehicle = async (req: Request, res: Response): Promise<void> => {
 	try {
-		console.log(req.body.VIN);
+		console.log(`body: ${req.body.VIN}`);
 		await vehicleCreater(req.body.VIN, req.body.user);
 		res.sendStatus(200);
 	} catch (error) {
