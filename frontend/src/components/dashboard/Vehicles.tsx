@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 import { Colors } from '../../utils/Colors';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
+import AuthContext from '../../context/authProvider';
+import { axiosPublic } from '../../config/axiosConfig';
+import { json } from 'stream/consumers';
 
 const DashboardContainer = styled.div`
 	display: flex;
@@ -11,6 +14,12 @@ const DashboardContainer = styled.div`
 	padding: 0.3em 2em 2em 0em;
 	flex-grow: 2;
 	background: ${Colors.MintCream};
+
+	span {
+		font-size: 1.2em;
+		text-align: center;
+		color: red;
+	}
 
 	.controlSection {
 		background-color: ${Colors.MintCream};
@@ -55,31 +64,30 @@ const DashboardContainer = styled.div`
 
 export const Vehicles = () => {
 	const [vin, setVin] = useState('');
+	const { auth } = useContext(AuthContext);
 
-	const createVehicle = () => {
-		axios
-			.post('/vehicles', { vin })
-			.then((response) => {
-				// handle response
+	const createVehicle = async () => {
+		await axiosPublic
+			.post(
+				'/vehicles',
+				{ vin, auth },
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: auth.accessToken,
+					},
+				},
+			)
+			.then((response: any) => {
+				console.log('test ' + JSON.stringify(response.data));
 			})
 			.catch((error) => {
 				// handle error
 			});
 	};
 
-	const editVehicle = () => {
-		axios
-			.put('/vehicles', { vin })
-			.then((response) => {
-				// handle response
-			})
-			.catch((error) => {
-				// handle error
-			});
-	};
-
-	const deleteVehicle = () => {
-		axios
+	const deleteVehicle = async () => {
+		await axiosPublic
 			.delete('/vehicles', { data: { vin } })
 			.then((response) => {
 				// handle response
@@ -89,11 +97,18 @@ export const Vehicles = () => {
 			});
 	};
 
-	const viewVehicle = () => {
-		axios
-			.get('/vehicles', { params: { vin } })
+	const viewVehicle = async () => {
+		await axiosPublic
+			.get(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${vin}?format=json`)
 			.then((response) => {
-				// handle response
+				console.log(
+					'LOGGING ' +
+						JSON.stringify(response.data.Results[0].Make) +
+						' - ' +
+						JSON.stringify(response.data.Results[0].Model) +
+						' - ' +
+						JSON.stringify(response.data.Results[0].ModelYear),
+				);
 			})
 			.catch((error) => {
 				// handle error
@@ -109,11 +124,11 @@ export const Vehicles = () => {
 					name='vin'
 					onChange={(e) => setVin(e.target.value)}
 				/>
+				<span></span> {/* TODO, make this sya invalid vin if needed.     Invalid VIN */}
 				<section className='buttons'>
-					<button onClick={createVehicle}>Create</button>
-					<button onClick={editVehicle}>Edit</button>
-					<button onClick={deleteVehicle}>Delete</button>
 					<button onClick={viewVehicle}>View</button>
+					<button onClick={createVehicle}>Create</button>
+					<button onClick={deleteVehicle}>Delete</button>
 				</section>
 			</section>
 			<section className='view' />
