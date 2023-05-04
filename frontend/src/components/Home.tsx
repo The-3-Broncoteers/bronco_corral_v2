@@ -16,6 +16,7 @@ const DashboardRightContainer = styled.div`
 	gap: 0.7em;
 	padding-top: 0.2em;
 	padding: 0.3em 0.3em 0em 0.3em;
+	flex-grow: 2;
 
 	.alertSection {
 		background-color: ${Colors.MintCream};

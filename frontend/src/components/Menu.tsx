@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
 
 const StyledDiv = styled.div`
-	background-color: ${Colors.DarkBlue};
+	background-color: ${Colors.MintCream};
 	position: relative;
 	min-width: 12vw;
+	border-right: 2px solid ${Colors.DarkBlue};
 
 	.menu-container {
 		min-width: auto;
