@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Colors } from '../utils/Colors';
-import { validateForm } from '../utils/formUtils';
-import axiosConfig from '../config/axiosConfig';
+import { Colors } from '../../utils/Colors';
+import { validateForm } from '../../utils/formUtils';
+import axiosConfig from '../../config/axiosConfig';
 
 //TODO Media Queries for css
 //TODO Themeing

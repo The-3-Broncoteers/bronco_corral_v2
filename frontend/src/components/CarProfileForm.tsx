@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
 import { useNavigate } from 'react-router-dom';
-import SignupForm from './SignupForm';
+import SignupForm from './auth/SignupForm';
 import axiosConfig from '../config/axiosConfig';
 import { validateForm } from '../utils/formUtils';
 

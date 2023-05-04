@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import MaintRequest from '../components/MaintRequest';
-import { Menu } from '../components/Menu';
+import { Menu } from '../components/dashboard/Menu';
 import CarProfileForm from '../components/CarProfileForm';
-import { Dashboard } from '../components/Dashboard';
+import { Dashboard } from '../components/dashboard/Dashboard';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
-import { Home } from '../components/Home';
+import { Home } from '../components/dashboard/Home';
 import { IoHomeSharp } from 'react-icons/io5';
 import { FaTruckMonster } from 'react-icons/fa';
 import { GoTools } from 'react-icons/go';

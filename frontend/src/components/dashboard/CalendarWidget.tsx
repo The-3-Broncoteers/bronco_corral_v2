@@ -1,6 +1,6 @@
 import { Calendar } from 'react-calendar';
 import styled from 'styled-components';
-import '../styles/Calendar.css';
+import '../../styles/Calendar.css';
 
 const StyledContainer = styled.div`
 	width: 100%;

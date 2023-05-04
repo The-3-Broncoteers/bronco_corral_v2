@@ -5,7 +5,7 @@ import { Login } from './pages/Login';
 import { LandingPage } from './pages/LandingPage';
 import { TrackerPage } from './pages/TrackerPage';
 import { Logout } from './pages/Logout';
-import { RequireAuth } from './components/RequireAuth';
+import { RequireAuth } from './components/auth/RequireAuth';
 import { DashboardController } from './pages/DashboardController';
 
 function App() {

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { CalendarWidget } from './CalendarWidget';
 import { VehicleTree } from './VehicleTree';
-import { Colors } from '../utils/Colors';
+import { Colors } from '../../utils/Colors';
 
 const DashboardContainer = styled.div`
 	display: flex;
