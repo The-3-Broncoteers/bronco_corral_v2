@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
 import { useNavigate } from 'react-router-dom';
 import SignupForm from './auth/SignupForm';
 import axiosConfig from '../config/axiosConfig';
 import { validateForm } from '../utils/formUtils';
+import AuthContext from '../context/authProvider';
 
 const StyledForm = styled.form`
 	display: flex;
@@ -87,6 +88,7 @@ const CarProfileForm = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [error, setError] = useState('');
 	const navigate = useNavigate();
+	const { auth } = useContext(AuthContext);
 
 	const handleOpenModal = () => {
 		setIsOpen(true);
@@ -111,7 +113,16 @@ const CarProfileForm = () => {
 		setError('');
 
 		try {
-			const res = await axiosConfig.post(createCarProfileEndPoint, formData);
+			const res = await axiosConfig.post(
+				createCarProfileEndPoint,
+				JSON.stringify({ ...formData }),
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: auth.accessToken,
+					},
+				},
+			);
 		} catch (error) {
 			setError('Invalid email or password.');
 		}
@@ -119,7 +130,7 @@ const CarProfileForm = () => {
 
 	return (
 		<>
-			<StyledForm onSubmit={handleSubmit} method='POST' action={createCarProfileEndPoint}>
+			<StyledForm onSubmit={handleSubmit}>
 				<div className='header'>
 					<h1>Car Profile Portal</h1>
 					<h6>Dont see your vehicle? Create a profile below</h6>
