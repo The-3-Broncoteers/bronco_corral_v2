@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { CalendarWidget } from './CalendarWidget';
 import { Colors } from '../../utils/Colors';
 import { useState } from 'react';
 import axios from 'axios';
@@ -9,9 +8,9 @@ const DashboardContainer = styled.div`
 	height: 100%;
 	flex-direction: column;
 	gap: 0.7em;
-	padding-top: 0.2em;
 	padding: 0.3em 2em 2em 0em;
 	flex-grow: 2;
+	background: ${Colors.MintCream};
 
 	.controlSection {
 		background-color: ${Colors.MintCream};
