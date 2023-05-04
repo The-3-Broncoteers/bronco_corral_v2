@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../../utils/Colors';
 import SignupForm from './SignupForm';
 import AuthContext from '../../context/authProvider';
-import axiosConfig from '../../config/axiosConfig';
 import { useNavigate } from 'react-router-dom';
+import { axiosPublic } from '../../config/axiosConfig';
 
 const StyledForm = styled.form`
 	display: flex;
@@ -99,7 +99,7 @@ export const LoginForm = () => {
 		e.preventDefault();
 
 		try {
-			const res = await axiosConfig.post(
+			const res = await axiosPublic.post(
 				loginEndPoint,
 				JSON.stringify({ email: email, password: password }),
 				{

@@ -1,11 +1,9 @@
-import { useContext, useState } from 'react';
-import styled from 'styled-components';
-import { Colors } from '../utils/Colors';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SignupForm from './auth/SignupForm';
-import axiosConfig from '../config/axiosConfig';
-import { validateForm } from '../utils/formUtils';
+import styled from 'styled-components';
+import { axiosPublic } from '../config/axiosConfig';
 import AuthContext from '../context/authProvider';
+import { Colors } from '../utils/Colors';
 
 const StyledForm = styled.form`
 	display: flex;
@@ -113,7 +111,7 @@ const CarProfileForm = () => {
 		setError('');
 
 		try {
-			const res = await axiosConfig.post(
+			const res = await axiosPublic.post(
 				createCarProfileEndPoint,
 				JSON.stringify({ ...formData }),
 				{

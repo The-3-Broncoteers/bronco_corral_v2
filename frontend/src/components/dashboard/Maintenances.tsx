@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { CalendarWidget } from './CalendarWidget';
 import { Colors } from '../../utils/Colors';
 
-const DashboardRightContainer = styled.div`
+const DashboardContainer = styled.div`
 	display: flex;
 	height: 100%;
 	flex-direction: column;
@@ -20,11 +20,11 @@ const DashboardRightContainer = styled.div`
 	}
 `;
 
-export const Home = () => {
+export const Maintenances = () => {
 	return (
-		<DashboardRightContainer>
-			<section className='alertSection'>alerts</section>
+		<DashboardContainer>
+			<section className='alertSection'>lol</section>
 			<CalendarWidget />
-		</DashboardRightContainer>
+		</DashboardContainer>
 	);
 };

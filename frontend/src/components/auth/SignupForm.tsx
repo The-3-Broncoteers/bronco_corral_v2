@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Colors } from '../../utils/Colors';
 import { validateForm } from '../../utils/formUtils';
-import axiosConfig from '../../config/axiosConfig';
-
+import { axiosPublic } from '../../config/axiosConfig';
 //TODO Media Queries for css
 //TODO Themeing
 
@@ -133,7 +132,7 @@ const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 		setError('');
 
 		try {
-			const res = await axiosConfig.post(loginEndPoint, formData);
+			const res = await axiosPublic.post(loginEndPoint, formData);
 			console.log(res.data);
 			onClose();
 		} catch (error) {

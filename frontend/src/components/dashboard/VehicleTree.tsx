@@ -7,5 +7,5 @@ const StyledTree = styled.div`
 `;
 
 export const VehicleTree = () => {
-	return <StyledTree>VehicleTree</StyledTree>;
+	return <StyledTree></StyledTree>;
 };

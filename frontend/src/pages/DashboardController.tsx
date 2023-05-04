@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import MaintRequest from '../components/MaintRequest';
 import { Menu } from '../components/dashboard/Menu';
 import CarProfileForm from '../components/CarProfileForm';
 import { Dashboard } from '../components/dashboard/Dashboard';
@@ -9,6 +8,9 @@ import { Home } from '../components/dashboard/Home';
 import { IoHomeSharp } from 'react-icons/io5';
 import { FaTruckMonster } from 'react-icons/fa';
 import { GoTools } from 'react-icons/go';
+import { Vehicles } from '../components/dashboard/Vehicles';
+import { Maintenances } from '../components/dashboard/Maintenances';
+import { VehicleTree } from '../components/dashboard/VehicleTree';
 
 const StyledContainer = styled.div`
 	background-color: ${Colors.Charcoal};
@@ -29,13 +31,13 @@ export const DashboardController: React.FC = () => {
 		{
 			name: 'Vehicles',
 			icon: <FaTruckMonster title='Vehicles' size={iconSize} />,
-			component: <MaintRequest />,
+			component: <Vehicles />,
 		},
 
 		{
 			name: 'Maintenances',
 			icon: <GoTools title='Maintenances' size={iconSize} />,
-			component: <CarProfileForm />,
+			component: <Maintenances />,
 		},
 	];
 
@@ -47,6 +49,7 @@ export const DashboardController: React.FC = () => {
 		<>
 			<StyledContainer>
 				<Menu items={menuItems} onItemClick={handleItemClick} />
+				<VehicleTree />
 				<Dashboard component={selectedComponent} />
 			</StyledContainer>
 		</>

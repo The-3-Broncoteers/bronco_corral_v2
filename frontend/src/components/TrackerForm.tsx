@@ -1,7 +1,5 @@
-import axios from 'axios';
-import axiosConfig from '../config/axiosConfig';
+import { axiosPublic } from '../config/axiosConfig';
 import React, { useEffect, useState } from 'react';
-import { Dropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';
@@ -127,7 +125,7 @@ const TrackerForm = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const res = await axiosConfig.get('/carprofile');
+			const res = await axiosPublic.get('/carprofile');
 
 			const vehicles: VehicleDataInterface[] = [];
 
