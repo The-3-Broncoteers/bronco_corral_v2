@@ -11,34 +11,79 @@ export const vehicleCreater = async (vin: string, user: string) => {
 	const res = await axios.get(url, {
 		headers: {
 			'content-type': 'application/json',
-			authorization: env.CARMD_TOKEN_SECRET1,
-			'partner-token': env.CARMD_PARTNER_TOKEN_SECRET1,
+			authorization: env.CARMD_TOKEN_SECRET2,
+			'partner-token': env.CARMD_PARTNER_TOKEN_SECRET2,
 		},
 	});
 
-	const userTest: string = 'tester@test.com';
+	// const maintUrl = `https://api.carmd.com/v3.0/maint?vin=${vin}&mileage=20000`;
+	// const resMaintInfo = await axios.get(maintUrl, {
+	// 	headers: {
+	// 		'content-type': 'application/json',
+	// 		authorization: env.CARMD_TOKEN_SECRET2,
+	// 		'partner-token': env.CARMD_PARTNER_TOKEN_SECRET2,
+	// 	},
+	// });
 
+	const userTest: string = 'tester@test.com';
 	const year = res.data.data.year;
 	const make = res.data.data.make;
 	const model = res.data.data.model;
 
-	await db.userVehicle.create({
-		data: {
-			vin: vin,
-			year: year,
-			make: make,
-			model: model,
-			userEmail: userTest,
-		},
-	});
+	let vehicleId: number = 0;
+
+	await db.userVehicle
+		.create({
+			data: {
+				vin: vin,
+				year: year,
+				make: make,
+				model: model,
+				userEmail: userTest,
+				milage: '50000',
+				milesPerDay: '100',
+			},
+		})
+		.then(
+			(response) => {
+				vehicleId = response.id;
+				console.log('response: ' + vehicleId);
+			},
+			(error) => {
+				console.log('response: ' + error);
+			},
+		);
+
+	// 	for (let i = 0; i < resMaintInfo.data.data.length; i++) {
+	// 		console.log('test');
+	// 		const maintType: string = resMaintInfo.data.data[i].desc;
+	// 		console.log(maintType);
+	// 		await db.maintenance
+	// 			.create({
+	// 				data: {
+	// 					vehicleId: vehicleId,
+	// 					description: maintType,
+	// 					dueMileage: 0,
+	// 				},
+	// 			})
+	// 			.then(
+	// 				(response) => {
+	// 					console.log(response.description);
+	// 				},
+	// 				(error) => {
+	// 					console.log('fail');
+	// 				},
+	// 			);
+	// 	}
 };
 
 export const fetchVehicles = async (user: string) => {
 	console.log('user: ' + user);
+	const userTest: string = 'tester@test.com';
 
 	const vehicles = await db.userVehicle.findMany({
 		where: {
-			userEmail: user,
+			userEmail: userTest,
 		},
 		select: {
 			id: true,
@@ -50,4 +95,22 @@ export const fetchVehicles = async (user: string) => {
 
 	console.log('number of vehicles: ' + vehicles.length);
 	return vehicles;
+};
+
+export const vehicleDeleter = async (vehicleId: string) => {
+	console.log('id to delete: ' + vehicleId);
+	const deleteVehicle = await db.userVehicle
+		.delete({
+			where: {
+				id: parseInt(vehicleId),
+			},
+		})
+		.then(
+			(response) => {
+				console.log('deleted ID: ' + response.id);
+			},
+			(error) => {
+				console.log('error delete response: ' + error);
+			},
+		);
 };
