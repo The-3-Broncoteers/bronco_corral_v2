@@ -96,21 +96,3 @@ export const fetchVehicles = async (user: string) => {
 	console.log('number of vehicles: ' + vehicles.length);
 	return vehicles;
 };
-
-export const vehicleDeleter = async (vehicleId: string) => {
-	console.log('id to delete: ' + vehicleId);
-	const deleteVehicle = await db.userVehicle
-		.delete({
-			where: {
-				id: parseInt(vehicleId),
-			},
-		})
-		.then(
-			(response) => {
-				console.log('deleted ID: ' + response.id);
-			},
-			(error) => {
-				console.log('error delete response: ' + error);
-			},
-		);
-};

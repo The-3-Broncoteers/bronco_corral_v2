@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
 import { HttpStatus } from '../utils/httpErrors/HttpStatus';
-import { newVehicle } from '../services/vehicles.services';
+import {
+	newVehicle,
+	allVehicleInfo,
+	vehicleDeleter,
+	vehicleInfo,
+} from '../services/vehicles.services';
 
 /*
 Fake vins to play with
@@ -20,6 +25,61 @@ export const createVehicle = async (
 	res.send(vehicle);
 	try {
 		return res.send();
+	} catch (error) {
+		if (error instanceof HttpStatus) {
+			return res.status(error.status).json({ message: error.message });
+		}
+
+		return res.status(500).json({ message: 'Something went wrong.' });
+	}
+};
+
+export const deleteVehicle = async (
+	req: Request<{}, {}, { vin: string; auth: any }>,
+	res: Response,
+) => {
+	const { vin, auth } = req.body;
+	const vehicle = await vehicleDeleter(vin);
+
+	res.send(vehicle);
+	try {
+		return res.send();
+	} catch (error) {
+		if (error instanceof HttpStatus) {
+			return res.status(error.status).json({ message: error.message });
+		}
+
+		return res.status(500).json({ message: 'Something went wrong.' });
+	}
+};
+
+export const getVehicleInfo = async (
+	req: Request<{}, {}, { id: number; auth: any }>,
+	res: Response,
+) => {
+	const { id, auth } = req.body;
+
+	try {
+		const info = await vehicleInfo(id, auth);
+		res.send(info);
+	} catch (error) {
+		if (error instanceof HttpStatus) {
+			return res.status(error.status).json({ message: error.message });
+		}
+
+		return res.status(500).json({ message: 'Something went wrong.' });
+	}
+};
+
+export const getAllVehicleInfo = async (
+	req: Request<{}, {}, { id: string; auth: any }>,
+	res: Response,
+) => {
+	const { id, auth } = req.body;
+
+	try {
+		const info = await allVehicleInfo(auth);
+		res.send(info);
 	} catch (error) {
 		if (error instanceof HttpStatus) {
 			return res.status(error.status).json({ message: error.message });

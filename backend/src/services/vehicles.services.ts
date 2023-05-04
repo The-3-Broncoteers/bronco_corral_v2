@@ -51,3 +51,39 @@ export const newVehicle = async (vin: string, auth: any) => {
 		console.log(error);
 	}
 };
+
+export const vehicleDeleter = async (vehicleId: string) => {
+	console.log('id to delete: ' + vehicleId);
+	const deleteVehicle = await db.userVehicle
+		.delete({
+			where: {
+				id: parseInt(vehicleId),
+			},
+		})
+		.then(
+			(response) => {
+				console.log('deleted ID: ' + response.id);
+			},
+			(error) => {
+				console.log('error delete response: ' + error);
+			},
+		);
+};
+
+export const vehicleInfo = async (vehicleId: number, auth: string) => {
+	const vehicle = await db.userVehicle.findFirst({
+		where: {
+			id: vehicleId,
+		},
+	});
+	return vehicle;
+};
+
+export const allVehicleInfo = async (auth: string) => {
+	const vehicles = await db.userVehicle.findMany({
+		where: {
+			userEmail: auth,
+		},
+	});
+	return vehicles;
+};

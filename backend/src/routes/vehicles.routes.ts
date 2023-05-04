@@ -1,15 +1,20 @@
 import express from 'express';
-import { createVehicle } from '../controllers/vehicles.controller';
+import {
+	createVehicle,
+	deleteVehicle,
+	getAllVehicleInfo,
+	getVehicleInfo,
+} from '../controllers/vehicles.controller';
 
 const router = express.Router();
 
 router
 	.route('/')
-	.get()
+	.get(getVehicleInfo)
 	.post(createVehicle)
 	//.put(updateUser) //TODO update user
-	.delete();
+	.delete(deleteVehicle);
 
-router.route('/:id').get();
+router.route('/:id').get(getAllVehicleInfo);
 
 export { router as vehicleRouter };
