@@ -70,12 +70,22 @@ export const vehicleDeleter = async (vehicleId: string) => {
 		);
 };
 
-export const vehicleInfo = async (vehicleId: number, auth: string) => {
-	const vehicle = await db.userVehicle.findFirst({
-		where: {
-			id: vehicleId,
-		},
-	});
+export const vehicleInfo = async (vehicleId: number) => {
+	console.log(vehicleId);
+	const vehicle = await db.userVehicle
+		.findUnique({
+			where: {
+				id: vehicleId,
+			},
+		})
+		.then(
+			(response) => {
+				console.log('found record: ' + response?.model);
+			},
+			(error) => {
+				console.log('error: ' + error);
+			},
+		);
 	return vehicle;
 };
 

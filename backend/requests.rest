@@ -1,4 +1,4 @@
-POST http://localhost:3001/carprofile
+POST http://localhost:3001/api/carprofile
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckB0ZXN0LmNvbSIsImlhdCI6MTY4MjcyMDA2OSwiZXhwIjoxNjgyNzIwMzY5fQ.0gQcI4Tv2-x_V_luSYdqvhOTd0sy6J3tqwyqVeIZxM4
 
@@ -8,6 +8,10 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckB0ZXN0
 
 ###
 
-GET http://localhost:3001/carprofile
+GET http://localhost:3001/api/vehicles
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlckB0ZXN0LmNvbSIsImlhdCI6MTY4Mjk4Mjg5MCwiZXhwIjoxNjgyOTgzMTkwfQ.dkQAC8rPwH0PQJJr2RLMQVVLZtiWTPdC414W8QTD_Z4
+
+{
+    "id":3
+}
