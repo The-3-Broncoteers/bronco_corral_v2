@@ -33,11 +33,13 @@ model UserVehicle {
     make            String
     model           String
     year            Int
+    milage          String
+    milesPerDay     String
     createdAt       DateTime         @default(now())
     updatedAt       DateTime         @default(now())
     userEmail       String
     maintenanceLogs MaintenanceLog[]
-    user            User             @relation(fields: [userEmail], references: [email])
+    user            User             @relation(fields: [userEmail], references: [email], onDelete: Cascade)
 }
 
 model MaintenanceLog {
@@ -47,7 +49,7 @@ model MaintenanceLog {
     description String
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @default(now())
-    vehicle     UserVehicle @relation(fields: [vehicleId], references: [id])
+    vehicle     UserVehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
 }
 
 model Vehicle {
@@ -67,5 +69,5 @@ model Maintenance {
     description String
     createdAt   DateTime @default(now())
     updatedAt   DateTime @default(now())
-    vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+    vehicle     Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
 }
