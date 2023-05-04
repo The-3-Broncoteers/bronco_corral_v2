@@ -1,5 +1,5 @@
 import { userRouter } from './src/routes/user.routes';
-import { carmdRouter } from './src/routes/carmd.routes';
+
 import { errorHandler } from './src/middleware/errorHandler';
 import { eventLogger } from './src/middleware/eventLogger';
 import { authRouter } from './src/routes/auth.routes';
@@ -12,7 +12,8 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-import { carProfileRouter } from './src/routes/carprofile.routes';
+
+import { vehicleRouter } from './src/routes/vehicles.routes';
 
 dotenv.config();
 
@@ -35,9 +36,10 @@ app.use('/api/auth', authRouter);
 app.use('/api/refresh', refreshRouter);
 app.use('/api/logout', logoutRouter);
 //app.use(verifyJWT);
-app.use('/api/maintenance', carmdRouter);
-app.use('/api/carprofile', carProfileRouter);
+// app.use('/api/maintenance', carmdRouter);
+// app.use('/api/carprofile', carProfileRouter);
 app.use('/api/users', userRouter);
+app.use('/api/vehicles', vehicleRouter);
 app.use(errorHandler);
 
 app.listen(PORT, async () => {
