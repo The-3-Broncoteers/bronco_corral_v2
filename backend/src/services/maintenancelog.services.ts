@@ -29,3 +29,11 @@ export const logCreator = async (vin: string, mileage: number, desc: string) => 
 		},
 	});
 };
+
+export const logDeleter = async (id: number) => {
+	const deleteLog = await db.maintenanceLog.delete({
+		where: {
+			id: id,
+		},
+	});
+};
