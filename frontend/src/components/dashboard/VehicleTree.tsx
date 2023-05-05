@@ -13,13 +13,21 @@ interface UserVehicle {
 
 interface VehicleGroup {
 	make: string;
-	models: { [key: string]: { years: number[] } };
+	models: { [key: string]: { years: number[]; vins: string[] } };
 }
 
 const StyledTree = styled.div`
 	background-color: ${Colors.MintCream};
 	min-width: 13em;
 	padding-left: 0.5em;
+`;
+
+const ToggleButton = styled.button`
+	border: none;
+	background: none;
+	padding: 0.25rem 0.5rem;
+	cursor: pointer;
+	color: ${Colors.SlateGray};
 `;
 
 export const VehicleTree = () => {
@@ -62,7 +70,7 @@ export const VehicleTree = () => {
 				const newGroup: VehicleGroup = {
 					make: vehicle.make,
 					models: {
-						[vehicle.model]: { years: [vehicle.year] },
+						[vehicle.model]: { years: [vehicle.year], vins: [vehicle.vin] },
 					},
 				};
 				groups.push(newGroup);
@@ -70,11 +78,12 @@ export const VehicleTree = () => {
 				// Add model to existing group for make
 				const group = groups[makeIndex];
 				if (group.models[vehicle.model]) {
-					// Add year to existing model
+					// Add year and VIN to existing model
 					group.models[vehicle.model].years.push(vehicle.year);
+					group.models[vehicle.model].vins.push(vehicle.vin);
 				} else {
 					// Create new model for make
-					group.models[vehicle.model] = { years: [vehicle.year] };
+					group.models[vehicle.model] = { years: [vehicle.year], vins: [vehicle.vin] };
 				}
 			}
 		});
@@ -82,26 +91,56 @@ export const VehicleTree = () => {
 		return groups;
 	};
 
+	const [expandedGroups, setExpandedGroups] = useState<boolean[]>(
+		new Array(vehicleGroups.length).fill(false),
+	);
+
+	const toggleGroup = (index: number) => {
+		const newExpandedGroups = [...expandedGroups];
+		newExpandedGroups[index] = !newExpandedGroups[index];
+		setExpandedGroups(newExpandedGroups);
+	};
+
 	return (
 		<StyledTree>
 			<ul className='vehicle-groups'>
-				{vehicleGroups.map((group) => (
+				{vehicleGroups.map((group, index) => (
 					<li key={group.make} className='vehicle-make'>
-						<h3>{group.make}</h3>
-						<ul className='vehicle-models'>
-							{Object.entries(group.models).map(([model, years]) => (
-								<li key={model} className='vehicle-model'>
-									<h4>{model}</h4>
-									<ul className='vehicle-years'>
-										{years.years.map((year) => (
-											<li key={year} className='vehicle-year'>
-												<button>{year}</button>
-											</li>
-										))}
-									</ul>
-								</li>
-							))}
-						</ul>
+						<h3 className='make-name'>
+							<ToggleButton onClick={() => toggleGroup(index)}>
+								{expandedGroups[index] ? '▼' : '►'}{' '}
+							</ToggleButton>
+							{group.make}
+						</h3>
+						{expandedGroups[index] && (
+							<ul className='vehicle-models'>
+								{Object.entries(group.models).map(([model, data]) => (
+									<li key={model} className='vehicle-model'>
+										<h4 className='model-name'>{model}</h4>
+										<ul className='vehicle-years'>
+											{data.years.map((year, index) => (
+												<li key={year} className='vehicle-year'>
+													<span className='year-label'>{year}</span>
+													{data.vins[index] && (
+														<button
+															className='vin-button'
+															onClick={() => {
+																setSelectedMake(group.make);
+																setSelectedModel(model);
+																setSelectedYear(year);
+																setSelectedVin(data.vins[index]);
+															}}
+														>
+															VIN: {data.vins[index]}
+														</button>
+													)}
+												</li>
+											))}
+										</ul>
+									</li>
+								))}
+							</ul>
+						)}
 					</li>
 				))}
 			</ul>
