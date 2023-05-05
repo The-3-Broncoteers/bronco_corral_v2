@@ -4,10 +4,10 @@ import axios from 'axios';
 interface VehicleData {
 	make: string;
 	model: string;
-	modelYear: string;
+	year: number;
 }
 
-const db = new PrismaClient({ log: ['error'] });
+const db = new PrismaClient();
 
 export const newVehicle = async (vin: string, auth: any) => {
 	try {
@@ -16,38 +16,49 @@ export const newVehicle = async (vin: string, auth: any) => {
 		await axios
 			.get(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${vin}?format=json`)
 			.then((response) => {
-				res.make = JSON.stringify(response.data.Results[0].Make);
-				res.model = JSON.stringify(response.data.Results[0].Model);
-				res.modelYear = JSON.stringify(response.data.Results[0].ModelYear);
+				console.log(response.data);
+				res.make = response.data.Results[0].Make;
+				res.model = response.data.Results[0].Model;
+
+				const yearString = response.data.Results[0].ModelYear.replaceAll('"', '');
+
+				res.year = parseInt(yearString);
 			});
 
-		return res;
+		let vehicle: Vehicle = await getVehicle(res);
 
-		const vehicle: Vehicle | null = await db.vehicle.findFirst({
-			where: {
-				make: res.make,
-				model: res.model,
-				year: parseInt(res.modelYear),
+		const maintenance = await db.maintenance.create({
+			data: {
+				vehicleId: vehicle.id,
+				dueMileage: 3000,
+				description: 'Oil Change',
 			},
 		});
-
-		console.log('ok');
-
-		if (vehicle) {
-			console.log('im here!');
-		} else {
-			const newVehicle = await db.vehicle.create({
-				data: {
-					make: res.make,
-					model: res.model,
-					year: parseInt(res.modelYear),
-				},
-			});
-			console.log('added one');
-		}
 
 		return res;
 	} catch (error) {
 		console.log(error);
 	}
 };
+
+async function getVehicle(res: VehicleData) {
+	let vehicle: Vehicle | null = await db.vehicle.findFirst({
+		where: {
+			make: res.make,
+			model: res.model,
+			year: res.year,
+		},
+	});
+
+	if (!vehicle) {
+		vehicle = await db.vehicle.create({
+			data: {
+				year: res.year,
+				make: res.make,
+				model: res.model,
+			},
+		});
+	}
+
+	return vehicle;
+}
