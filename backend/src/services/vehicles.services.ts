@@ -11,37 +11,54 @@ const db = new PrismaClient();
 
 export const newVehicle = async (vin: string, auth: any) => {
 	try {
-		let res: VehicleData = <VehicleData>{};
+		const existingVehicle = await db.userVehicle.findUnique({
+			where: {
+				vin: vin,
+			},
+		});
+
+		if (existingVehicle) return existingVehicle;
+
+		let axiosResponse: VehicleData = <VehicleData>{};
 
 		await axios
 			.get(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${vin}?format=json`)
 			.then((response) => {
-				console.log(response.data);
-				res.make = response.data.Results[0].Make;
-				res.model = response.data.Results[0].Model;
+				axiosResponse.make = response.data.Results[0].Make;
+				axiosResponse.model = response.data.Results[0].Model;
 
 				const yearString = response.data.Results[0].ModelYear.replaceAll('"', '');
 
-				res.year = parseInt(yearString);
+				axiosResponse.year = parseInt(yearString);
 			});
 
-		let vehicle: Vehicle = await getVehicle(res);
+		const vehicleData: Vehicle = await getVehicleData(axiosResponse);
 
-		const maintenance = await db.maintenance.create({
+		const newVehicle = await db.userVehicle.create({
 			data: {
-				vehicleId: vehicle.id,
-				dueMileage: 3000,
-				description: 'Oil Change',
+				vin: vin,
+				make: vehicleData.make,
+				model: vehicleData.model,
+				year: vehicleData.year,
+				userEmail: auth.email,
 			},
 		});
 
-		return res;
+		// const maintenance = await db.maintenance.create({
+		// 	data: {
+		// 		vehicleId: vehicle.id,
+		// 		dueMileage: 3000,
+		// 		description: 'Oil Change',
+		// 	},
+		// });
+
+		return newVehicle;
 	} catch (error) {
 		console.log(error);
 	}
 };
 
-async function getVehicle(res: VehicleData) {
+async function getVehicleData(res: VehicleData) {
 	let vehicle: Vehicle | null = await db.vehicle.findFirst({
 		where: {
 			make: res.make,
@@ -97,6 +114,7 @@ export const vehicleInfo = async (vehicleId: number) => {
 				console.log('error: ' + error);
 			},
 		);
+
 	return vehicle;
 };
 

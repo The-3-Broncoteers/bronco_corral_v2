@@ -19,11 +19,11 @@ export const createVehicle = async (
 	req: Request<{}, {}, { vin: string; auth: any }>,
 	res: Response,
 ) => {
-	const { vin, auth } = req.body;
-
 	try {
-		const vehicle = await newVehicle(vin, 'tester@test.com');
-		return res.send(vehicle?.model);
+		const { vin, auth } = req.body;
+		const vehicle = await newVehicle(vin, auth);
+
+		return res.send(vehicle);
 	} catch (error) {
 		if (error instanceof HttpStatus) {
 			return res.status(error.status).json({ message: error.message });
