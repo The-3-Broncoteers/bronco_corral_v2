@@ -9,8 +9,8 @@ const db = new PrismaClient({ log: ['error'] });
 async function main() {
 	const newUser = await db.user.create({
 		data: {
-			email: 'danielTest',
-			password: 'one',
+			email: 'test@test.com',
+			password: '123',
 		},
 	});
 }
