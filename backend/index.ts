@@ -14,6 +14,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 
 import { vehicleRouter } from './src/routes/vehicles.routes';
+import { maintenanceLogRouter } from './src/routes/maintenancelog.routes';
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.use('/api/logout', logoutRouter);
 // app.use('/api/carprofile', carProfileRouter);
 app.use('/api/users', userRouter);
 app.use('/api/vehicles', vehicleRouter);
+app.use('api/maintenance', maintenanceLogRouter);
 app.use(errorHandler);
 
 app.listen(PORT, async () => {
