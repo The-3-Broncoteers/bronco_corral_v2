@@ -15,7 +15,7 @@ import { VehicleTree } from '../components/dashboard/VehicleTree';
 const StyledContainer = styled.div`
 	background-color: ${Colors.Charcoal};
 	min-width: 100%;
-	height: 100vh;
+	height: 95vh;
 	display: flex;
 	flex-flow: row nowrap;
 `;

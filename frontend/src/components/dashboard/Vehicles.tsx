@@ -1,10 +1,8 @@
 import styled from 'styled-components';
 import { Colors } from '../../utils/Colors';
 import { useContext, useState } from 'react';
-import axios from 'axios';
 import AuthContext from '../../context/authProvider';
 import { axiosPublic } from '../../config/axiosConfig';
-import { json } from 'stream/consumers';
 
 const DashboardContainer = styled.div`
 	display: flex;
@@ -79,7 +77,7 @@ export const Vehicles = () => {
 				},
 			)
 			.then((response: any) => {
-				console.log('test ' + JSON.stringify(response.data));
+				console.log('test ' + response.data.userEmail);
 			})
 			.catch((error) => {
 				// handle error
@@ -99,16 +97,9 @@ export const Vehicles = () => {
 
 	const viewVehicle = async () => {
 		await axiosPublic
-			.get(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${vin}?format=json`)
+			.get('/vehicles')
 			.then((response) => {
-				console.log(
-					'LOGGING ' +
-						JSON.stringify(response.data.Results[0].Make) +
-						' - ' +
-						JSON.stringify(response.data.Results[0].Model) +
-						' - ' +
-						JSON.stringify(response.data.Results[0].ModelYear),
-				);
+				// handle response
 			})
 			.catch((error) => {
 				// handle error

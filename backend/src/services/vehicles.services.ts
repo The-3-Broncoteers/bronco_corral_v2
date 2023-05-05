@@ -22,7 +22,7 @@ export const newVehicle = async (vin: string, auth: any) => {
 		let axiosResponse: VehicleData = <VehicleData>{};
 
 		await axios
-			.get(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${vin}?format=json`)
+			.get(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvaluesextended/${vin}?format=json`)
 			.then((response) => {
 				axiosResponse.make = response.data.Results[0].Make;
 				axiosResponse.model = response.data.Results[0].Model;
@@ -30,6 +30,7 @@ export const newVehicle = async (vin: string, auth: any) => {
 				const yearString = response.data.Results[0].ModelYear.replaceAll('"', '');
 
 				axiosResponse.year = parseInt(yearString);
+				console.log(response.data.Results);
 			});
 
 		const vehicleData: Vehicle = await getVehicleData(axiosResponse);
@@ -80,12 +81,12 @@ async function getVehicleData(res: VehicleData) {
 	return vehicle;
 }
 
-export const vehicleDeleter = async (vehicleId: string) => {
-	console.log('id to delete: ' + vehicleId);
+export const vehicleDeleter = async (vin: string) => {
+	console.log('id to delete: ' + vin);
 	const deleteVehicle = await db.userVehicle
 		.delete({
 			where: {
-				id: parseInt(vehicleId),
+				vin: vin,
 			},
 		})
 		.then(
