@@ -36,4 +36,14 @@ export const logDeleter = async (id: number) => {
 			id: id,
 		},
 	});
+	return deleteLog;
+};
+
+export const logsFetcher = async (id: number) => {
+	const logsFetched = await db.maintenanceLog.findUnique({
+		where: {
+			id: id,
+		},
+	});
+	return logsFetched;
 };

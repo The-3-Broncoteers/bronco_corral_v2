@@ -8,7 +8,7 @@ router
 	.route('/')
 	.get(getLogs)
 	.post(addLog)
-	//.put(updateUser) //TODO update user
+	//.put(updateLog) //TODO update user
 	.delete(deleteLog);
 
 export { router as maintenanceLogRouter };
