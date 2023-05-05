@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { HttpStatus } from '../utils/httpErrors/HttpStatus';
 import {
 	newVehicle,
-	allVehicleInfo,
+	getAllVehicles,
 	vehicleDeleter,
 	vehicleInfo,
 } from '../services/vehicles.services';
@@ -70,15 +70,11 @@ export const getVehicleInfo = async (
 	}
 };
 
-export const getAllVehicleInfo = async (
-	req: Request<{}, {}, { id: string; auth: any }>,
-	res: Response,
-) => {
-	const { id, auth } = req.body;
-
+export const getVehicles = async (req: Request, res: Response) => {
 	try {
-		const info = await allVehicleInfo(auth);
-		res.send(info);
+		const data = await getAllVehicles(req.query.email);
+
+		res.send(data);
 	} catch (error) {
 		if (error instanceof HttpStatus) {
 			return res.status(error.status).json({ message: error.message });

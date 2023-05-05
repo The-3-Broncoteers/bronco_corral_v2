@@ -108,10 +108,8 @@ export const LoginForm = () => {
 				},
 			);
 
-			//console.log(JSON.stringify(res));
 			const accessToken = res?.data?.accessToken;
 			setAuth({ email: email, password: password, accessToken });
-			console.log(JSON.stringify(res?.data));
 			setEmail('');
 			setPassword('');
 			navigate('/user/dashboard');

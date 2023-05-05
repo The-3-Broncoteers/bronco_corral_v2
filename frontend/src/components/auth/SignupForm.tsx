@@ -133,7 +133,6 @@ const SignupForm = ({ isOpen, onClose }: SignupFormProps) => {
 
 		try {
 			const res = await axiosPublic.post(loginEndPoint, formData);
-			console.log(res.data);
 			onClose();
 		} catch (error) {
 			setError('Invalid email or password.');

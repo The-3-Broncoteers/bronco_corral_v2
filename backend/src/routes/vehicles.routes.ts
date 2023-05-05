@@ -2,7 +2,7 @@ import express from 'express';
 import {
 	createVehicle,
 	deleteVehicle,
-	getAllVehicleInfo,
+	getVehicles,
 	getVehicleInfo,
 } from '../controllers/vehicles.controller';
 
@@ -10,11 +10,11 @@ const router = express.Router();
 
 router
 	.route('/')
-	.get(getVehicleInfo)
+	.get(getVehicles)
 	.post(createVehicle)
-	//.put(updateUser) //TODO update user
+	//.put()
 	.delete(deleteVehicle);
 
-router.route('/:id').get(getAllVehicleInfo);
+router.route('/:id').get(getVehicleInfo);
 
 export { router as vehicleRouter };

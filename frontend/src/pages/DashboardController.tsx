@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Menu } from '../components/dashboard/Menu';
-import CarProfileForm from '../components/CarProfileForm';
 import { Dashboard } from '../components/dashboard/Dashboard';
 import styled from 'styled-components';
 import { Colors } from '../utils/Colors';

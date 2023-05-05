@@ -30,10 +30,9 @@ export const newVehicle = async (vin: string, auth: any) => {
 				const yearString = response.data.Results[0].ModelYear.replaceAll('"', '');
 
 				axiosResponse.year = parseInt(yearString);
-				console.log(response.data.Results);
 			});
 
-		const vehicleData: Vehicle = await getVehicleData(axiosResponse);
+		const vehicleData: Vehicle = await getOrCreateVehicle(axiosResponse);
 
 		const newVehicle = await db.userVehicle.create({
 			data: {
@@ -45,21 +44,13 @@ export const newVehicle = async (vin: string, auth: any) => {
 			},
 		});
 
-		// const maintenance = await db.maintenance.create({
-		// 	data: {
-		// 		vehicleId: vehicle.id,
-		// 		dueMileage: 3000,
-		// 		description: 'Oil Change',
-		// 	},
-		// });
-
 		return newVehicle;
 	} catch (error) {
 		console.log(error);
 	}
 };
 
-async function getVehicleData(res: VehicleData) {
+async function getOrCreateVehicle(res: VehicleData) {
 	let vehicle: Vehicle | null = await db.vehicle.findFirst({
 		where: {
 			make: res.make,
@@ -119,11 +110,18 @@ export const vehicleInfo = async (vehicleId: number) => {
 	return vehicle;
 };
 
-export const allVehicleInfo = async (auth: string) => {
+export const getAllVehicles = async (email: string | any) => {
 	const vehicles = await db.userVehicle.findMany({
 		where: {
-			userEmail: auth,
+			userEmail: email,
+		},
+		select: {
+			vin: true,
+			make: true,
+			model: true,
+			year: true,
 		},
 	});
+
 	return vehicles;
 };
