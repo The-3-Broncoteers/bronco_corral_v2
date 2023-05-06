@@ -4,24 +4,28 @@ import { Colors } from '../../utils/Colors';
 
 const StyledDiv = styled.div`
 	background-color: ${Colors.MintCream};
+	border-right: 2px solid ${Colors.DarkBlue};
 	position: relative;
 	min-width: 12vw;
-	border-right: 2px solid ${Colors.DarkBlue};
-
-	.menu-container {
-		min-width: auto;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.9em;
-		margin: 0em 0.7em;
-		align-items: stretch;
-	}
+	display: flex;
+	flex-direction: column;
+	gap: 0.9em;
+	padding-top: 1%;
+	align-items: stretch;
 
 	.menu-item {
-		background-color: ${Colors.White};
-		border-radius: 2px;
+		background-color: ${Colors.MintCream};
 		cursor: pointer;
+
+		&:hover {
+			background-color: ${Colors.Cambridge};
+			color: ${Colors.MintCream};
+		}
+
+		&.active {
+			background-color: ${Colors.DarkBlue};
+			color: ${Colors.MintCream};
+		}
 	}
 `;
 
