@@ -1,6 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
-import { axiosPublic } from '../../config/axiosConfig';
-import AuthContext from '../../context/authProvider';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../../utils/Colors';
 import { UserVehicle } from './UserVehicle';
@@ -15,8 +13,10 @@ const StyledTree = styled.div`
 	background-color: ${Colors.MintCream};
 	min-width: 13em;
 	padding-left: 0.5em;
-	max-height: 100%; /* maximum height before scrollbar appears */
-	overflow-y: auto; /* enable vertical scrollbar */
+	max-height: 100%;
+	overflow-y: auto;
+	overflow-x: auto;
+	max-width: 15%;
 `;
 
 const ToggleButton = styled.button`
