@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import { Colors } from '../../utils/Colors';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../context/authProvider';
 import { axiosPublic } from '../../config/axiosConfig';
 import { VehicleContext } from '../../context/VehicleProvider';
+import axios from 'axios';
+import { json } from 'stream/consumers';
 
 const DashboardContainer = styled.div`
 	display: flex;
@@ -66,6 +68,7 @@ export const Vehicles = () => {
 	const { auth } = useContext(AuthContext);
 	const { vehicleList, setVehicleList } = useContext(VehicleContext);
 	const { selectedVehicle } = useContext(VehicleContext);
+	const [vehicleImage, setVehicleImage] = useState('');
 
 	const createVehicle = async () => {
 		const isDuplicate = vehicleList.some((vehicle) => vehicle.vin === vin);
@@ -117,6 +120,33 @@ export const Vehicles = () => {
 			});
 	};
 
+	// useEffect(() => {
+	// 	const fetchVehicleImage = async () => {
+	// 		if (selectedVehicle) {
+	// 			await axios
+	// 				.get('https://api.carmd.com/v3.0/image', {
+	// 					headers: {
+	// 						'content-type': 'application/json',
+	// 						authorization: 'Basic MjUzMmNjZGUtMGM0MC00ZDEzLWFkNTMtMmYwOGRmNjZjMTNm',
+	// 						'partner-token': '5a95593fa0b44166b947ac55ec6edcd2',
+	// 					},
+	// 					params: {
+	// 						vin: selectedVehicle.vin,
+	// 					},
+	// 				})
+	// 				.then((response) => {
+	// 					console.log(response.data.data.image);
+	// 					setVehicleImage(response.data.data.image);
+	// 				})
+	// 				.catch((error) => {
+	// 					// handle error
+	// 				});
+	// 		}
+	// 	};
+
+	// 	fetchVehicleImage();
+	// }, [selectedVehicle]);
+
 	return (
 		<DashboardContainer>
 			<section className='controlSection'>
@@ -126,7 +156,7 @@ export const Vehicles = () => {
 					name='vin'
 					onChange={(e) => setVin(e.target.value)}
 				/>
-				<span></span> {/* TODO, make this sya invalid vin if needed.     Invalid VIN */}
+				<span></span>
 				<section className='buttons'>
 					<button onClick={viewVehicle}>View</button>
 					<button onClick={createVehicle}>Create</button>
@@ -137,6 +167,10 @@ export const Vehicles = () => {
 				{selectedVehicle ? (
 					<div>
 						<h3>Selected Vehicle:</h3>
+						<img
+							src={'http://downloads.innova.com/polk-vehicle-images/CAC20TOT105C0101.jpg'}
+							alt={selectedVehicle.make}
+						/>
 						<p>Make: {selectedVehicle.make}</p>
 						<p>Model: {selectedVehicle.model}</p>
 						<p>Year: {selectedVehicle.year}</p>

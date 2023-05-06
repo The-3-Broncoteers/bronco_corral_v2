@@ -7,14 +7,6 @@ import {
 	vehicleInfo,
 } from '../services/vehicles.services';
 
-/*
-Fake vins to play with
-JTHFF2C26B2515141
-5TFUW5F13CX228552
-KMHDU4ADXAU832403
-1GNDS13S132266223
-1FVACWDU1BHBB3474
-*/
 export const createVehicle = async (
 	req: Request<{}, {}, { vin: string; auth: any }>,
 	res: Response,

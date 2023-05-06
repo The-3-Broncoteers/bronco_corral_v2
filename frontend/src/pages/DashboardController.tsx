@@ -35,11 +35,11 @@ export const DashboardController: React.FC = () => {
 			component: <Vehicles />,
 		},
 
-		{
-			name: 'Maintenances',
-			icon: <GoTools title='Maintenances' size={iconSize} />,
-			component: <Maintenances />,
-		},
+		// {
+		// 	name: 'Maintenances',
+		// 	icon: <GoTools title='Maintenances' size={iconSize} />,
+		// 	component: <Maintenances />,
+		// },
 	];
 
 	const handleItemClick = (component: React.ReactNode, name: string) => {

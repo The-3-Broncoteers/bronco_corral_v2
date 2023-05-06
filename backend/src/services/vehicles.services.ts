@@ -74,6 +74,7 @@ async function getOrCreateVehicle(res: VehicleData) {
 
 export const vehicleDeleter = async (vin: string) => {
 	console.log('id to delete: ' + vin);
+
 	const deleteVehicle = await db.userVehicle
 		.delete({
 			where: {
