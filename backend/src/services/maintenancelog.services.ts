@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import axios from 'axios';
 
 const db = new PrismaClient({ log: ['error'] });
 
