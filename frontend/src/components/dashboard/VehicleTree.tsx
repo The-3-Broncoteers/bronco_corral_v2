@@ -15,6 +15,8 @@ const StyledTree = styled.div`
 	background-color: ${Colors.MintCream};
 	min-width: 13em;
 	padding-left: 0.5em;
+	max-height: 100%; /* maximum height before scrollbar appears */
+	overflow-y: auto; /* enable vertical scrollbar */
 `;
 
 const ToggleButton = styled.button`
