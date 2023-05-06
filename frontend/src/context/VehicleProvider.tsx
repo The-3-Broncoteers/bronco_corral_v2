@@ -15,6 +15,8 @@ import AuthContext from './authProvider';
 type VehicleContextType = {
 	vehicleList: UserVehicle[];
 	setVehicleList: Dispatch<SetStateAction<UserVehicle[]>>;
+	selectedVehicle: UserVehicle | null;
+	setSelectedVehicle: Dispatch<SetStateAction<UserVehicle | null>>;
 };
 
 type VehicleContextProviderProps = {
@@ -25,12 +27,16 @@ export const VehicleContext = createContext<VehicleContextType>({
 	vehicleList: [],
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	setVehicleList: () => {},
+	selectedVehicle: null,
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	setSelectedVehicle: () => {},
 });
 
 export const VehicleContextProvider: FunctionComponent<VehicleContextProviderProps> = ({
 	children,
 }) => {
 	const [vehicleList, setVehicleList] = useState<UserVehicle[]>([]);
+	const [selectedVehicle, setSelectedVehicle] = useState<UserVehicle | null>(null);
 	const { auth } = useContext(AuthContext);
 
 	useEffect(() => {
@@ -55,7 +61,9 @@ export const VehicleContextProvider: FunctionComponent<VehicleContextProviderPro
 	}, []);
 
 	return (
-		<VehicleContext.Provider value={{ vehicleList, setVehicleList }}>
+		<VehicleContext.Provider
+			value={{ vehicleList, setVehicleList, selectedVehicle, setSelectedVehicle }}
+		>
 			{children}
 		</VehicleContext.Provider>
 	);

@@ -34,7 +34,7 @@ export const VehicleTree = () => {
 	const [selectedYear, setSelectedYear] = useState<number>(0);
 	const [expandedModels, setExpandedModels] = useState<{ [key: string]: boolean }>({});
 	const [expandedYears, setExpandedYears] = useState<{ [key: string]: boolean }>({});
-	const { vehicleList } = useContext(VehicleContext);
+	const { vehicleList, setSelectedVehicle } = useContext(VehicleContext);
 
 	const buildVehicleGroups = (vehicles: UserVehicle[]): VehicleGroup[] => {
 		const groups: VehicleGroup[] = [];
@@ -88,6 +88,13 @@ export const VehicleTree = () => {
 		}));
 	};
 
+	const handleVinButtonClick = (vin: string) => {
+		const selectedVehicle = vehicleList.find((vehicle) => vehicle.vin === vin);
+		if (selectedVehicle) {
+			setSelectedVehicle(selectedVehicle);
+		}
+	};
+
 	const vehicleGroups = buildVehicleGroups(vehicleList);
 
 	return (
@@ -124,12 +131,7 @@ export const VehicleTree = () => {
 														{expandedYears[`${model}-${year}`] && data.vins[yearIndex] && (
 															<button
 																className='vin-button'
-																onClick={() => {
-																	setSelectedMake(group.make);
-																	setSelectedModel(model);
-																	setSelectedYear(year);
-																	setSelectedVin(data.vins[yearIndex]);
-																}}
+																onClick={() => handleVinButtonClick(data.vins[yearIndex])}
 															>
 																VIN: {data.vins[yearIndex]}
 															</button>

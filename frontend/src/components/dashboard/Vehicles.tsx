@@ -65,6 +65,7 @@ export const Vehicles = () => {
 	const [vin, setVin] = useState('');
 	const { auth } = useContext(AuthContext);
 	const { vehicleList, setVehicleList } = useContext(VehicleContext);
+	const { selectedVehicle } = useContext(VehicleContext);
 
 	const createVehicle = async () => {
 		const isDuplicate = vehicleList.some((vehicle) => vehicle.vin === vin);
@@ -132,7 +133,19 @@ export const Vehicles = () => {
 					<button onClick={deleteVehicle}>Delete</button>
 				</section>
 			</section>
-			<section className='view' />
+			<section className='view'>
+				{selectedVehicle ? (
+					<div>
+						<h3>Selected Vehicle:</h3>
+						<p>Make: {selectedVehicle.make}</p>
+						<p>Model: {selectedVehicle.model}</p>
+						<p>Year: {selectedVehicle.year}</p>
+						<p>VIN: {selectedVehicle.vin}</p>
+					</div>
+				) : (
+					<p>No vehicle selected</p>
+				)}
+			</section>
 		</DashboardContainer>
 	);
 };
