@@ -67,6 +67,13 @@ export const Vehicles = () => {
 	const { vehicleList, setVehicleList } = useContext(VehicleContext);
 
 	const createVehicle = async () => {
+		const isDuplicate = vehicleList.some((vehicle) => vehicle.vin === vin);
+
+		if (isDuplicate) {
+			console.log('Vehicle with this VIN already exists!');
+			return;
+		}
+
 		await axiosPublic
 			.post(
 				'/vehicles',
