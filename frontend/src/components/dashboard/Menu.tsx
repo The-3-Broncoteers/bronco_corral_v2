@@ -43,13 +43,11 @@ type MenuProps = {
 export const Menu: React.FC<MenuProps> = ({ items, onItemClick }) => {
 	return (
 		<StyledDiv>
-			<div className='menu-container'>
-				{items.map((item, index) => (
-					<div key={index} className='menu-item' onClick={() => onItemClick(item.component)}>
-						{item.icon} <span>{item.name}</span>
-					</div>
-				))}
-			</div>
+			{items.map((item, index) => (
+				<div key={index} className='menu-item' onClick={() => onItemClick(item.component)}>
+					{item.icon} <span>{item.name}</span>
+				</div>
+			))}
 		</StyledDiv>
 	);
 };

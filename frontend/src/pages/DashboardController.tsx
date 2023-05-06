@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Menu } from '../components/dashboard/Menu';
 import { Dashboard } from '../components/dashboard/Dashboard';
 import styled from 'styled-components';
@@ -11,6 +10,7 @@ import { Vehicles } from '../components/dashboard/Vehicles';
 import { Maintenances } from '../components/dashboard/Maintenances';
 import { VehicleTree } from '../components/dashboard/VehicleTree';
 import { VehicleContextProvider } from '../context/VehicleProvider';
+import { useState } from 'react';
 
 const StyledContainer = styled.div`
 	background-color: ${Colors.Charcoal};
@@ -22,6 +22,7 @@ const StyledContainer = styled.div`
 
 export const DashboardController: React.FC = () => {
 	const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>(<Home />);
+	const [activeItem, setActiveItem] = useState<string>('Home');
 
 	const iconSize: number = 33;
 
@@ -41,15 +42,16 @@ export const DashboardController: React.FC = () => {
 		},
 	];
 
-	const handleItemClick = (component: React.ReactNode) => {
+	const handleItemClick = (component: React.ReactNode, name: string) => {
 		setSelectedComponent(component);
+		setActiveItem(name);
 	};
 
 	return (
 		<>
 			<StyledContainer>
 				<VehicleContextProvider>
-					<Menu items={menuItems} onItemClick={handleItemClick} />
+					<Menu items={menuItems} activeItem={activeItem} onItemClick={handleItemClick} />
 					<VehicleTree />
 					<Dashboard component={selectedComponent} />
 				</VehicleContextProvider>
