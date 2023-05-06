@@ -10,6 +10,7 @@ import { GoTools } from 'react-icons/go';
 import { Vehicles } from '../components/dashboard/Vehicles';
 import { Maintenances } from '../components/dashboard/Maintenances';
 import { VehicleTree } from '../components/dashboard/VehicleTree';
+import { VehicleContextProvider } from '../context/VehicleProvider';
 
 const StyledContainer = styled.div`
 	background-color: ${Colors.Charcoal};
@@ -47,9 +48,11 @@ export const DashboardController: React.FC = () => {
 	return (
 		<>
 			<StyledContainer>
-				<Menu items={menuItems} onItemClick={handleItemClick} />
-				<VehicleTree />
-				<Dashboard component={selectedComponent} />
+				<VehicleContextProvider>
+					<Menu items={menuItems} onItemClick={handleItemClick} />
+					<VehicleTree />
+					<Dashboard component={selectedComponent} />
+				</VehicleContextProvider>
 			</StyledContainer>
 		</>
 	);

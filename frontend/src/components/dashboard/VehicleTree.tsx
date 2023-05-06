@@ -3,13 +3,8 @@ import { axiosPublic } from '../../config/axiosConfig';
 import AuthContext from '../../context/authProvider';
 import styled from 'styled-components';
 import { Colors } from '../../utils/Colors';
-
-interface UserVehicle {
-	vin: string;
-	make: string;
-	model: string;
-	year: number;
-}
+import { UserVehicle } from './UserVehicle';
+import { VehicleContext } from '../../context/VehicleProvider';
 
 interface VehicleGroup {
 	make: string;
@@ -31,42 +26,21 @@ const ToggleButton = styled.button`
 `;
 
 export const VehicleTree = () => {
-	const [vehicleGroups, setVehicleGroups] = useState<VehicleGroup[]>([]);
 	const [selectedMake, setSelectedMake] = useState<string>('');
 	const [selectedModel, setSelectedModel] = useState<string>('');
 	const [selectedVin, setSelectedVin] = useState<string>('');
 	const [selectedYear, setSelectedYear] = useState<number>(0);
-	const { auth } = useContext(AuthContext);
-
-	useEffect(() => {
-		const fetchVehicles = async () => {
-			try {
-				const response = await axiosPublic.get('/vehicles', {
-					params: {
-						email: auth.email,
-					},
-				});
-
-				//console.log('res ' + JSON.parse(response.data));
-				const groups = buildVehicleGroups(response.data);
-				setVehicleGroups(groups);
-			} catch (error) {
-				console.error('Error fetching vehicles:', error);
-			}
-		};
-
-		fetchVehicles();
-	}, []);
+	const [expandedModels, setExpandedModels] = useState<{ [key: string]: boolean }>({});
+	const [expandedYears, setExpandedYears] = useState<{ [key: string]: boolean }>({});
+	const { vehicleList } = useContext(VehicleContext);
 
 	const buildVehicleGroups = (vehicles: UserVehicle[]): VehicleGroup[] => {
 		const groups: VehicleGroup[] = [];
 
 		vehicles.forEach((vehicle) => {
-			// Check if group already exists for the make
 			const makeIndex = groups.findIndex((group) => group.make === vehicle.make);
 
 			if (makeIndex === -1) {
-				// Create new group for make
 				const newGroup: VehicleGroup = {
 					make: vehicle.make,
 					models: {
@@ -75,14 +49,11 @@ export const VehicleTree = () => {
 				};
 				groups.push(newGroup);
 			} else {
-				// Add model to existing group for make
 				const group = groups[makeIndex];
 				if (group.models[vehicle.model]) {
-					// Add year and VIN to existing model
 					group.models[vehicle.model].years.push(vehicle.year);
 					group.models[vehicle.model].vins.push(vehicle.vin);
 				} else {
-					// Create new model for make
 					group.models[vehicle.model] = { years: [vehicle.year], vins: [vehicle.vin] };
 				}
 			}
@@ -92,7 +63,7 @@ export const VehicleTree = () => {
 	};
 
 	const [expandedGroups, setExpandedGroups] = useState<boolean[]>(
-		new Array(vehicleGroups.length).fill(false),
+		new Array(vehicleList.length).fill(false),
 	);
 
 	const toggleGroup = (index: number) => {
@@ -101,6 +72,22 @@ export const VehicleTree = () => {
 		setExpandedGroups(newExpandedGroups);
 	};
 
+	const toggleModel = (model: string) => {
+		setExpandedModels((prevState) => ({
+			...prevState,
+			[model]: !prevState[model],
+		}));
+	};
+
+	const toggleYear = (yearKey: string) => {
+		setExpandedYears((prevState) => ({
+			...prevState,
+			[yearKey]: !prevState[yearKey],
+		}));
+	};
+
+	const vehicleGroups = buildVehicleGroups(vehicleList);
+
 	return (
 		<StyledTree>
 			<ul className='vehicle-groups'>
@@ -108,7 +95,7 @@ export const VehicleTree = () => {
 					<li key={group.make} className='vehicle-make'>
 						<h3 className='make-name'>
 							<ToggleButton onClick={() => toggleGroup(index)}>
-								{expandedGroups[index] ? '▼' : '►'}{' '}
+								{expandedGroups[index] ? '▼' : '►'}
 							</ToggleButton>
 							{group.make}
 						</h3>
@@ -116,27 +103,39 @@ export const VehicleTree = () => {
 							<ul className='vehicle-models'>
 								{Object.entries(group.models).map(([model, data]) => (
 									<li key={model} className='vehicle-model'>
-										<h4 className='model-name'>{model}</h4>
-										<ul className='vehicle-years'>
-											{data.years.map((year, index) => (
-												<li key={year} className='vehicle-year'>
-													<span className='year-label'>{year}</span>
-													{data.vins[index] && (
-														<button
-															className='vin-button'
-															onClick={() => {
-																setSelectedMake(group.make);
-																setSelectedModel(model);
-																setSelectedYear(year);
-																setSelectedVin(data.vins[index]);
-															}}
-														>
-															VIN: {data.vins[index]}
-														</button>
-													)}
-												</li>
-											))}
-										</ul>
+										<h4 className='model-name'>
+											<ToggleButton onClick={() => toggleModel(model)}>
+												{expandedModels[model] ? '▼' : '►'}
+											</ToggleButton>
+											{model}
+										</h4>
+										{expandedModels[model] && (
+											<ul className='vehicle-years'>
+												{data.years.map((year, yearIndex) => (
+													<li key={year} className='vehicle-year'>
+														<span className='year-label'>
+															<ToggleButton onClick={() => toggleYear(`${model}-${year}`)}>
+																{expandedYears[`${model}-${year}`] ? '▼' : '►'}
+															</ToggleButton>
+															{year}
+														</span>
+														{expandedYears[`${model}-${year}`] && data.vins[yearIndex] && (
+															<button
+																className='vin-button'
+																onClick={() => {
+																	setSelectedMake(group.make);
+																	setSelectedModel(model);
+																	setSelectedYear(year);
+																	setSelectedVin(data.vins[yearIndex]);
+																}}
+															>
+																VIN: {data.vins[yearIndex]}
+															</button>
+														)}
+													</li>
+												))}
+											</ul>
+										)}
 									</li>
 								))}
 							</ul>

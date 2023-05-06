@@ -3,6 +3,7 @@ import { Colors } from '../../utils/Colors';
 import { useContext, useState } from 'react';
 import AuthContext from '../../context/authProvider';
 import { axiosPublic } from '../../config/axiosConfig';
+import { VehicleContext } from '../../context/VehicleProvider';
 
 const DashboardContainer = styled.div`
 	display: flex;
@@ -63,6 +64,7 @@ const DashboardContainer = styled.div`
 export const Vehicles = () => {
 	const [vin, setVin] = useState('');
 	const { auth } = useContext(AuthContext);
+	const { vehicleList, setVehicleList } = useContext(VehicleContext);
 
 	const createVehicle = async () => {
 		await axiosPublic
@@ -77,7 +79,8 @@ export const Vehicles = () => {
 				},
 			)
 			.then((response: any) => {
-				console.log('test ' + response.data.userEmail);
+				const { vin, make, model, year } = response.data;
+				setVehicleList([...vehicleList, { vin, make, model, year }]);
 			})
 			.catch((error) => {
 				// handle error
@@ -88,7 +91,7 @@ export const Vehicles = () => {
 		await axiosPublic
 			.delete('/vehicles', { data: { vin } })
 			.then((response) => {
-				// handle response
+				setVehicleList(vehicleList.filter((vehicle) => vehicle.vin !== vin));
 			})
 			.catch((error) => {
 				// handle error
