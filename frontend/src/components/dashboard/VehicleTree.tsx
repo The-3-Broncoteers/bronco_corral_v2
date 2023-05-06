@@ -20,6 +20,7 @@ const StyledTree = styled.div`
 	overflow-x: auto;
 	min-width: 15vw;
 	max-width: 15vw;
+	border-top-left-radius: 0.7em;
 
 	ul {
 		list-style: none;
