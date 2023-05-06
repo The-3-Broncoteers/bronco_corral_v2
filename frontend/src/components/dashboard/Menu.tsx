@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { Colors } from '../../utils/Colors';
 
 const StyledDiv = styled.div`
-	background-color: ${Colors.MintCream};
-	border-right: 2px solid ${Colors.DarkBlue};
+	background-color: ${Colors.DarkBlue};
 	position: relative;
 	min-width: 12vw;
 	display: flex;
@@ -14,8 +13,10 @@ const StyledDiv = styled.div`
 	align-items: stretch;
 
 	.menu-item {
-		background-color: ${Colors.MintCream};
+		background-color: ${Colors.Cambridge};
 		cursor: pointer;
+		color: ${Colors.MintCream};
+		text-align: center;
 
 		&:hover {
 			background-color: ${Colors.Cambridge};
@@ -23,7 +24,7 @@ const StyledDiv = styled.div`
 		}
 
 		&.active {
-			background-color: ${Colors.DarkBlue};
+			background-color: ${Colors.Blue};
 			color: ${Colors.MintCream};
 		}
 	}
@@ -37,14 +38,19 @@ type MenuItem = {
 
 type MenuProps = {
 	items: MenuItem[];
-	onItemClick: (component: React.ReactNode) => void;
+	onItemClick: (component: React.ReactNode, name: string) => void;
+	activeItem: string;
 };
 
-export const Menu: React.FC<MenuProps> = ({ items, onItemClick }) => {
+export const Menu: React.FC<MenuProps> = ({ items, onItemClick, activeItem }) => {
 	return (
 		<StyledDiv>
 			{items.map((item, index) => (
-				<div key={index} className='menu-item' onClick={() => onItemClick(item.component)}>
+				<div
+					key={index}
+					className={`menu-item ${activeItem === item.name ? 'active' : ''}`}
+					onClick={() => onItemClick(item.component, item.name)}
+				>
 					{item.icon} <span>{item.name}</span>
 				</div>
 			))}

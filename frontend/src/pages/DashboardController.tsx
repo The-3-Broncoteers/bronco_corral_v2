@@ -22,6 +22,7 @@ const StyledContainer = styled.div`
 
 export const DashboardController: React.FC = () => {
 	const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>(<Home />);
+	const [activeItem, setActiveItem] = useState<string>('Home');
 
 	const iconSize: number = 33;
 
@@ -41,15 +42,16 @@ export const DashboardController: React.FC = () => {
 		},
 	];
 
-	const handleItemClick = (component: React.ReactNode) => {
+	const handleItemClick = (component: React.ReactNode, name: string) => {
 		setSelectedComponent(component);
+		setActiveItem(name);
 	};
 
 	return (
 		<>
 			<StyledContainer>
 				<VehicleContextProvider>
-					<Menu items={menuItems} onItemClick={handleItemClick} />
+					<Menu items={menuItems} onItemClick={handleItemClick} activeItem={activeItem} />
 					<VehicleTree />
 					<Dashboard component={selectedComponent} />
 				</VehicleContextProvider>
