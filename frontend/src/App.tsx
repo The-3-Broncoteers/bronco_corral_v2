@@ -6,6 +6,7 @@ import { LandingPage } from './pages/LandingPage';
 import { TrackerPage } from './pages/TrackerPage';
 import { Logout } from './pages/Logout';
 import { RequireAuth } from './components/auth/RequireAuth';
+import PersistLogin from './components/auth/PersistLogin';
 import { DashboardController } from './pages/DashboardController';
 
 function App() {
@@ -16,10 +17,12 @@ function App() {
 			<Route path='/' element={<LandingPage />} />
 			<Route path='/login' element={<Login />} />
 
-			<Route element={<RequireAuth />}>
-				<Route path='/user/' element={<MainNav />}>
-					<Route path='dashboard' element={<DashboardController />} />
-					<Route path='logout' element={<Logout />} />
+			<Route element={<PersistLogin />}>
+				<Route element={<RequireAuth />}>
+					<Route path='/user/' element={<MainNav />}>
+						<Route path='dashboard' element={<DashboardController />} />
+						<Route path='logout' element={<Logout />} />
+					</Route>
 				</Route>
 			</Route>
 		</Routes>
