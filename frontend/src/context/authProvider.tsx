@@ -2,14 +2,14 @@ import { createContext, useState } from 'react';
 
 interface AuthContextType {
 	auth: any;
-	persist: boolean;
+	persist: any;
 	setAuth: React.Dispatch<React.SetStateAction<any>>;
 	setPersist: React.Dispatch<React.SetStateAction<any>>;
 }
 
 const AuthContext = createContext<AuthContextType>({
 	auth: {},
-	persist: false,
+	persist: {},
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	setAuth: () => {},
 	// eslint-disable-next-line @typescript-eslint/no-empty-function

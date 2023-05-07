@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Colors } from '../../utils/Colors';
 import SignupForm from './SignupForm';
@@ -82,7 +82,7 @@ const loginEndPoint: string = '/auth';
 
 export const LoginForm = () => {
 	const navigate = useNavigate();
-	const { setAuth } = useContext(AuthContext);
+	const { setAuth, persist, setPersist } = useContext(AuthContext);
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
@@ -118,6 +118,14 @@ export const LoginForm = () => {
 		}
 	};
 
+	const togglePersist = () => {
+		setPersist((prev: any) => !prev);
+	};
+
+	useEffect(() => {
+		localStorage.setItem('persist', persist);
+	}, [persist]);
+
 	return (
 		<StyledForm onSubmit={handleSubmit}>
 			<div className='form-group'>
@@ -141,6 +149,10 @@ export const LoginForm = () => {
 			</div>
 
 			<button type='submit'>Log In</button>
+			<div className='persistCheck'>
+				<input type='checkbox' id='persist' onChange={togglePersist} checked={persist} />
+				<label htmlFor='persist'>Trust This Device</label>
+			</div>
 			<a href=''>Forgot Password?</a>
 			<div className='form-seperator'></div>
 
