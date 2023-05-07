@@ -12,7 +12,7 @@ export const logoutUser = async (token: string) => {
 			throw new Http500Error('Invalid Token');
 		}
 
-		return await db.token.delete({ where: { id: dbToken.id } });;
+		return await db.token.delete({ where: { id: dbToken.id } });
 
 	} catch (error) {
 		if (
