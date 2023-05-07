@@ -3,13 +3,15 @@ import { UserData } from '../utils/userData';
 import { HttpStatus } from '../utils/httpErrors/HttpStatus';
 import { logoutUser } from '../services/logout.services';
 
-export const logout = async (req: Request<{}, {}, UserData>, res: Response) => {
+export const logout = async (req: Request, res: Response) => {
 	try {
-		const cookies = req.cookies;
+		const authHeader = req.headers['authorization'];
+		const token = authHeader && authHeader.replace(/^Bearer\s+/, '');
+		console.log('logging out token:' + token);
 
-		if (!cookies?.jwt) return res.status(204);
+		if (!token) return res.status(204);
 
-		await logoutUser(cookies.jwt);
+		await logoutUser(token);
 
 		//TODO send status back
 	} catch (error) {
