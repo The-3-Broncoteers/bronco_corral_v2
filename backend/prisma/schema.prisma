@@ -1,3 +1,6 @@
+
+ 
+
 generator client {
     provider = "prisma-client-js"
 }
@@ -60,7 +63,6 @@ model Vehicle {
     createdAt   DateTime      @default(now())
     updatedAt   DateTime      @default(now())
     maintenance Maintenance[]
-
     @@unique([make, model, year])
 }
 
@@ -72,4 +74,3 @@ model Maintenance {
     createdAt   DateTime @default(now())
     updatedAt   DateTime @default(now())
     vehicle     Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
-}
