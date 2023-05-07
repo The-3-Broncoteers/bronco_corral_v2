@@ -1,11 +1,9 @@
 import styled from 'styled-components';
 import { Colors } from '../../utils/Colors';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import AuthContext from '../../context/authProvider';
 import { axiosPublic } from '../../config/axiosConfig';
 import { VehicleContext } from '../../context/VehicleProvider';
-import axios from 'axios';
-import { json } from 'stream/consumers';
 
 const DashboardContainer = styled.div`
 	display: flex;
@@ -13,7 +11,6 @@ const DashboardContainer = styled.div`
 	flex-direction: column;
 	gap: 0.7em;
 	padding: 0.3em 2em 2em 0em;
-	flex-grow: 2;
 	background: ${Colors.MintCream};
 
 	span {
@@ -60,6 +57,42 @@ const DashboardContainer = styled.div`
 		border-radius: 20px;
 		border: solid 2px #55828b;
 		box-shadow: 2px 2px 15px #87bba2;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.view .vehicle-info {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.view .vehicle-info img {
+		margin-right: 20px;
+		border-radius: 20px;
+		border: solid 2px #55828b;
+		box-shadow: 2px 2px 15px #87bba2;
+		max-width: 300px;
+	}
+
+	.view .vehicle-details {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.left-container {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.right-container {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
 	}
 `;
 
@@ -149,37 +182,83 @@ export const Vehicles = () => {
 
 	return (
 		<DashboardContainer>
-			<section className='controlSection'>
-				<input
-					className='vin'
-					placeholder='Enter VIN'
-					name='vin'
-					onChange={(e) => setVin(e.target.value)}
-				/>
-				<span></span>
-				<section className='buttons'>
-					<button onClick={viewVehicle}>View</button>
-					<button onClick={createVehicle}>Create</button>
-					<button onClick={deleteVehicle}>Delete</button>
-				</section>
-			</section>
-			<section className='view'>
-				{selectedVehicle ? (
-					<div>
-						<h3>Selected Vehicle:</h3>
-						<img
-							src={'http://downloads.innova.com/polk-vehicle-images/CAC20TOT105C0101.jpg'}
-							alt={selectedVehicle.make}
+			<div style={{ display: 'flex', flex: 1 }}>
+				<div className='left-container'>
+					<section className='controlSection'>
+						<input
+							className='vin'
+							placeholder='Enter VIN'
+							name='vin'
+							onChange={(e) => setVin(e.target.value)}
 						/>
-						<p>Make: {selectedVehicle.make}</p>
-						<p>Model: {selectedVehicle.model}</p>
-						<p>Year: {selectedVehicle.year}</p>
-						<p>VIN: {selectedVehicle.vin}</p>
-					</div>
-				) : (
-					<p>No vehicle selected</p>
-				)}
-			</section>
+						<span></span>
+						<section className='buttons'>
+							<button onClick={viewVehicle}>View</button>
+							<button onClick={createVehicle}>Create</button>
+							<button onClick={deleteVehicle}>Delete</button>
+						</section>
+					</section>
+					<section className='view'>
+						{selectedVehicle ? (
+							<div>
+								<h3>Selected Vehicle:</h3>
+								<div className='vehicle-info'>
+									<img
+										src={'http://downloads.innova.com/polk-vehicle-images/CAC20TOT105C0101.jpg'}
+										alt={selectedVehicle.make}
+									/>
+									<div className='vehicle-details'>
+										<p>Make: {selectedVehicle.make}</p>
+										<p>Model: {selectedVehicle.model}</p>
+										<p>Year: {selectedVehicle.year}</p>
+										<p>VIN: {selectedVehicle.vin}</p>
+									</div>
+								</div>
+							</div>
+						) : (
+							<p>No vehicle selected</p>
+						)}
+					</section>
+				</div>
+				<div className='right-container'>
+					{' '}
+					<section className='controlSection'>
+						<input
+							className='vin'
+							placeholder='Enter VIN'
+							name='vin'
+							onChange={(e) => setVin(e.target.value)}
+						/>
+						<span></span>
+						<section className='buttons'>
+							<button onClick={viewVehicle}>View</button>
+							<button onClick={createVehicle}>Create</button>
+							<button onClick={deleteVehicle}>Delete</button>
+						</section>
+					</section>
+					<section className='view'>
+						{selectedVehicle ? (
+							<div>
+								<h3>Selected Vehicle:</h3>
+								<div className='vehicle-info'>
+									<img
+										src={'http://downloads.innova.com/polk-vehicle-images/CAC20TOT105C0101.jpg'}
+										alt={selectedVehicle.make}
+									/>
+									<div className='vehicle-details'>
+										<p>Make: {selectedVehicle.make}</p>
+										<p>Model: {selectedVehicle.model}</p>
+										<p>Year: {selectedVehicle.year}</p>
+										<p>VIN: {selectedVehicle.vin}</p>
+									</div>
+								</div>
+							</div>
+						) : (
+							<p>No vehicle selected</p>
+						)}
+					</section>
+				</div>
+			</div>
 		</DashboardContainer>
 	);
 };
