@@ -4,15 +4,13 @@ import { logoutUser } from '../services/logout.services';
 
 export const logout = async (req: Request, res: Response) => {
 	try {
-		const authHeader = req.headers['authorization'];
-		const token = authHeader && authHeader.replace(/^Bearer\s+/, '');
-		console.log('logging out token:' + token);
+		const cookies = req.cookies;
+		if (!cookies?.jwt) return res.sendStatus(204);
+		const refreshToken = cookies.jwt;
+		console.log('logging out token:' + refreshToken);
 
-		if (!token) return res.status(204);
+		await logoutUser(refreshToken);
 
-		await logoutUser(token);
-
-		res.cookie('jwt', '', { expires: new Date(0) });
 		return res.redirect('/');
 	} catch (error) {
 		if (error instanceof HttpStatus) {
