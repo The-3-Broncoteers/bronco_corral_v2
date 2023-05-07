@@ -13,7 +13,7 @@ import { VehicleTree } from '../components/dashboard/VehicleTree';
 import { VehicleContextProvider } from '../context/VehicleProvider';
 
 const StyledContainer = styled.div`
-	background-color: ${Colors.Charcoal};
+	background-color: ${Colors.DarkBlue};
 	min-width: 100%;
 	height: 95vh;
 	display: flex;
