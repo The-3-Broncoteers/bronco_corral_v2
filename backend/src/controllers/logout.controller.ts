@@ -13,7 +13,8 @@ export const logout = async (req: Request, res: Response) => {
 
 		await logoutUser(token);
 
-		//TODO send status back
+		res.cookie('jwt', '', { expires: new Date(0) });
+		return res.redirect('/');
 	} catch (error) {
 		if (error instanceof HttpStatus) {
 			return res.status(error.status).json({ message: error.message });
