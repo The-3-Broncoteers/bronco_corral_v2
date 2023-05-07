@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { UserData } from '../utils/userData';
 import { HttpStatus } from '../utils/httpErrors/HttpStatus';
 import { logoutUser } from '../services/logout.services';
 
