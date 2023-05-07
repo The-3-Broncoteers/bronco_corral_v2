@@ -7,11 +7,14 @@ export const logout = async (req: Request<{}, {}, UserData>, res: Response) => {
 	try {
 		const cookies = req.cookies;
 
-		if (!cookies?.jwt) return res.status(204);
+		if (!cookies?.jwt) {
+			return res.status(204);
+		}
 
 		await logoutUser(cookies.jwt);
 
-		//TODO send status back
+		res.cookie('jwt', '', { expires: new Date(0) });
+		return res.redirect('/');
 	} catch (error) {
 		if (error instanceof HttpStatus) {
 			return res.status(error.status).json({ message: error.message });
