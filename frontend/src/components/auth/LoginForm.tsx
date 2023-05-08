@@ -76,6 +76,29 @@ const StyledForm = styled.form`
 			text-align: center;
 		}
 	}
+
+	.form-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+
+		.form-seperator {
+			flex-grow: 1;
+		}
+
+		.forgot-password {
+			margin-left: auto;
+		}
+
+		.trust-device {
+			display: flex;
+
+			input[type='checkbox'] {
+				margin-right: 0.3rem;
+			}
+		}
+	}
 `;
 
 const loginEndPoint: string = '/auth';
@@ -129,39 +152,50 @@ export const LoginForm = () => {
 	return (
 		<StyledForm onSubmit={handleSubmit}>
 			<div className='form-group'>
-				<label hidden>Enter Email</label>
 				<input
 					type='email'
-					placeholder='Enter email'
+					id='email'
 					name='email'
+					placeholder='Email Address'
 					onChange={(e) => setEmail(e.target.value)}
+					value={email}
+					required
 				/>
 			</div>
-
 			<div className='form-group'>
-				<label hidden>Enter Password</label>
 				<input
 					type='password'
-					placeholder='Enter password'
+					id='password'
 					name='password'
+					placeholder='Password'
 					onChange={(e) => setPassword(e.target.value)}
+					value={password}
+					required
 				/>
 			</div>
-
-			<button type='submit'>Log In</button>
-			<div className='persistCheck'>
-				<input type='checkbox' id='persist' onChange={togglePersist} checked={persist} />
-				<label htmlFor='persist'>Trust This Device</label>
+			<button type='submit'>Sign In</button>
+			<div className='form-footer'>
+				<div className='trust-device'>
+					<input
+						type='checkbox'
+						id='trust-device'
+						name='trust-device'
+						checked={persist}
+						onChange={() => setPersist(!persist)}
+					/>
+					<label htmlFor='trust-device'>Remember me</label>
+				</div>
+				<div className='forgot-password'>
+					<a href='#' onClick={handleOpenModal}>
+						Forgot Password?
+					</a>
+				</div>
 			</div>
-			<a href=''>Forgot Password?</a>
 			<div className='form-seperator'></div>
-
 			<div className='signup-container'>
-				<a role={'button'} onClick={handleOpenModal} className='signup-button'>
-					Create a new account
-				</a>
-				<SignupForm isOpen={isOpen} onClose={handleCloseModal} />
+				<a href='/signup'>Create an account</a>
 			</div>
+			<SignupForm isOpen={isOpen} onClose={handleCloseModal} />
 		</StyledForm>
 	);
 };
