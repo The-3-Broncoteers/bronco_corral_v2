@@ -1,4 +1,4 @@
-import { PrismaClient, Vehicle } from '@prisma/client';
+import { PrismaClient, Vehicle } from '.prisma/client';
 import axios from 'axios';
 
 interface VehicleData {

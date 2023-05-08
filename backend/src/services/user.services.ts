@@ -1,7 +1,7 @@
 import { User } from '.prisma/client';
 import { Http404Error } from '../utils/httpErrors/errors/Http404Error';
 import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '.prisma/client';
 
 const db = new PrismaClient({ log: ['error'] });
 
