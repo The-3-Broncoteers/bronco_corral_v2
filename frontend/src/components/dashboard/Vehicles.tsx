@@ -31,11 +31,11 @@ const DashboardContainer = styled.div`
 		.view {
 			height: 97%;
 			display: flex;
-			flex-direction: row; /* Change from 'column' to 'row' */
-			align-items: flex-start; /* Add this line to align items to the top */
+			flex-direction: row;
+			align-items: flex-start;
 
 			.vehicle-img {
-				width: 50%; /* Reduce the width to 50% */
+				width: 50%;
 				max-height: 100%;
 				object-fit: contain;
 			}
@@ -44,8 +44,8 @@ const DashboardContainer = styled.div`
 				overflow-y: auto;
 				overflow-x: auto;
 				max-height: 50%;
-				width: 50%; /* Add this line to set the width to 50% */
-				padding-left: 10px; /* Add some padding to the left to separate it from the image */
+				width: 50%;
+				padding-left: 10px;
 			}
 		}
 	}
@@ -86,9 +86,6 @@ export const Vehicles = () => {
 		plantCity: string;
 		trim: string;
 		transmissionStyle: string;
-		transmissionSpeeds: string;
-		transmissionControlType: string;
-		transmissionManufacturer: string;
 	} | null>(null);
 
 	const createVehicle = async () => {
@@ -203,9 +200,6 @@ export const Vehicles = () => {
 								PlantCity,
 								Trim,
 								TransmissionStyle,
-								TransmissionSpeeds,
-								TransmissionControlType,
-								TransmissionManufacturer,
 							} = Results[0];
 
 							setVehicleDetails({
@@ -232,9 +226,6 @@ export const Vehicles = () => {
 								plantCity: PlantCity || '',
 								trim: Trim || '',
 								transmissionStyle: TransmissionStyle || '',
-								transmissionSpeeds: TransmissionSpeeds || '',
-								transmissionControlType: TransmissionControlType || '',
-								transmissionManufacturer: TransmissionManufacturer || '',
 							});
 						}
 					})
@@ -302,9 +293,6 @@ export const Vehicles = () => {
 											<li>Plant City: {vehicleDetails.plantCity}</li>
 											<li>Trim: {vehicleDetails.trim}</li>
 											<li>Transmission Style: {vehicleDetails.transmissionStyle}</li>
-											<li>Transmission Speeds: {vehicleDetails.transmissionSpeeds}</li>
-											<li>Transmission Control Type: {vehicleDetails.transmissionControlType}</li>
-											<li>Transmission Manufacturer: {vehicleDetails.transmissionManufacturer}</li>
 										</>
 									)}
 								</ul>
