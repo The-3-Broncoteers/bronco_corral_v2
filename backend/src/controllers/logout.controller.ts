@@ -7,7 +7,6 @@ export const logout = async (req: Request, res: Response) => {
 		const cookies = req.cookies;
 		if (!cookies?.jwt) return res.sendStatus(204);
 		const refreshToken = cookies.jwt;
-		console.log('logging out token:' + refreshToken);
 
 		await logoutUser(refreshToken);
 

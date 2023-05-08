@@ -80,8 +80,6 @@ async function getOrCreateVehicle(res: VehicleData) {
 }
 
 export const vehicleDeleter = async (vin: string) => {
-	console.log('id to delete: ' + vin);
-
 	const deleteVehicle = await db.userVehicle
 		.delete({
 			where: {
@@ -99,7 +97,6 @@ export const vehicleDeleter = async (vin: string) => {
 };
 
 export const vehicleInfo = async (vehicleId: number) => {
-	console.log(vehicleId);
 	const vehicle = await db.userVehicle
 		.findUnique({
 			where: {

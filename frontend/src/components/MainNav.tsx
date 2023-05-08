@@ -43,7 +43,6 @@ export const MainNav = () => {
 		} catch (err) {
 			console.log(err);
 		}
-		console.log('logout: ' + auth.accessToken);
 	};
 
 	return (

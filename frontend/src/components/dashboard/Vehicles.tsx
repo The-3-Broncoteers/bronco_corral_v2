@@ -112,6 +112,7 @@ const DashboardContainer = styled.div`
                 border-bottom-left-radius: 20px;
                 border-right: 0;
                 text-align: center;
+                height: 2.5em;
 
                 ::placeholder {
                     text-align: center; 
@@ -217,7 +218,6 @@ export const Vehicles = () => {
 					...vehicleList,
 					{ vin, make, model, year, milage, avgMilage: milesPerDay },
 				]);
-				console.log(`on set ${milage} ${milesPerDay}`);
 			})
 			.catch((error) => {
 				// handle error

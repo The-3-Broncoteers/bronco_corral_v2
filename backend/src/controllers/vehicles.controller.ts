@@ -14,7 +14,9 @@ export const createVehicle = async (
 	try {
 		const { vin, auth } = req.body;
 		const vehicle = await newVehicle(vin, auth);
+
 		console.log(`email: ${auth.email} miles: ${vehicle?.milage} avgMiles: ${vehicle?.milesPerDay}`);
+
 		return res.send(vehicle);
 	} catch (error) {
 		if (error instanceof HttpStatus) {

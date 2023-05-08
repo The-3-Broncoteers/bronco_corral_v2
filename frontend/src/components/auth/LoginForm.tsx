@@ -124,6 +124,7 @@ export const LoginForm = () => {
 			);
 
 			const accessToken = res?.data?.accessToken;
+			console.log(JSON.stringify(res));
 			setAuth({ email: email, password: password, accessToken });
 			setEmail('');
 			setPassword('');

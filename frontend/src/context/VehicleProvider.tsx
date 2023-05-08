@@ -57,7 +57,6 @@ export const VehicleContextProvider: FunctionComponent<VehicleContextProviderPro
 		};
 
 		fetchVehicleData();
-		console.log(vehicleList);
 	}, []);
 
 	return (
