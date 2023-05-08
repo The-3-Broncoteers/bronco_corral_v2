@@ -1,0 +1,57 @@
+name: Push-Backend-to-EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x, 20.x]
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Node.js ${{ matrix.node-version }}
+      working-directory: ./backend
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install npm depedencies
+      working-directory: ./backend
+      run: npm ci
+    - name: Run build task
+      working-directory: ./backend
+      run: npm run build --if-present
+  deploy:
+    name: Push Backend to EC2 Instance
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clear backend folder prior to run
+      - uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: 3.21.166.158
+          username: ubuntu
+          port: 22
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+          cd /var/www/bronco_corral_v2/
+          sudo git pull
+          sudo rm backend/dist -rf
+      
+      
+      - name: Checkout the code
+        uses: actions/checkout@v1
+
+      - name: Deploy to my EC2 instance
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.EC2_HOST_NAME }}
+          REMOTE_USER: ${{ secrets.EC2_USER_NAME }}
+          TARGET: "/var/www/bronco_corral_v2/""
