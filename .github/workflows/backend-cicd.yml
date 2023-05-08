@@ -35,7 +35,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /var/www/bronco_corral_v2/
-            sudo rm backend/dist -rf
+            sudo rm backend -rf
 
       - name: Deploy to server
         uses: appleboy/scp-action@master
