@@ -1,4 +1,4 @@
-name: Push-Backend-to-EC2
+name: Backend-CICD
 
 on:
   push:
