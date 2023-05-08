@@ -5,6 +5,7 @@ import { Colors } from '../../utils/Colors';
 const StyledDiv = styled.div`
 	background-color: ${Colors.DarkBlue};
 	position: relative;
+	max-width: 10vw;
 	min-width: 10vw;
 	display: flex;
 	flex-direction: column;

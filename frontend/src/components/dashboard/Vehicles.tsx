@@ -7,35 +7,39 @@ import { VehicleContext } from '../../context/VehicleProvider';
 
 const DashboardContainer = styled.div`
 	display: flex;
-	height: 100%;
-	flex-direction: row;
+    height: 100%;
+	flex-flow: row nowrap:
 	gap: 0.1em;
 	padding: 0.5em 0.5em;
 	background: ${Colors.MintCream};
+    max-width: 75vw;
 
 	.left-container,
 	.right-container {
 		width: 50%;
-		max-width: 50%;
-
-		p {
-			word-wrap: break-word;
-			overflow-wrap: break-word;
-		}
+		max-width: 37.5vw;
+        height: 100%;
 	}
 
 	.left-container {
 		background-color: lightblue;
 		padding: 10px;
+        display: flex;
+        flex-flow: column nowrap;
+
+		p {
+			word-wrap: break-word;
+			overflow-wrap: break-word;
+		}
 
 		.view {
-			height: 97%;
+			height: 65%;
+            max-height: 65%;
 			display: flex;
 			flex-direction: row;
 			align-items: flex-start;
 
 			.vehicle-img {
-				width: 50%;
 				max-height: 100%;
 				object-fit: contain;
 			}
@@ -43,11 +47,26 @@ const DashboardContainer = styled.div`
 			.vehicle-details {
 				overflow-y: auto;
 				overflow-x: auto;
-				max-height: 50%;
-				width: 50%;
+                height: 100%;
 				padding-left: 10px;
 			}
 		}
+
+        .view-left {
+            display: flex;
+            flex-flow column nowrap;
+            width: 50%;
+            height: 100%;
+        }
+
+        .mile-control {
+            display: flex;
+            flex-flow column nowrap;
+        }
+
+        .alerts {
+            height: 32%
+        }
 	}
 
 	.right-container {
@@ -264,8 +283,22 @@ export const Vehicles = () => {
 									alt={selectedVehicle.make}
 									className='vehicle-img'
 								/>
-								<div className='miles'></div>
-								<div className='avg-miles'></div>
+								<div className='mile-control'>
+									<div className='milage-control'>
+										<label htmlFor='milage'>Current est. milage: </label>
+										<input type='text' id='milage'></input>
+										<button type='button' className='miles' onClick={createVehicle}>
+											Update
+										</button>
+									</div>
+									<div className='avg-milage-control'>
+										<label htmlFor='avg-miles'>Current est. miles/month: </label>
+										<input type='text' id='avg-miles'></input>
+										<button type='button' className='avg-miles' onClick={createVehicle}>
+											Update
+										</button>
+									</div>
+								</div>
 							</div>
 							<div className='vehicle-details'>
 								<ul>
@@ -297,12 +330,12 @@ export const Vehicles = () => {
 									)}
 								</ul>
 							</div>
-							<div className='alert'></div>
 						</>
 					) : (
 						<p>Select a vehicle in your tree to the left, or add one above if you have none!</p>
 					)}
 				</section>
+				<section className='alerts'>alerts</section>
 			</section>
 			<section className='right-container view'>
 				<section className='controlSection'>Placeholder</section>
