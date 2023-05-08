@@ -24,8 +24,8 @@ jobs:
     - name: SSH into server and prepare directory
       uses: appleboy/ssh-action@v0.1.6
       with:
-        host: 3.21.166.158
-        username: ubuntu
+        host: ${{ secrets.EC2_HOST_NAME }}
+        username: ${{ secrets.EC2_USER_NAME }}
         port: 22
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
@@ -36,8 +36,8 @@ jobs:
     - name: Copy frontend build to server
       uses: appleboy/scp-action@v0.1.4
       with:
-        host: 3.21.166.158
-        username: ubuntu
+        host: ${{ secrets.EC2_HOST_NAME }}
+        username: ${{ secrets.EC2_USER_NAME }}
         port: 22
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "./frontend/build"
