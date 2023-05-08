@@ -31,8 +31,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd /var/www/bronco_corral_v2/
-          sudo git pull
-          sudo rm frontend/build -rf
+          sudo rm frontend -rf
 
     - name: Copy frontend build to server
       uses: appleboy/scp-action@v0.1.4
