@@ -37,8 +37,6 @@ app.use('/api/auth', authRouter);
 app.use('/api/refresh', refreshRouter);
 app.use('/api/logout', logoutRouter);
 //app.use(verifyJWT);
-// app.use('/api/maintenance', carmdRouter);
-// app.use('/api/carprofile', carProfileRouter);
 app.use('/api/users', userRouter);
 app.use('/api/vehicles', vehicleRouter);
 app.use('api/maintenance', maintenanceLogRouter);
