@@ -22,6 +22,7 @@ jobs:
         working-directory: ./backend
         run: |
           npm install prisma -g
+          npm install @prisma/client -g
           npx prisma generate
 
       - name: Build Node.js server
