@@ -64,12 +64,20 @@ const DashboardContainer = styled.div`
             flex-flow column nowrap;
             width: 50%;
             height: 100%;
+            padding: 0em 0em .5em .5em;
         }
 
         .mile-control {
             display: flex;
             flex-flow column nowrap;
             height: 70%;
+            width: 100%;
+            justify-content: space-evenly;
+            text-align: center;
+
+            label {
+                padding-right: .7em;
+            }
         }
 
         .alerts {
@@ -85,7 +93,44 @@ const DashboardContainer = styled.div`
             justify-content: center;
             padding-bottom: .5em;
             margin-bottom: .5em;
-            border-bottom: 2px solid ${Colors.TeaGreen}
+            border-bottom: 2px solid ${Colors.TeaGreen};
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-flow: row nowrap;
+            width: 100%;
+            margin: 0em;
+            padding: 0em;
+            justify-content: center;
+
+            input {
+                width: 70%;
+                padding: 1px 0px 1px 2px;
+                border: .15em solid ${Colors.Blue};
+                border-top-left-radius: 20px;
+                border-bottom-left-radius: 20px;
+                border-right: 0;
+
+                ::placeholder {
+                    text-align: center; 
+                }
+            }
+
+            button {
+                border: .15em solid ${Colors.Blue};
+                border-left: 0;
+                border-top-right-radius: 20px;
+                border-bottom-right-radius: 20px;
+                background-color: ${Colors.Blue};
+                color: ${Colors.MintCream};
+
+                :hover {
+                    background-color: ${Colors.Charcoal};
+                    border: .15em solid ${Colors.Charcoal};
+                    border-left: 0;
+                }
+            }
         }
 	}
 
@@ -298,7 +343,7 @@ export const Vehicles = () => {
 		<DashboardContainer>
 			<section className='left-container'>
 				<section className='controls'>
-					<section className='vin-input'>
+					<section className='input-wrapper'>
 						<input
 							type='text'
 							name='vin'
@@ -322,18 +367,22 @@ export const Vehicles = () => {
 								/>
 								<div className='mile-control'>
 									<div className='milage-control'>
-										<label htmlFor='milage'>Current est. milage: </label>
-										<input type='text' id='milage'></input>
-										<button type='button' className='miles' onClick={createVehicle}>
-											Update
-										</button>
+										<label htmlFor='milage'>Current est. milage: 0</label>
+										<div className='input-wrapper'>
+											<input type='text' id='milage'></input>
+											<button type='button' className='miles' onClick={createVehicle}>
+												Update
+											</button>
+										</div>
 									</div>
 									<div className='avg-milage-control'>
-										<label htmlFor='avg-miles'>Current est. miles/month: </label>
-										<input type='text' id='avg-miles'></input>
-										<button type='button' className='avg-miles' onClick={createVehicle}>
-											Update
-										</button>
+										<label htmlFor='avg-miles'>Current est. miles/month: null</label>
+										<div className='input-wrapper'>
+											<input type='text' id='avg-miles'></input>
+											<button type='button' className='avg-miles' onClick={createVehicle}>
+												Update
+											</button>
+										</div>
 									</div>
 								</div>
 							</div>
