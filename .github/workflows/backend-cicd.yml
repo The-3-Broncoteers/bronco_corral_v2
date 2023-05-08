@@ -49,7 +49,7 @@ jobs:
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SOURCE: "./"
+          SOURCE: "backend/dist"
           REMOTE_HOST: ${{ secrets.EC2_HOST_NAME }}
           REMOTE_USER: ${{ secrets.EC2_USER_NAME }}
           TARGET: "/var/www/bronco_corral_v2/"
