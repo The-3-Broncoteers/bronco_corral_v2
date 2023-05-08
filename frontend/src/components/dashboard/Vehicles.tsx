@@ -168,6 +168,8 @@ export const Vehicles = () => {
 		model: string;
 		year: string;
 		vin: string;
+		milage: string;
+		avgMilage: string;
 		bodyClass: string;
 		displacementL: string;
 		engineConfiguration: string;
@@ -209,8 +211,12 @@ export const Vehicles = () => {
 				},
 			)
 			.then((response: any) => {
-				const { vin, make, model, year } = response.data;
-				setVehicleList([...vehicleList, { vin, make, model, year }]);
+				const { vin, make, model, year, milage, milesPerDay } = response.data;
+				setVehicleList([
+					...vehicleList,
+					{ vin, make, model, year, milage, avgMilage: milesPerDay },
+				]);
+				console.log(`on set ${milage} ${milesPerDay}`);
 			})
 			.catch((error) => {
 				// handle error
@@ -282,6 +288,8 @@ export const Vehicles = () => {
 								Model,
 								ModelYear,
 								VIN,
+								Milage,
+								AvgMiles,
 								BodyClass,
 								DisplacementL,
 								EngineConfiguration,
@@ -308,6 +316,8 @@ export const Vehicles = () => {
 								model: Model || '',
 								year: ModelYear || '',
 								vin: VIN || '',
+								milage: Milage || '',
+								avgMilage: AvgMiles || '',
 								bodyClass: BodyClass || '',
 								displacementL: DisplacementL || '',
 								engineConfiguration: EngineConfiguration || '',
@@ -367,7 +377,9 @@ export const Vehicles = () => {
 								/>
 								<div className='mile-control'>
 									<div className='milage-control'>
-										<label htmlFor='milage'>Current est. milage: 0</label>
+										<label htmlFor='milage'>
+											Current est. milage: {' ' + selectedVehicle.milage}
+										</label>
 										<div className='input-wrapper'>
 											<input type='text' id='milage'></input>
 											<button type='button' className='miles' onClick={createVehicle}>
@@ -376,7 +388,9 @@ export const Vehicles = () => {
 										</div>
 									</div>
 									<div className='avg-milage-control'>
-										<label htmlFor='avg-miles'>Current est. miles/month: null</label>
+										<label htmlFor='avg-miles'>
+											Current est. miles/month: {' ' + selectedVehicle.avgMilage}
+										</label>
 										<div className='input-wrapper'>
 											<input type='text' id='avg-miles'></input>
 											<button type='button' className='avg-miles' onClick={createVehicle}>

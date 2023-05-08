@@ -3,4 +3,6 @@ export interface UserVehicle {
 	make: string;
 	model: string;
 	year: number;
+	milage: string;
+	avgMilage: string;
 }
