@@ -379,7 +379,7 @@ export const Vehicles = () => {
 								<div className='mile-control'>
 									<div className='milage-control'>
 										<label htmlFor='milage'>
-											Current est. milage: {' ' + selectedVehicle.milage}
+											Current est. milage: {selectedVehicle?.milage ? selectedVehicle.milage : '0'}
 										</label>
 										<div className='input-wrapper'>
 											<input type='text' id='milage'></input>
@@ -390,7 +390,8 @@ export const Vehicles = () => {
 									</div>
 									<div className='avg-milage-control'>
 										<label htmlFor='avg-miles'>
-											Current est. miles/month: {' ' + selectedVehicle.avgMilage}
+											Current est. miles/month:
+											{selectedVehicle?.avgMilage ? selectedVehicle.avgMilage : '0'}
 										</label>
 										<div className='input-wrapper'>
 											<input type='text' id='avg-miles'></input>
