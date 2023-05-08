@@ -111,6 +111,7 @@ const DashboardContainer = styled.div`
                 border-top-left-radius: 20px;
                 border-bottom-left-radius: 20px;
                 border-right: 0;
+                text-align: center;
 
                 ::placeholder {
                     text-align: center; 
