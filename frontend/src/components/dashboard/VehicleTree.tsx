@@ -22,6 +22,22 @@ const StyledTree = styled.div`
 	max-width: 15vw;
 	border-top-left-radius: 0.7em;
 
+	&.sbar::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		background-color: ${Colors.White};
+	}
+
+	&.sbar::-webkit-scrollbar {
+		width: 12px;
+		background-color: ${Colors.White};
+	}
+
+	&.sbar::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		background-color: ${Colors.DarkBlue};
+	}
+
 	ul {
 		list-style: none;
 	}
@@ -38,9 +54,9 @@ const StyledTree = styled.div`
 	}
 
 	.vehicle-groups {
-		padding: 0;
 		margin: 0px;
 		height: 100%;
+		padding: 0;
 	}
 
 	h3,
@@ -183,7 +199,7 @@ export const VehicleTree = () => {
 	const vehicleGroups = buildVehicleGroups(vehicleList);
 
 	return (
-		<StyledTree>
+		<StyledTree className='sbar'>
 			<ul className='vehicle-groups'>
 				{vehicleGroups.map((group, index) => (
 					<li key={group.make} className='vehicle-make'>

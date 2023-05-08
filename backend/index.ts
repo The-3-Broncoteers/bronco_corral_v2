@@ -7,7 +7,7 @@ import { registerRouter } from './src/routes/register.routes';
 import { verifyJWT } from './src/middleware/verifyJWT';
 import { logoutRouter } from './src/routes/logout.routes';
 import { refreshRouter } from './src/routes/refresh.routes';
-import { PrismaClient } from '.prisma/client';
+import { PrismaClient } from '@prisma/client';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';

@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
 import { Http409Error } from '../utils/httpErrors/errors/Http409Error';
-import { PrismaClient, User } from '.prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 
 const db = new PrismaClient({ log: ['error'] });
 

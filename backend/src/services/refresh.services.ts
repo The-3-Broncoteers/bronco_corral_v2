@@ -4,7 +4,7 @@ import { Http403Error } from '../utils/httpErrors/errors/Http403Error';
 import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
 import jwt from 'jsonwebtoken';
 import { ACCESS_TOKEN_DURATION } from '../utils/jwtTokenDuration';
-import { PrismaClient } from '.prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const db = new PrismaClient({ log: ['error'] });
 

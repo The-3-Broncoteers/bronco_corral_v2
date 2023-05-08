@@ -22,7 +22,6 @@ const DashboardContainer = styled.div`
 	}
 
 	.left-container {
-		background-color: lightblue;
 		padding: 10px;
         display: flex;
         flex-flow: column nowrap;
@@ -35,20 +34,28 @@ const DashboardContainer = styled.div`
 		.view {
 			height: 65%;
             max-height: 65%;
+            margin: .3em;
+            padding-top: .3em;
+            padding-right: .7em;
 			display: flex;
 			flex-direction: row;
 			align-items: flex-start;
+            border-radius: 20px;
+            border: solid 2px ${Colors.Blue};
+            box-shadow: 2px 2px 15px ${Colors.Cambridge};
 
 			.vehicle-img {
 				max-height: 100%;
+                border-radius: 20px;
 				object-fit: contain;
 			}
 
 			.vehicle-details {
 				overflow-y: auto;
 				overflow-x: auto;
-                height: 100%;
-				padding-left: 10px;
+                height: 98%;
+				padding: 0px .7em;
+                overflow-wrap: break-word;
 			}
 		}
 
@@ -62,10 +69,23 @@ const DashboardContainer = styled.div`
         .mile-control {
             display: flex;
             flex-flow column nowrap;
+            height: 70%;
         }
 
         .alerts {
-            height: 32%
+            margin: .3em;
+            height: 100%;
+            border-radius: 20px;
+            border: solid 2px ${Colors.Blue};
+            box-shadow: 2px 2px 15px ${Colors.Cambridge};
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            padding-bottom: .5em;
+            margin-bottom: .5em;
+            border-bottom: 2px solid ${Colors.TeaGreen}
         }
 	}
 
@@ -73,6 +93,23 @@ const DashboardContainer = styled.div`
 		background-color: lightgreen;
 		padding: 10px;
 	}
+
+    #sbar::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        background-color: ${Colors.White};
+    }
+    
+    #sbar::-webkit-scrollbar {
+        width: 12px;
+        background-color: ${Colors.White};
+    }
+    
+    #sbar::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: ${Colors.DarkBlue};
+    }
 `;
 
 export const Vehicles = () => {
@@ -300,7 +337,7 @@ export const Vehicles = () => {
 									</div>
 								</div>
 							</div>
-							<div className='vehicle-details'>
+							<div className='vehicle-details' id='sbar'>
 								<ul>
 									<li>Make: {selectedVehicle.make}</li>
 									<li>Model: {selectedVehicle.model}</li>

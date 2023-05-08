@@ -1,6 +1,6 @@
 import { Http409Error } from '../utils/httpErrors/errors/Http409Error';
 import { Http500Error } from '../utils/httpErrors/errors/Http500Error';
-import { PrismaClient } from '.prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const db = new PrismaClient({ log: ['error'] });
 
