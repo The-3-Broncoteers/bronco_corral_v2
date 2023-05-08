@@ -15,6 +15,7 @@ jobs:
         with:
           node-version: '18.x'
       - name: Install dependencies
+        working-directory: ./backend
         run: npm install
 
       - name: Generate Prisma client
@@ -32,5 +33,5 @@ jobs:
           host: ${{ secrets.EC2_HOST_NAME }}
           username: ${{ secrets.EC2_USER_NAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ./dist/
+          source: ./backend/dist/
           target: "/var/www/bronco_corral_v2/"
