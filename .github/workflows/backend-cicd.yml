@@ -16,14 +16,11 @@ jobs:
           node-version: '18.x'
       - name: Install dependencies
         working-directory: ./backend
-        run: npm install
+        run: npm install --force --dev
 
       - name: Generate Prisma client
         working-directory: ./backend
-        run: |
-          npm install prisma -g
-          npm install @prisma/client -g
-          npx prisma generate
+        run: npx prisma generate
 
       - name: Build Node.js server
         working-directory: ./backend
