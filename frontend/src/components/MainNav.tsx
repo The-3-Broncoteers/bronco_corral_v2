@@ -17,10 +17,11 @@ const StyledButton = styled.button`
 	color: ${Colors.MintCream};
 	background-color: rgb(33, 37, 41);
 	border: none;
+	height: 100%;
 `;
 
 const logoutEndPoint: string = '/logout';
-//TODO Change login linked based on if user is signed in or not
+
 export const MainNav = () => {
 	const { auth } = useContext(AuthContext);
 
