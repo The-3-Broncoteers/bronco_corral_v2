@@ -12,7 +12,6 @@ const StyledForm = styled.form`
 	justify-content: space-evenly;
 	align-items: center;
 	gap: 0.7em;
-
 	button {
 		background-color: ${Colors.Charcoal};
 		border-style: solid;
@@ -21,7 +20,6 @@ const StyledForm = styled.form`
 		color: ${Colors.MintCream};
 		height: 3em;
 		width: 100%;
-
 		&:hover,
 		&:focus,
 		&:target {
@@ -29,18 +27,15 @@ const StyledForm = styled.form`
 			border-color: ${Colors.Blue};
 		}
 	}
-
 	a {
 		text-decoration: none;
 	}
-
 	.form-group {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		width: 100%;
-
 		input {
 			border-style: solid;
 			border-radius: 10px;
@@ -50,18 +45,15 @@ const StyledForm = styled.form`
 			width: 100%;
 		}
 	}
-
 	.form-seperator {
 		border-bottom: 1px solid ${Colors.TeaGreen};
 		margin: 0px;
 		width: 100%;
 	}
-
 	.signup-container {
 		position: relative;
 		width: 100%;
 		height: 3em;
-
 		a {
 			position: absolute;
 			top: 50%;
@@ -81,7 +73,7 @@ const StyledForm = styled.form`
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		width: 100%;
+		width: 98%;
 
 		.form-seperator {
 			flex-grow: 1;
@@ -152,20 +144,20 @@ export const LoginForm = () => {
 	return (
 		<StyledForm onSubmit={handleSubmit}>
 			<div className='form-group'>
+				<label hidden>Enter Email</label>
 				<input
 					type='email'
-					id='email'
 					name='email'
 					placeholder='Email Address'
 					onChange={(e) => setEmail(e.target.value)}
-					value={email}
 					required
 				/>
 			</div>
+
 			<div className='form-group'>
+				<label hidden>Enter Password</label>
 				<input
 					type='password'
-					id='password'
 					name='password'
 					placeholder='Password'
 					onChange={(e) => setPassword(e.target.value)}
@@ -173,7 +165,9 @@ export const LoginForm = () => {
 					required
 				/>
 			</div>
-			<button type='submit'>Sign In</button>
+
+			<button type='submit'>Log In</button>
+
 			<div className='form-footer'>
 				<div className='trust-device'>
 					<input
@@ -185,17 +179,16 @@ export const LoginForm = () => {
 					/>
 					<label htmlFor='trust-device'>Remember me</label>
 				</div>
-				<div className='forgot-password'>
-					<a href='#' onClick={handleOpenModal}>
-						Forgot Password?
-					</a>
-				</div>
+				<a href=''>Forgot Password?</a>
 			</div>
 			<div className='form-seperator'></div>
+
 			<div className='signup-container'>
-				<a href='/signup'>Create an account</a>
+				<a role={'button'} onClick={handleOpenModal} className='signup-button'>
+					Create a new account
+				</a>
+				<SignupForm isOpen={isOpen} onClose={handleCloseModal} />
 			</div>
-			<SignupForm isOpen={isOpen} onClose={handleCloseModal} />
 		</StyledForm>
 	);
 };
