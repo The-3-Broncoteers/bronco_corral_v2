@@ -1,10 +1,12 @@
-import { PrismaClient, Vehicle } from '@prisma/client';
+import { PrismaClient, UserVehicle, Vehicle } from '@prisma/client';
 import axios from 'axios';
 
 interface VehicleData {
 	make: string;
 	model: string;
 	year: number;
+	milage: string;
+	avgMilage: string;
 }
 
 const db = new PrismaClient();
@@ -32,7 +34,8 @@ export const newVehicle = async (vin: string, auth: any) => {
 				axiosResponse.year = parseInt(yearString);
 			});
 
-		const vehicleData: Vehicle = await getOrCreateVehicle(axiosResponse);
+		let vehicleData = <VehicleData>{};
+		vehicleData = await getOrCreateVehicle(axiosResponse);
 
 		const newVehicle = await db.userVehicle.create({
 			data: {
@@ -40,6 +43,8 @@ export const newVehicle = async (vin: string, auth: any) => {
 				make: vehicleData.make,
 				model: vehicleData.model,
 				year: vehicleData.year,
+				milage: vehicleData.milage,
+				milesPerDay: vehicleData.avgMilage,
 				userEmail: auth.email,
 			},
 		});
@@ -69,7 +74,9 @@ async function getOrCreateVehicle(res: VehicleData) {
 		});
 	}
 
-	return vehicle;
+	const resultingVehicle = { ...vehicle, milage: '0', avgMilage: '0' };
+
+	return resultingVehicle;
 }
 
 export const vehicleDeleter = async (vin: string) => {
