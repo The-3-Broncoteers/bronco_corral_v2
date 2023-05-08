@@ -11,6 +11,13 @@ import { axiosPrivate } from '../config/axiosConfig';
 
 const StyledNavbar = styled(Navbar)`
 	height: 5vh;
+	padding: 0px;
+
+	.container-fluid {
+		.a {
+			padding: 0px;
+		}
+	}
 `;
 
 const StyledButton = styled.button`

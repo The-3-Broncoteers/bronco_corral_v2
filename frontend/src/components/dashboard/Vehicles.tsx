@@ -29,7 +29,7 @@ const DashboardContainer = styled.div`
 		padding: 10px;
 
 		.view {
-			height: 100%;
+			height: 97%;
 			display: flex;
 			flex-direction: row; /* Change from 'column' to 'row' */
 			align-items: flex-start; /* Add this line to align items to the top */

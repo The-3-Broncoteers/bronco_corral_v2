@@ -39,6 +39,8 @@ const StyledTree = styled.div`
 
 	.vehicle-groups {
 		padding: 0;
+		margin: 0px;
+		height: 100%;
 	}
 
 	h3,
