@@ -14,7 +14,7 @@ import { addLog, logObject } from '../utils/updateLogContext';
  * Creates context and stores logs in context
  *
  * @param - none
- * @returns LogContext.Provider
+ * @returns logs, setLogs, hasDataFlag, setHasDataFlag stored in context
  */
 
 type LogContextType = {

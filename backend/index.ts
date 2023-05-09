@@ -39,7 +39,7 @@ app.use('/api/logout', logoutRouter);
 //app.use(verifyJWT);
 app.use('/api/users', userRouter);
 app.use('/api/vehicles', vehicleRouter);
-app.use('api/maintenance', maintenanceLogRouter);
+app.use('/api/maintenance', maintenanceLogRouter);
 app.use(errorHandler);
 
 app.listen(PORT, async () => {
