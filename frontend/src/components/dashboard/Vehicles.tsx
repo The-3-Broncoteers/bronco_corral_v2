@@ -209,8 +209,8 @@ export const Vehicles = () => {
 				},
 			)
 			.then((response: any) => {
-				const { vin, make, model, year } = response.data;
-				setVehicleList([...vehicleList, { vin, make, model, year }]);
+				const { id, vin, make, model, year } = response.data;
+				setVehicleList([...vehicleList, { id, vin, make, model, year }]);
 			})
 			.catch((error) => {
 				// handle error

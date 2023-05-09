@@ -117,6 +117,7 @@ export const getAllVehicles = async (email: string | any) => {
 			userEmail: email,
 		},
 		select: {
+			id: true,
 			vin: true,
 			make: true,
 			model: true,
