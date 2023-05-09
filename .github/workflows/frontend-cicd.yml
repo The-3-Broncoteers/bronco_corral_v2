@@ -1,44 +1,44 @@
-#  name: Frontend-CICD
+name: Frontend-CICD
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   frontend-build-and-deploy:
-#     runs-on: ubuntu-latest
-#     name: Build and Deploy Frontend and Backend
+jobs:
+  frontend-build-and-deploy:
+    runs-on: ubuntu-latest
+    name: Build and Deploy Frontend and Backend
 
-#     steps:
-#     - name: Checkout code
-#       uses: actions/checkout@v3
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
       
-#     - name: Install frontend dependencies
-#       working-directory: ./frontend
-#       run: npm install
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm install
 
-#     - name: Build frontend
-#       working-directory: ./frontend
-#       run: npm run build
+    - name: Build frontend
+      working-directory: ./frontend
+      run: npm run build
 
-#     - name: SSH into server and prepare directory
-#       uses: appleboy/ssh-action@v0.1.6
-#       with:
-#         host: ${{ secrets.EC2_HOST_NAME }}
-#         username: ${{ secrets.EC2_USER_NAME }}
-#         port: 22
-#         key: ${{ secrets.SSH_PRIVATE_KEY }}
-#         script: |
-#           cd /var/www/bronco_corral_v2/
-#           sudo rm frontend -rf
+    - name: SSH into server and prepare directory
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.EC2_HOST_NAME }}
+        username: ${{ secrets.EC2_USER_NAME }}
+        port: 22
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/bronco_corral_v2/
+          sudo rm frontend -rf
 
-#     - name: Copy frontend build to server
-#       uses: appleboy/scp-action@v0.1.4
-#       with:
-#         host: ${{ secrets.EC2_HOST_NAME }}
-#         username: ${{ secrets.EC2_USER_NAME }}
-#         port: 22
-#         key: ${{ secrets.SSH_PRIVATE_KEY }}
-#         source: "./frontend/build"
-#         target: "/var/www/bronco_corral_v2/"
+    - name: Copy frontend build to server
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.EC2_HOST_NAME }}
+        username: ${{ secrets.EC2_USER_NAME }}
+        port: 22
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "./frontend/build"
+        target: "/var/www/bronco_corral_v2/"
