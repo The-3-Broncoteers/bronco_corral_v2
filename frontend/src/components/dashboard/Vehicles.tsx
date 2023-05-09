@@ -315,33 +315,6 @@ export const Vehicles = () => {
 			});
 	};
 
-	// useEffect(() => {
-	// 	const fetchVehicleImage = async () => {
-	// 		if (selectedVehicle) {
-	// 			await axios
-	// 				.get('https://api.carmd.com/v3.0/image', {
-	// 					headers: {
-	// 						'content-type': 'application/json',
-	// 						authorization: 'Basic MjUzMmNjZGUtMGM0MC00ZDEzLWFkNTMtMmYwOGRmNjZjMTNm',
-	// 						'partner-token': '5a95593fa0b44166b947ac55ec6edcd2',
-	// 					},
-	// 					params: {
-	// 						vin: selectedVehicle.vin,
-	// 					},
-	// 				})
-	// 				.then((response) => {
-	// 					console.log(response.data.data.image);
-	// 					setVehicleImage(response.data.data.image);
-	// 				})
-	// 				.catch((error) => {
-	// 					// handle error
-	// 				});
-	// 		}
-	// 	};
-
-	// 	fetchVehicleImage();
-	// }, [selectedVehicle]);
-
 	useEffect(() => {
 		const fetchVehicleDetails = async () => {
 			if (selectedVehicle) {
@@ -413,6 +386,33 @@ export const Vehicles = () => {
 		fetchVehicleDetails();
 	}, [selectedVehicle]);
 
+	useEffect(() => {
+		const fetchVehicleImage = async () => {
+			if (selectedVehicle) {
+				await axiosPublic
+					.get('https://api.carmd.com/v3.0/image', {
+						headers: {
+							'content-type': 'application/json',
+							authorization: 'Basic ZDhhYzAxNzAtYWE0YS00MmE3LTkwZDUtYzMzYjY2YzQ5ZWY3',
+							'partner-token': 'b3ebd4fae8f84950ab179693abe0204d',
+						},
+						params: {
+							vin: selectedVehicle.vin,
+						},
+					})
+					.then((response) => {
+						console.log('IMAGE' + response.data.data.image);
+						setVehicleImage(response.data.data.image);
+					})
+					.catch((error) => {
+						console.log(' FUCK FUCK FUCK');
+					});
+			}
+		};
+
+		fetchVehicleImage();
+	}, [selectedVehicle]);
+
 	return (
 		<DashboardContainer>
 			<section className='left-container'>
@@ -435,11 +435,7 @@ export const Vehicles = () => {
 					{selectedVehicle ? (
 						<>
 							<div className='view-left'>
-								<img
-									src={'http://downloads.innova.com/polk-vehicle-images/CAC20TOT105C0101.jpg'}
-									alt={selectedVehicle?.make}
-									className='vehicle-img'
-								/>
+								<img src={vehicleImage} alt={selectedVehicle?.make} className='vehicle-img' />
 								<div className='mile-control'>
 									<div className='mile-control'>
 										<div className='milage-control'>
