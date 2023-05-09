@@ -63,3 +63,26 @@ export const isBlank = (str: string): boolean => str.length < 1 || !str;
  * @returns a boolean. true if string length is greater than or equal to length.
  */
 export const isLength = (length: number, str: string): boolean => str.length >= length;
+
+export function validateVIN(vin: string): boolean {
+	if (vin.length !== 17) {
+		return false;
+	}
+
+	console.log('test 1');
+
+	if (!/^[a-zA-Z0-9]+$/.test(vin)) {
+		return false;
+	}
+
+	console.log('test 2');
+
+	const vis = vin.substring(9);
+	if (!/^[a-zA-Z0-9]+$/.test(vis)) {
+		return false;
+	}
+
+	console.log('test 3');
+
+	return true;
+}

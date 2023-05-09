@@ -5,11 +5,12 @@ import AuthContext from '../../context/authProvider';
 import { axiosPublic } from '../../config/axiosConfig';
 import { VehicleContext } from '../../context/VehicleProvider';
 import MaintRequest from '../MaintRequest';
+import { validateVIN } from '../../utils/formUtils';
 
 const DashboardContainer = styled.div`
 	display: flex;
     height: 100%;
-	flex-flow: row nowrap:
+	flex-flow: row nowrap;
 	gap: 0.1em;
 	padding: 0.5em 0.5em;
 	background: ${Colors.MintCream};
@@ -44,6 +45,7 @@ const DashboardContainer = styled.div`
             border-radius: 20px;
             border: solid 2px ${Colors.Blue};
             box-shadow: 2px 2px 15px ${Colors.Cambridge};
+            align-text: center;
 
 			.vehicle-img {
 				max-height: 100%;
@@ -118,6 +120,7 @@ const DashboardContainer = styled.div`
                 ::placeholder {
                     text-align: center; 
                 }
+
             }
 
             button {
@@ -135,10 +138,22 @@ const DashboardContainer = styled.div`
                 }
             }
         }
+
+        .delete {
+            border: .15em solid ${Colors.Blue};
+            border-radius: 20px;
+            background-color: ${Colors.Blue};
+            color: ${Colors.MintCream};
+            width: 50%;
+
+            :hover {
+                background-color: ${Colors.Charcoal};
+                border: .15em solid ${Colors.Charcoal};
+            }
+        }
 	}
 
 	.right-container {
-		background-color: darkgrey;
 		padding: 10px;
 	}
 
@@ -164,7 +179,7 @@ export const Vehicles = () => {
 	const [vin, setVin] = useState('');
 	const { auth } = useContext(AuthContext);
 	const { vehicleList, setVehicleList } = useContext(VehicleContext);
-	const { selectedVehicle } = useContext(VehicleContext);
+	const { selectedVehicle, setSelectedVehicle } = useContext(VehicleContext);
 	const [vehicleImage, setVehicleImage] = useState('');
 	const [vehicleDetails, setVehicleDetails] = useState<{
 		make: string;
@@ -193,6 +208,60 @@ export const Vehicles = () => {
 		trim: string;
 		transmissionStyle: string;
 	} | null>(null);
+	const [currentMilage, setCurrentMilage] = useState('');
+	const [avgMilage, setAvgMilage] = useState('');
+
+	const handleCurrentMilageChange = (event: any) => {
+		setCurrentMilage(event.target.value);
+	};
+
+	const handleAvgMilageChange = (event: any) => {
+		setAvgMilage(event.target.value);
+	};
+
+	const updateCurrentMilage = async () => {
+		if (!selectedVehicle) return console.log('No Vehicle Selected');
+
+		if (isNaN(parseInt(currentMilage))) return console.log('Invalid Milage');
+
+		try {
+			const data = await axiosPublic.put(`/vehicles/${selectedVehicle.vin}`, {
+				vin: selectedVehicle.vin,
+				milage: currentMilage,
+			});
+
+			setSelectedVehicle({
+				...selectedVehicle,
+				milage: currentMilage,
+			});
+
+			setCurrentMilage('');
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const updateAvgMilage = async () => {
+		if (!selectedVehicle) return console.log('No Vehicle Selected');
+
+		if (isNaN(parseInt(avgMilage))) return console.log('Invalid Average Milage');
+
+		try {
+			const data = await axiosPublic.put(`/vehicles/${selectedVehicle.vin}`, {
+				vin: selectedVehicle.vin,
+				avgMilage: avgMilage,
+			});
+
+			setSelectedVehicle({
+				...selectedVehicle,
+				avgMilage: avgMilage,
+			});
+
+			setAvgMilage('');
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	const createVehicle = async () => {
 		const isDuplicate = vehicleList.some((vehicle) => vehicle.vin === vin);
@@ -201,6 +270,8 @@ export const Vehicles = () => {
 			console.log('Vehicle with this VIN already exists!');
 			return;
 		}
+
+		if (!validateVIN(vin)) return console.log('Invalid vin');
 
 		await axiosPublic
 			.post(
@@ -219,6 +290,8 @@ export const Vehicles = () => {
 					...vehicleList,
 					{ vin, make, model, year, milage, avgMilage: milesPerDay },
 				]);
+
+				setVin('');
 			})
 			.catch((error) => {
 				// handle error
@@ -226,22 +299,17 @@ export const Vehicles = () => {
 	};
 
 	const deleteVehicle = async () => {
-		await axiosPublic
-			.delete('/vehicles', { data: { vin } })
-			.then((response) => {
-				setVehicleList(vehicleList.filter((vehicle) => vehicle.vin !== vin));
-			})
-			.catch((error) => {
-				// handle error
-			});
-	};
+		if (!selectedVehicle) return console.log('No Vehicle Selected');
 
-	const viewVehicle = async () => {
+		const viNum = selectedVehicle.vin;
+
 		await axiosPublic
-			.get('/vehicles')
+			.delete('/vehicles', { data: { vin: viNum } })
 			.then((response) => {
-				// handle response
+				setVehicleList(vehicleList.filter((vehicle) => vehicle.vin !== viNum));
+				setSelectedVehicle(null);
 			})
+
 			.catch((error) => {
 				// handle error
 			});
@@ -286,12 +354,6 @@ export const Vehicles = () => {
 
 						if (Results && Results.length > 0) {
 							const {
-								Make,
-								Model,
-								ModelYear,
-								VIN,
-								Milage,
-								AvgMiles,
 								BodyClass,
 								DisplacementL,
 								EngineConfiguration,
@@ -314,12 +376,12 @@ export const Vehicles = () => {
 							} = Results[0];
 
 							setVehicleDetails({
-								make: Make || '',
-								model: Model || '',
-								year: ModelYear || '',
-								vin: VIN || '',
-								milage: Milage || '',
-								avgMilage: AvgMiles || '',
+								make: selectedVehicle.make || '',
+								model: selectedVehicle.model || '',
+								year: selectedVehicle.year.toString() || '',
+								vin: selectedVehicle.vin || '',
+								milage: selectedVehicle.milage || '',
+								avgMilage: selectedVehicle.avgMilage || '',
 								bodyClass: BodyClass || '',
 								displacementL: DisplacementL || '',
 								engineConfiguration: EngineConfiguration || '',
@@ -361,6 +423,7 @@ export const Vehicles = () => {
 							name='vin'
 							placeholder='Enter VIN'
 							onChange={(e) => setVin(e.target.value)}
+							value={vin}
 							className='vin-input'
 						/>
 						<button type='button' className='vin-button' onClick={createVehicle}>
@@ -374,33 +437,50 @@ export const Vehicles = () => {
 							<div className='view-left'>
 								<img
 									src={'http://downloads.innova.com/polk-vehicle-images/CAC20TOT105C0101.jpg'}
-									alt={selectedVehicle.make}
+									alt={selectedVehicle?.make}
 									className='vehicle-img'
 								/>
 								<div className='mile-control'>
-									<div className='milage-control'>
-										<label htmlFor='milage'>
-											Current est. milage: {' ' + selectedVehicle.milage}
-										</label>
-										<div className='input-wrapper'>
-											<input type='text' id='milage'></input>
-											<button type='button' className='miles' onClick={createVehicle}>
-												Update
-											</button>
+									<div className='mile-control'>
+										<div className='milage-control'>
+											<label htmlFor='milage'>
+												Current est. milage:{' '}
+												{selectedVehicle?.milage ? selectedVehicle.milage : '0'}
+											</label>
+											<div className='input-wrapper'>
+												<input
+													type='text'
+													id='milage'
+													value={currentMilage}
+													onChange={handleCurrentMilageChange}
+												/>
+												<button type='button' className='miles' onClick={updateCurrentMilage}>
+													Update
+												</button>
+											</div>
 										</div>
-									</div>
-									<div className='avg-milage-control'>
-										<label htmlFor='avg-miles'>
-											Current est. miles/month: {' ' + selectedVehicle.avgMilage}
-										</label>
-										<div className='input-wrapper'>
-											<input type='text' id='avg-miles'></input>
-											<button type='button' className='avg-miles' onClick={createVehicle}>
-												Update
-											</button>
+										<div className='avg-milage-control'>
+											<label htmlFor='avg-miles'>
+												Current est. miles/month:{' '}
+												{selectedVehicle?.avgMilage ? selectedVehicle.avgMilage : '0'}
+											</label>
+											<div className='input-wrapper'>
+												<input
+													type='text'
+													id='avg-miles'
+													value={avgMilage}
+													onChange={handleAvgMilageChange}
+												/>
+												<button type='button' className='avg-miles' onClick={updateAvgMilage}>
+													Update
+												</button>
+											</div>
 										</div>
 									</div>
 								</div>
+								<button type='button' className='delete' onClick={deleteVehicle}>
+									Delete Vehicle
+								</button>
 							</div>
 							<div className='vehicle-details' id='sbar'>
 								<ul>
@@ -437,12 +517,13 @@ export const Vehicles = () => {
 						<p>Select a vehicle in your tree to the left, or add one above if you have none!</p>
 					)}
 				</section>
-				<section className='alerts'>alerts</section>
+				<section className='alerts'></section>
 			</section>
 			<section className='right-container view'>
 				<section className='controlSection'>
 					<MaintRequest />
 				</section>
+				<section className='controlSection'> </section>
 			</section>
 		</DashboardContainer>
 	);

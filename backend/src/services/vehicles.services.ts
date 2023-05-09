@@ -1,4 +1,4 @@
-import { PrismaClient, UserVehicle, Vehicle } from '@prisma/client';
+import { PrismaClient, Vehicle } from '@prisma/client';
 import axios from 'axios';
 
 interface VehicleData {
@@ -96,11 +96,11 @@ export const vehicleDeleter = async (vin: string) => {
 		);
 };
 
-export const vehicleInfo = async (vehicleId: number) => {
+export const vehicleInfo = async (vehicleId: string) => {
 	const vehicle = await db.userVehicle
 		.findUnique({
 			where: {
-				id: vehicleId,
+				vin: vehicleId,
 			},
 		})
 		.then(
@@ -129,4 +129,43 @@ export const getAllVehicles = async (email: string | any) => {
 	});
 
 	return vehicles;
+};
+
+export const updateMilageData = async (vin: string, milage?: string, avgMilage?: string) => {
+	if (!milage && !avgMilage) {
+		throw new Error('At least one of milage or avgMilage must be provided');
+	}
+
+	const updatedVehicle = await db.$transaction(async (prisma) => {
+		const vehicle = await prisma.userVehicle.findUnique({
+			where: {
+				vin,
+			},
+		});
+
+		if (!vehicle) {
+			throw new Error(`Vehicle with VIN ${vin} not found`);
+		}
+
+		const data: { milage?: string; milesPerDay?: string } = {};
+
+		if (milage) {
+			data.milage = milage;
+		}
+
+		if (avgMilage) {
+			data.milesPerDay = avgMilage;
+		}
+
+		const updatedVehicle = await prisma.userVehicle.update({
+			where: {
+				vin,
+			},
+			data,
+		});
+
+		return updatedVehicle;
+	});
+
+	return updatedVehicle;
 };
