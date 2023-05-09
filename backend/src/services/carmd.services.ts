@@ -14,29 +14,29 @@ export const getMaintenances = async (vin: string, mileage: number) => {
 	const response = await axios.get(apiUrl, {
 		headers: {
 			'content-type': 'application/json',
-			authorization: authKey,
+			'authorization': authKey,
 			'partner-token': token,
 		},
 	});
 
-	const userTest: string = 'tester@test.com';
+	/**const userTest: string = 'tester@test.com';
 
-	const maintenances = response.data.data.map((maintenance: { desc: any; due_mileage: any }) => {
+	const maintenances = response.data.data.map((maintenance: { desc: string; due_mileage: string; }) => {
 		return {
 			desc: maintenance.desc,
 			dueMileage: maintenance.due_mileage,
 			userEmail: userTest,
 			Vehicle: {
 				connect: {
-					vin: vin,
-				},
-			},
-		};
+					vin: vin
+				}
+			}
+		}
 	});
 
 	await db.maintenance.createMany({
 		data: maintenances,
-	});
+	}); */
 
 	return response.data;
 };

@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../context/authProvider';
 import { axiosPublic } from '../../config/axiosConfig';
 import { VehicleContext } from '../../context/VehicleProvider';
+import MaintRequest from '../MaintRequest';
 import { validateVIN } from '../../utils/formUtils';
 
 const DashboardContainer = styled.div`
@@ -519,6 +520,9 @@ export const Vehicles = () => {
 				<section className='alerts'></section>
 			</section>
 			<section className='right-container view'>
+				<section className='controlSection'>
+					<MaintRequest />
+				</section>
 				<section className='controlSection'> </section>
 			</section>
 		</DashboardContainer>
