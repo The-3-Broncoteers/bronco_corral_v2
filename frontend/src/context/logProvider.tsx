@@ -1,5 +1,12 @@
 import { createContext, useState } from 'react';
 
+/**
+ * Creates context and stores logs in context
+ *
+ * @param - none
+ * @returns LogContext.Provider
+ */
+
 interface LogContextType {
 	logs: any;
 	hasDataFlag: boolean;
