@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { FunctionComponent, ReactNode, createContext, useState } from 'react';
 
 /**
  * Creates context and stores logs in context
@@ -7,21 +7,27 @@ import { createContext, useState } from 'react';
  * @returns LogContext.Provider
  */
 
-interface LogContextType {
+type LogContextType = {
 	logs: any;
 	hasDataFlag: boolean;
 	setHasDataFlag: React.Dispatch<React.SetStateAction<any>>;
 	setLogs: React.Dispatch<React.SetStateAction<any>>;
-}
+};
 
-const LogContext = createContext<LogContextType>({
-	logs: {},
+type LogContextProviderProps = {
+	children: ReactNode;
+};
+
+export const LogContext = createContext<LogContextType>({
 	hasDataFlag: false,
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	setHasDataFlag: () => {},
+	logs: {},
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	setLogs: () => {},
 });
 
-export const logProvider = ({ children }: any) => {
+export const LogProvider: FunctionComponent<LogContextProviderProps> = ({ children }: any) => {
 	const [logs, setLogs] = useState([]);
 	const [hasDataFlag, setHasDataFlag] = useState(false);
 
@@ -31,5 +37,3 @@ export const logProvider = ({ children }: any) => {
 		</LogContext.Provider>
 	);
 };
-
-export default LogContext;

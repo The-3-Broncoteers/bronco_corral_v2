@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import logContext from '../../context/logProvider';
 import axios from 'axios';
 import AuthContext from '../../context/authProvider';
 import { VehicleContext } from '../../context/VehicleProvider';
-import LogContext, { logProvider } from '../../context/logProvider';
+import { LogContext, LogProvider } from '../../context/logProvider';
+import { useLog } from '../../hooks/useLog';
 
 /**
  * Accesses user vehicle id's from VehicleContext,
@@ -19,8 +19,8 @@ interface logObject {
 }
 
 const Logs = () => {
-	const { logs, setLogs } = useContext(LogContext);
-	const { hasDataFlag, setHasDataFlag } = useContext(LogContext);
+	const { logs, setLogs } = useLog();
+	const { hasDataFlag, setHasDataFlag } = useLog();
 	const { auth } = useContext(AuthContext);
 	const { vehicleList } = useContext(VehicleContext);
 

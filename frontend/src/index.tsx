@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import { AuthProvider } from './context/authProvider';
+import { LogProvider } from './context/logProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
