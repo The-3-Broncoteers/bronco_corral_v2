@@ -4,11 +4,12 @@ import { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../context/authProvider';
 import { axiosPublic } from '../../config/axiosConfig';
 import { VehicleContext } from '../../context/VehicleProvider';
+import { validateVIN } from '../../utils/formUtils';
 
 const DashboardContainer = styled.div`
 	display: flex;
     height: 100%;
-	flex-flow: row nowrap:
+	flex-flow: row nowrap;
 	gap: 0.1em;
 	padding: 0.5em 0.5em;
 	background: ${Colors.MintCream};
@@ -43,6 +44,7 @@ const DashboardContainer = styled.div`
             border-radius: 20px;
             border: solid 2px ${Colors.Blue};
             box-shadow: 2px 2px 15px ${Colors.Cambridge};
+            align-text: center;
 
 			.vehicle-img {
 				max-height: 100%;
@@ -117,6 +119,7 @@ const DashboardContainer = styled.div`
                 ::placeholder {
                     text-align: center; 
                 }
+
             }
 
             button {
@@ -132,6 +135,19 @@ const DashboardContainer = styled.div`
                     border: .15em solid ${Colors.Charcoal};
                     border-left: 0;
                 }
+            }
+        }
+
+        .delete {
+            border: .15em solid ${Colors.Blue};
+            border-radius: 20px;
+            background-color: ${Colors.Blue};
+            color: ${Colors.MintCream};
+            width: 50%;
+
+            :hover {
+                background-color: ${Colors.Charcoal};
+                border: .15em solid ${Colors.Charcoal};
             }
         }
 	}
@@ -200,6 +216,8 @@ export const Vehicles = () => {
 			console.log('Vehicle with this VIN already exists!');
 			return;
 		}
+
+		if (!validateVIN(vin)) return console.log('invalid vin');
 
 		await axiosPublic
 			.post(
@@ -373,7 +391,7 @@ export const Vehicles = () => {
 							<div className='view-left'>
 								<img
 									src={'http://downloads.innova.com/polk-vehicle-images/CAC20TOT105C0101.jpg'}
-									alt={selectedVehicle.make}
+									alt={selectedVehicle?.make}
 									className='vehicle-img'
 								/>
 								<div className='mile-control'>
@@ -390,7 +408,7 @@ export const Vehicles = () => {
 									</div>
 									<div className='avg-milage-control'>
 										<label htmlFor='avg-miles'>
-											Current est. miles/month:
+											Current est. miles/month:{' '}
 											{selectedVehicle?.avgMilage ? selectedVehicle.avgMilage : '0'}
 										</label>
 										<div className='input-wrapper'>
@@ -401,6 +419,9 @@ export const Vehicles = () => {
 										</div>
 									</div>
 								</div>
+								<button type='button' className='delete' onClick={deleteVehicle}>
+									Delete Vehicle
+								</button>
 							</div>
 							<div className='vehicle-details' id='sbar'>
 								<ul>
@@ -437,7 +458,7 @@ export const Vehicles = () => {
 						<p>Select a vehicle in your tree to the left, or add one above if you have none!</p>
 					)}
 				</section>
-				<section className='alerts'>alerts</section>
+				<section className='alerts'></section>
 			</section>
 			<section className='right-container view'>
 				<section className='controlSection'>Placeholder</section>
