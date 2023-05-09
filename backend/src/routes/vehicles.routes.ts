@@ -4,6 +4,7 @@ import {
 	deleteVehicle,
 	getVehicles,
 	getVehicleInfo,
+	updateVehicleMilageData,
 } from '../controllers/vehicles.controller';
 
 const router = express.Router();
@@ -15,6 +16,6 @@ router
 	//.put()
 	.delete(deleteVehicle);
 
-router.route('/:id').get(getVehicleInfo);
+router.route('/:id').get(getVehicleInfo).put(updateVehicleMilageData);
 
 export { router as vehicleRouter };
